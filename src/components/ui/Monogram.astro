@@ -1,0 +1,45 @@
+---
+interface Props {
+  size?: 'sm' | 'md' | 'lg';
+  class?: string;
+  letters?: string;
+}
+
+const { size = 'md', class: className = '', letters = 'SR', ...rest } = Astro.props;
+const classes = ['monogram', size !== 'md' ? `monogram-${size}` : '', className].filter(Boolean).join(' ');
+---
+
+<span class={classes} {...rest} aria-hidden="true">
+  {letters}
+</span>
+
+<style>
+  .monogram {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    color: var(--bg);
+    background-color: var(--accent);
+    border-radius: var(--radius-md);
+  }
+
+  .monogram-sm {
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1rem;
+  }
+
+  .monogram-md {
+    width: 3rem;
+    height: 3rem;
+    font-size: 1.25rem;
+  }
+
+  .monogram-lg {
+    width: 4rem;
+    height: 4rem;
+    font-size: 1.5rem;
+  }
+</style>

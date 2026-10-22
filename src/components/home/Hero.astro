@@ -1,0 +1,154 @@
+---
+import Button from '../ui/Button.astro';
+import StatusBadge from '../ui/StatusBadge.astro';
+---
+
+<section class="hero" aria-labelledby="hero-heading">
+  <div class="network-container" aria-hidden="true">
+    <canvas id="network-canvas" data-network-canvas></canvas>
+  </div>
+
+  <div class="container">
+    <div class="hero-content reveal">
+      <div class="hero-badge" aria-label="Status">
+        <StatusBadge label="Open to work · Remote" />
+      </div>
+
+      <h1 id="hero-heading" class="hero-headline">
+        Building intelligent systems for the agentic era.
+      </h1>
+
+      <p class="hero-subtext">
+        Self-taught for 2.5+ years, I design and build AI agents, search systems, and automation that turn complex work into simple workflows.
+      </p>
+
+      <div class="hero-actions">
+        <Button href="/projects" variant="primary" size="lg">
+          View Projects
+        </Button>
+        <Button href="/contact" variant="secondary" size="lg">
+          Get in Touch
+        </Button>
+      </div>
+
+      <div class="hero-status">
+        <span class="monogram-label">SR</span>
+        <span class="monogram-role">AI/ML Engineer in the Making, Agents & Automation</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: var(--space-4xl) 0;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      ellipse at 50% 0%,
+      rgba(77, 226, 197, 0.05) 0%,
+      transparent 70%
+    );
+    pointer-events: none;
+  }
+
+  .network-container {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .network-container canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 48ch;
+  }
+
+  .hero-badge {
+    margin-bottom: var(--space-lg);
+  }
+
+  .hero-headline {
+    margin-bottom: var(--space-md);
+    line-height: 1.1;
+  }
+
+  .hero-subtext {
+    font-size: 1.125rem;
+    color: var(--muted);
+    max-width: 48ch;
+    margin-bottom: var(--space-xl);
+    line-height: 1.7;
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-md);
+    margin-bottom: var(--space-xl);
+  }
+
+  .hero-status {
+    display: flex;
+    align-items: center;
+    gap: var(--space-lg);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+
+  .monogram-label {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+
+  .monogram-role {
+    font-weight: 500;
+  }
+
+  @media (max-width: 640px) {
+    .hero {
+      padding: var(--space-3xl) 0;
+      min-height: auto;
+    }
+
+    .hero-actions {
+      flex-direction: column;
+    }
+
+    .hero-actions .btn {
+      width: 100%;
+    }
+
+    .hero-status {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-sm);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero::before {
+      display: none;
+    }
+  }
+</style>

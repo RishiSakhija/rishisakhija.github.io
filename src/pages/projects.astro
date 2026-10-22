@@ -1,0 +1,27 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { projects } from '../data/projects';
+import ProjectCard from '../components/projects/ProjectCard.astro';
+---
+
+<BaseLayout
+  title="Projects"
+  description="Explore my AI, ML, and automation projects including search engines, agentic systems, and web applications."
+>
+  <section class="projects-page" aria-labelledby="projects-heading">
+    <div class="container">
+      <header class="projects-page-header reveal">
+        <h1 id="projects-heading" class="projects-page-title">All Projects</h1>
+        <p class="projects-page-subtext">
+          A collection of AI, ML, and automation projects built over 2.5+ years of self-directed learning.
+        </p>
+      </header>
+
+      <div class="projects-grid" role="list">
+        {projects.map((project, index) => (
+          <ProjectCard project={project} index={index} />
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

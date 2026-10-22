@@ -1,0 +1,24 @@
+---
+import Navbar from './Navbar.astro';
+import Footer from './Footer.astro';
+---
+
+<div class="layout">
+  <Navbar />
+  <main id="main-content">
+    <slot />
+  </main>
+  <Footer />
+</div>
+
+<style>
+  .layout {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  main {
+    flex: 1;
+  }
+</style>

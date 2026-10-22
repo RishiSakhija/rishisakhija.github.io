@@ -1,0 +1,99 @@
+---
+import Layout from '../components/layout/Layout.astro';
+import '../styles/globals.css';
+import '../styles/components.css';
+import '../styles/transitions.css';
+
+interface Props {
+  title: string;
+  description: string;
+  ogImage?: string;
+  canonicalURL?: string;
+}
+
+const {
+  title,
+  description,
+  ogImage = '/og-image.png',
+  canonicalURL,
+  ...rest
+} = Astro.props;
+
+const siteTitle = 'Sakhija Rishi';
+const fullTitle = title === siteTitle ? siteTitle : `${title} | ${siteTitle}`;
+const siteURL = new URL(Astro.site || 'https://RishiSakhija.github.io');
+const pageURL = canonicalURL ? new URL(canonicalURL, siteURL) : new URL(Astro.url.pathname, siteURL);
+const imageURL = new URL(ogImage, siteURL);
+---
+
+<!doctype html>
+<html lang="en" {...rest}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={pageURL} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={pageURL} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={imageURL} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={pageURL} />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imageURL} />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <!-- View Transitions -->
+    <meta name="astro-view-transitions-enabled" content="true" />
+  </head>
+  <body>
+    <Layout>
+      <slot />
+    </Layout>
+
+    <!-- Network Animation Script -->
+    <script type="module" src="/scripts/network-animation.js"></script>
+
+    <!-- Scroll Reveal Intersection Observer -->
+    <script>
+      // Initialize scroll reveal
+      const revealElements = document.querySelectorAll('.reveal');
+
+      const revealObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+              revealObserver.unobserve(entry.target);
+            }
+          });
+        },
+        {
+          threshold: 0.1,
+          rootMargin: '0px 0px -50px 0px',
+        }
+      );
+
+      revealElements.forEach((el) => revealObserver.observe(el));
+
+      // Re-initialize on Astro View Transitions
+      document.addEventListener('astro:after-swap', () => {
+        const newRevealElements = document.querySelectorAll('.reveal:not(.visible)');
+        newRevealElements.forEach((el) => revealObserver.observe(el));
+      });
+    </script>
+  </body>
+</html>

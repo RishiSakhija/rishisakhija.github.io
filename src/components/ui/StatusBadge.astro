@@ -1,0 +1,43 @@
+---
+interface Props {
+  label: string;
+  class?: string;
+}
+
+const { label, class: className = '', ...rest } = Astro.props;
+const classes = ['status-badge', className].filter(Boolean).join(' ');
+---
+
+<span class={classes} {...rest}>
+  <slot>{label}</slot>
+</span>
+
+<style>
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--accent);
+  }
+
+  .status-badge::before {
+    content: '●';
+    color: var(--accent);
+    font-size: 0.5rem;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .status-badge::before {
+      animation: none;
+    }
+  }
+</style>

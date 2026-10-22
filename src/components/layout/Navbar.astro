@@ -1,0 +1,123 @@
+---
+import Monogram from '../ui/Monogram.astro';
+
+const navItems = [
+  { href: '/', label: 'Home' },
+  { href: '/projects', label: 'Projects' },
+  { href: '/about', label: 'About' },
+  { href: '/contact', label: 'Contact' },
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<nav class="navbar" view-transition-name="nav">
+  <div class="container navbar-inner">
+    <a href="/" class="navbar-brand" aria-label="Sakhija Rishi - Home">
+      <Monogram size="sm" />
+      <span class="font-heading font-semibold">Sakhija Rishi</span>
+    </a>
+
+    <ul class="navbar-nav" role="navigation" aria-label="Main navigation">
+      {navItems.map((item) => (
+        <li>
+          <a
+            href={item.href}
+            class={`nav-link ${currentPath === item.href || (currentPath !== '/' && currentPath.startsWith(item.href)) ? 'active' : ''}`}
+            aria-current={currentPath === item.href || (currentPath !== '/' && currentPath.startsWith(item.href)) ? 'page' : undefined}
+          >
+            {item.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-nav);
+    background-color: rgba(10, 13, 18, 0.8);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: var(--space-md) 0;
+  }
+
+  .navbar-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-lg);
+  }
+
+  .navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    text-decoration: none;
+    color: var(--text);
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 1.125rem;
+    transition: color var(--transition-fast);
+  }
+
+  .navbar-brand:hover {
+    color: var(--accent);
+  }
+
+  .navbar-nav {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    list-style: none;
+  }
+
+  .nav-link {
+    display: block;
+    padding: var(--space-sm) var(--space-md);
+    font-family: var(--font-heading);
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--muted);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    transition: all var(--transition-fast);
+  }
+
+  .nav-link:hover,
+  .nav-link.active {
+    color: var(--accent);
+    background-color: rgba(77, 226, 197, 0.08);
+  }
+
+  .nav-link.active {
+    position: relative;
+  }
+
+  .nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: var(--space-xs);
+    left: var(--space-md);
+    right: var(--space-md);
+    height: 2px;
+    background-color: var(--accent);
+    border-radius: 1px;
+  }
+
+  @media (max-width: 640px) {
+    .navbar-nav {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .navbar-brand,
+    .nav-link {
+      transition: none;
+    }
+  }
+</style>

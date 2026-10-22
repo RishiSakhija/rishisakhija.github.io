@@ -1,0 +1,37 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Timeline from '../components/about/Timeline.astro';
+import PlaceholderSection from '../components/about/PlaceholderSection.astro';
+---
+
+<BaseLayout
+  title="About"
+  description="Learn more about Sakhija Rishi - a self-taught AI/ML engineer focused on agents, automation, and the agentic era."
+>
+  <section class="about-page" aria-labelledby="about-heading">
+    <div class="container">
+      <header class="about-intro reveal">
+        <h1 id="about-heading" class="about-intro-heading">Learning in public, building for real.</h1>
+        <p class="about-intro-text">
+          I'm Sakhija Rishi, a Computer Engineering diploma student and a self-taught builder with over 2.5 years of hands-on work in AI and machine learning. My focus is the agentic era: systems that reason, coordinate, and act. I learn by building, and everything here is real work in progress.
+        </p>
+        <p class="about-intro-text mono" style="margin-top: var(--space-lg);">
+          Location: Remote
+        </p>
+      </header>
+
+      <Timeline />
+
+      <div class="about-grid" style="margin-top: var(--space-3xl);">
+        <PlaceholderSection
+          title="Blog"
+          description="Coming soon — technical deep-dives, project retrospectives, and lessons learned while building in public."
+        />
+        <PlaceholderSection
+          title="Proof of Work"
+          description="Coming soon — verified contributions, certifications, and tangible evidence of skills in action."
+        />
+      </div>
+    </div>
+  </section>
+</BaseLayout>

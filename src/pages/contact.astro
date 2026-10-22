@@ -1,0 +1,37 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ContactLinks from '../components/contact/ContactLinks.astro';
+---
+
+<BaseLayout
+  title="Contact"
+  description="Get in touch with Sakhija Rishi — open to opportunities, collaborations, and conversations about AI."
+>
+  <section class="contact-page" aria-labelledby="contact-heading">
+    <div class="container">
+      <header class="contact-page-header reveal">
+        <h1 id="contact-heading" class="contact-page-title">Get in Touch</h1>
+        <p class="contact-page-subtext">
+          Open to opportunities, collaborations, and conversations about AI.
+        </p>
+      </header>
+
+      <div class="contact-links" role="list">
+        <ContactLinks index={0} />
+        <ContactLinks index={1} />
+        <ContactLinks index={2} />
+        <!-- Resume download slot - uncomment when ready -->
+        {/* <a href="/resume.pdf" class="contact-link" download>
+          <svg class="contact-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+          <span>Download Resume</span>
+        </a> */}
+      </div>
+
+      <p class="contact-closing">
+        Open to opportunities, collaborations, and conversations about AI.
+      </p>
+    </div>
+  </section>
+</BaseLayout>

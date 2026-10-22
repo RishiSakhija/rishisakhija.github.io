@@ -1,0 +1,40 @@
+---
+interface Props {
+  class?: string;
+  hoverable?: boolean;
+}
+
+const { class: className = '', hoverable = true, ...rest } = Astro.props;
+const classes = ['card', hoverable ? 'card-hover' : '', className].filter(Boolean).join(' ');
+---
+
+<div class={classes} {...rest}>
+  <slot />
+</div>
+
+<style>
+  .card {
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+    transition: all var(--transition-base);
+  }
+
+  .card-hover:hover {
+    border-color: var(--accent);
+    box-shadow: var(--shadow-accent);
+    transform: translateY(-2px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card,
+    .card-hover {
+      transition: none;
+    }
+
+    .card-hover:hover {
+      transform: none;
+    }
+  }
+</style>

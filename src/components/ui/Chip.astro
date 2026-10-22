@@ -1,0 +1,51 @@
+---
+interface Props {
+  variant?: 'default' | 'primary';
+  class?: string;
+  role?: 'listitem' | 'option' | 'tab' | 'button' | 'link' | 'menuitem' | 'treeitem';
+}
+
+const { variant = 'default', class: className = '', role, ...rest } = Astro.props;
+const classes = ['chip', variant === 'primary' ? 'chip-primary' : '', className].filter(Boolean).join(' ');
+---
+
+<span class={classes} role={role} {...rest}>
+  <slot />
+</span>
+
+<style>
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--space-xs) var(--space-sm);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--muted);
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    transition: all var(--transition-fast);
+  }
+
+  .chip:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .chip-primary {
+    color: var(--accent);
+    border-color: var(--accent);
+    background-color: rgba(77, 226, 197, 0.08);
+  }
+
+  .chip-primary:hover {
+    background-color: rgba(77, 226, 197, 0.15);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .chip {
+      transition: none;
+    }
+  }
+</style>
