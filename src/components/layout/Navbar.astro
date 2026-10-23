@@ -1,6 +1,4 @@
 ---
-import Monogram from '../ui/Monogram.astro';
-
 const navItems = [
   { href: '/', label: 'Home' },
   { href: '/projects', label: 'Projects' },
@@ -17,8 +15,11 @@ const currentPath = Astro.url.pathname;
 <nav class="navbar" view-transition-name="nav">
   <div class="container navbar-inner">
     <a href="/" class="navbar-brand" aria-label="Rishi Sakhija - Home">
-      <Monogram size="sm" letters="RS" />
-      <span>Rishi Sakhija</span>
+      <span class="navbar-wordmark">
+        <span class="navbar-wordmark-rishi">Rishi</span>
+        <span class="navbar-wordmark-sakhija">Sakhija</span>
+      </span>
+      <span class="visually-hidden">Rishi Sakhija</span>
     </a>
 
     <button
@@ -93,6 +94,7 @@ const currentPath = Astro.url.pathname;
     background-color: rgba(5, 7, 13, 0.85);
     backdrop-filter: blur(16px);
     border-bottom: 1px solid var(--border);
+    border-image: linear-gradient(to right, transparent, var(--red), transparent) 1;
     padding: var(--space-md) 0;
   }
 
@@ -117,6 +119,27 @@ const currentPath = Astro.url.pathname;
 
   .navbar-brand:hover {
     color: var(--blue-glow);
+  }
+
+  .navbar-wordmark {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: var(--fs-h4);
+    line-height: 1.1;
+  }
+
+  .navbar-wordmark-rishi {
+    color: var(--text);
+  }
+
+  .navbar-wordmark-sakhija {
+    background: linear-gradient(135deg, var(--blue-soft) 0%, var(--blue) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 
   .navbar-nav {

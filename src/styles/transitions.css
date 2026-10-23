@@ -51,7 +51,9 @@ nav {
   view-transition-name: hero-glow;
 }
 
-/* Transition Overlay */
+/* ============================================
+   TRANSITION OVERLAY (New SVG-based diagonal sweep)
+   ============================================ */
 .transition-overlay {
   position: fixed;
   inset: 0;
@@ -59,7 +61,7 @@ nav {
   z-index: var(--z-transition-overlay);
   opacity: 0;
   visibility: hidden;
-  transition: opacity var(--transition-fast), visibility var(--transition-fast);
+  transition: opacity 100ms ease, visibility 100ms ease;
 }
 
 .transition-overlay.active {
@@ -67,45 +69,43 @@ nav {
   visibility: visible;
 }
 
-/* Sweep Line */
+/* Dark overlay background */
+.transition-bg {
+  position: absolute;
+  inset: 0;
+  background: rgba(5, 7, 13, 0.95);
+  backdrop-filter: blur(4px);
+}
+
+/* Diagonal sweep line (SVG) */
 .transition-sweep {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 4px;
+  inset: 0;
+  width: 100%;
   height: 100%;
-  background: linear-gradient(180deg, var(--blue) 0%, var(--blue-glow) 50%, var(--blue) 100%);
-  transform: translateX(-100%);
-  transform-origin: left center;
-  will-change: transform;
+  overflow: visible;
 }
 
-.transition-sweep::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -2px;
-  width: 8px;
-  height: 8px;
-  background: var(--red);
-  border-radius: 50%;
-  box-shadow: 0 0 12px var(--red-glow), 0 0 24px var(--red);
+.transition-sweep .sweep-line {
+  stroke-dasharray: 141;
+  stroke-dashoffset: 141;
+  transition: stroke-dashoffset 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.transition-overlay.active .transition-sweep {
-  animation: sweep-cross var(--transition-agent) cubic-bezier(0.4, 0, 0.2, 1) forwards;
+.transition-overlay.active .transition-sweep .sweep-line {
+  stroke-dashoffset: 0;
 }
 
-@keyframes sweep-cross {
-  0% {
-    transform: translateX(-100%);
-  }
-  100% {
-    transform: translateX(calc(100vw + 100%));
-  }
+.transition-sweep .sweep-edge {
+  opacity: 0;
+  transition: opacity 0.2s ease;
 }
 
-/* Agent Nodes */
+.transition-overlay.active .transition-sweep .sweep-edge {
+  opacity: 1;
+}
+
+/* Agent nodes */
 .transition-nodes {
   position: absolute;
   inset: 0;
@@ -114,12 +114,15 @@ nav {
 
 .transition-node {
   position: absolute;
-  width: 6px;
-  height: 6px;
+  left: 50%;
+  top: 50%;
+  width: 8px;
+  height: 8px;
   background: var(--blue-glow);
   border-radius: 50%;
-  box-shadow: 0 0 8px var(--blue-glow), 0 0 16px var(--blue);
+  box-shadow: 0 0 12px var(--blue-glow), 0 0 24px var(--blue);
   opacity: 0;
+  transform: translate(-50%, -50%) scale(0.5);
   will-change: transform, opacity;
 }
 
@@ -129,40 +132,40 @@ nav {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 12px;
-  height: 12px;
+  width: 16px;
+  height: 16px;
   border: 1px solid var(--blue-glow);
   border-radius: 50%;
-  opacity: 0.5;
+  opacity: 0.4;
 }
 
 .transition-overlay.active .transition-node {
   animation: node-travel var(--transition-agent) cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
-.transition-node:nth-child(1) { animation-delay: 0.1s; }
-.transition-node:nth-child(2) { animation-delay: 0.2s; }
-.transition-node:nth-child(3) { animation-delay: 0.3s; }
-.transition-node:nth-child(4) { animation-delay: 0.4s; }
-.transition-node:nth-child(5) { animation-delay: 0.5s; }
-.transition-node:nth-child(6) { animation-delay: 0.6s; }
+.transition-node:nth-child(1) { animation-delay: 0.05s; --travel-y: -35%; }
+.transition-node:nth-child(2) { animation-delay: 0.15s; --travel-y: -15%; }
+.transition-node:nth-child(3) { animation-delay: 0.25s; --travel-y: 5%; }
+.transition-node:nth-child(4) { animation-delay: 0.35s; --travel-y: 25%; }
+.transition-node:nth-child(5) { animation-delay: 0.45s; --travel-y: 45%; }
+.transition-node:nth-child(6) { animation-delay: 0.55s; --travel-y: 65%; }
 
 @keyframes node-travel {
   0% {
     opacity: 0;
-    transform: translateX(-50px) scale(0.5);
+    transform: translate(-50%, -50%) translateX(-60px) scale(0.5);
   }
-  15% {
+  10% {
     opacity: 1;
-    transform: translateX(-10px) scale(1);
+    transform: translate(-50%, -50%) translateX(-10px) scale(1);
   }
-  85% {
+  90% {
     opacity: 1;
-    transform: translateX(calc(100vw + 20px)) scale(1);
+    transform: translate(-50%, -50%) translateX(calc(100vw + 20px)) scale(1);
   }
   100% {
     opacity: 0;
-    transform: translateX(calc(100vw + 50px)) scale(0.5);
+    transform: translate(-50%, -50%) translateX(calc(100vw + 60px)) scale(0.5);
   }
 }
 
@@ -179,42 +182,23 @@ nav {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-pill);
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-lg), var(--shadow-blue);
   opacity: 0;
   transform: translateY(1rem);
   pointer-events: none;
   will-change: opacity, transform;
   z-index: var(--z-transition-overlay);
+  transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
 .transition-status.visible {
-  animation: status-appear 0.3s ease forwards;
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .transition-status.hidden {
-  animation: status-disappear 0.3s ease forwards;
-}
-
-@keyframes status-appear {
-  from {
-    opacity: 0;
-    transform: translateY(1rem);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes status-disappear {
-  from {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  to {
-    opacity: 0;
-    transform: translateY(-1rem);
-  }
+  opacity: 0;
+  transform: translateY(-1rem);
 }
 
 /* Page Content Reveal */
@@ -288,8 +272,9 @@ button:hover, a:hover, .card:hover {
 }
 
 .card:hover {
-  box-shadow: var(--shadow-blue);
-  border-color: var(--blue);
+  box-shadow: var(--shadow-blue), 0 0 32px rgba(225, 10, 44, 0.15);
+  border-color: transparent;
+  border-image: linear-gradient(135deg, var(--blue) 0%, var(--red) 100%) 1;
 }
 
 button:active, a:active {
@@ -308,18 +293,12 @@ button:active, a:active {
     display: none !important;
   }
 
-  .transition-sweep,
-  .transition-node,
-  .transition-status {
-    display: none !important;
-  }
-
   *,
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+    transition-duration: 150ms !important;
     scroll-behavior: auto !important;
   }
 
@@ -333,12 +312,23 @@ button:active, a:active {
     opacity: 1;
     transform: none;
   }
+
+  .card:hover {
+    transform: none;
+  }
 }
 
-/* Mobile Reduced Motion */
-@media (max-width: 768px) and (prefers-reduced-motion: no-preference) {
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .transition-status {
+    bottom: var(--space-md);
+    left: var(--space-md);
+    right: var(--space-md);
+    text-align: center;
+  }
+
   .transition-node {
-    width: 4px;
-    height: 4px;
+    width: 6px;
+    height: 6px;
   }
 }

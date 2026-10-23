@@ -1,14 +1,15 @@
 ---
-import Monogram from '../ui/Monogram.astro';
-
 const currentYear = new Date().getFullYear();
 ---
 
 <footer class="footer" role="contentinfo">
   <div class="container footer-inner">
     <div class="footer-brand">
-      <Monogram size="sm" letters="RS" />
-      <span>Rishi Sakhija</span>
+      <span class="footer-wordmark">
+        <span class="footer-wordmark-rishi">Rishi</span>
+        <span class="footer-wordmark-sakhija">Sakhija</span>
+      </span>
+      <span class="visually-hidden">Rishi Sakhija</span>
     </div>
     <p class="footer-copyright">
       {currentYear} Rishi Sakhija. Built with Astro.
@@ -63,6 +64,27 @@ const currentYear = new Date().getFullYear();
     font-weight: 600;
     font-size: var(--fs-h4);
     color: var(--text);
+  }
+
+  .footer-wordmark {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: var(--fs-h4);
+    line-height: 1.1;
+  }
+
+  .footer-wordmark-rishi {
+    color: var(--text);
+  }
+
+  .footer-wordmark-sakhija {
+    background: linear-gradient(135deg, var(--blue-soft) 0%, var(--blue) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 
   .footer-copyright {

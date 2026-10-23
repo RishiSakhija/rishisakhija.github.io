@@ -1,6 +1,7 @@
 ---
 import Layout from '../components/layout/Layout.astro';
 import TransitionOverlay from '../components/layout/TransitionOverlay.astro';
+import { ClientRouter } from 'astro:transitions';
 import '../styles/globals.css';
 import '../styles/components.css';
 import '../styles/transitions.css';
@@ -61,12 +62,7 @@ const imageURL = new URL(ogImage, siteURL);
 
     <!-- View Transitions - Client Router -->
     <meta name="astro-view-transitions-enabled" content="true" />
-    <script>
-      // Enable Client Router for smooth transitions
-      if ('navigation' in window) {
-        document.documentElement.classList.add('has-client-router');
-      }
-    </script>
+    <ClientRouter />
   </head>
   <body>
     <!-- Hero Glow (persists across transitions) -->
