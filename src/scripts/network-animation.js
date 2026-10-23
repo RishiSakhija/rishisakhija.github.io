@@ -1,5 +1,5 @@
 /**
- * Network Animation - Lightweight node-and-line animation
+ * Network Animation - Blue theme, lightweight node-and-line animation
  * Pauses when tab is hidden, respects prefers-reduced-motion
  */
 
@@ -13,10 +13,10 @@ class NetworkAnimation {
       nodeMinSize: options.nodeMinSize || 1.5,
       nodeMaxSize: options.nodeMaxSize || 3.5,
       lineWidth: options.lineWidth || 0.5,
-      nodeColor: options.nodeColor || 'rgba(77, 226, 197, 0.6)',
-      lineColor: options.lineColor || 'rgba(77, 226, 197, 0.15)',
-      hoverColor: options.hoverColor || 'rgba(77, 226, 197, 0.4)',
-      speed: options.speed || 0.3,
+      nodeColor: options.nodeColor || 'rgba(47, 123, 255, 0.6)',
+      lineColor: options.lineColor || 'rgba(47, 123, 255, 0.12)',
+      hoverColor: options.hoverColor || 'rgba(0, 178, 255, 0.35)',
+      speed: options.speed || 0.25,
       ...options,
     };
 
@@ -242,8 +242,8 @@ class NetworkAnimation {
           this.ctx.moveTo(nodeA.x, nodeA.y);
           this.ctx.lineTo(nodeB.x, nodeB.y);
           this.ctx.strokeStyle = isNearMouse
-            ? hoverColor.replace('0.4', (opacity * 0.4).toFixed(2))
-            : lineColor.replace('0.15', (opacity * 0.15).toFixed(2));
+            ? hoverColor.replace('0.35', (opacity * 0.35).toFixed(2))
+            : lineColor.replace('0.12', (opacity * 0.12).toFixed(2));
           this.ctx.lineWidth = lineWidth;
           this.ctx.stroke();
         }
@@ -264,7 +264,7 @@ class NetworkAnimation {
       this.ctx.beginPath();
       this.ctx.arc(node.x, node.y, node.size, 0, Math.PI * 2);
       this.ctx.fillStyle = isNearMouse
-        ? hoverColor.replace('0.6', '0.9')
+        ? hoverColor.replace('0.35', '0.6')
         : nodeColor;
       this.ctx.fill();
     }
@@ -297,5 +297,12 @@ if (document.readyState === 'loading') {
 document.addEventListener('astro:after-swap', () => {
   initNetworkAnimations();
 });
+
+document.addEventListener('astro:page-load', () => {
+  initNetworkAnimations();
+});
+
+// Export for manual initialization
+window.initNetworkAnimation = initNetworkAnimations;
 
 export { NetworkAnimation };

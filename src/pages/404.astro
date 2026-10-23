@@ -1,0 +1,63 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/ui/Button.astro';
+---
+
+<BaseLayout
+  title="404 — Not Found"
+  description="Page not found. Return to the homepage or explore projects."
+>
+  <section class="not-found" aria-labelledby="not-found-heading">
+    <div class="container">
+      <h1 id="not-found-heading" class="not-found-code">404</h1>
+      <h2 class="not-found-title">Page Not Found</h2>
+      <p class="not-found-text">
+        The page you're looking for doesn't exist or has been moved.
+        No worries — even the best agents get lost sometimes.
+      </p>
+      <div style="display: flex; gap: var(--space-md); justify-content: center; flex-wrap: wrap;">
+        <Button href="/" variant="primary" size="lg">
+          Go Home
+        </Button>
+        <Button href="/projects" variant="secondary" size="lg">
+          View Projects
+        </Button>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .not-found {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-4xl) 0;
+    text-align: center;
+  }
+
+  .not-found-code {
+    font-family: var(--font-heading);
+    font-size: clamp(6rem, 20vw, 16rem);
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--red) 0%, var(--red-glow) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1;
+    margin-bottom: var(--space-lg);
+  }
+
+  .not-found-title {
+    font-size: var(--fs-h2);
+    margin-bottom: var(--space-md);
+  }
+
+  .not-found-text {
+    color: var(--muted);
+    max-width: 32ch;
+    margin: 0 auto var(--space-xl);
+    font-size: var(--fs-hero-sub);
+  }
+</style>

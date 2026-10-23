@@ -6,20 +6,43 @@ const currentYear = new Date().getFullYear();
 
 <footer class="footer" role="contentinfo">
   <div class="container footer-inner">
+    <div class="footer-brand">
+      <Monogram size="sm" letters="RS" />
+      <span>Rishi Sakhija</span>
+    </div>
     <p class="footer-copyright">
-      <Monogram size="sm" />
-      {currentYear} Sakhija Rishi. Built with Astro.
+      {currentYear} Rishi Sakhija. Built with Astro.
     </p>
     <div class="footer-links">
-      <a href="https://github.com/RishiSakhija" target="_blank" rel="noopener noreferrer" class="footer-link">GitHub</a>
-      <a href="mailto:rishisakhija7@gmail.com" class="footer-link">Email</a>
+      <a
+        href="https://github.com/RishiSakhija"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="footer-link"
+      >
+        GitHub
+      </a>
+      <a
+        href="https://www.linkedin.com/in/rishisakhija"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="footer-link"
+      >
+        LinkedIn
+      </a>
+      <a
+        href="mailto:rishisakhija7@gmail.com"
+        class="footer-link"
+      >
+        Email
+      </a>
     </div>
   </div>
 </footer>
 
 <style>
   .footer {
-    padding: var(--space-xl) 0;
+    padding: var(--space-2xl) 0;
     border-top: 1px solid var(--border);
     background-color: var(--surface);
   }
@@ -32,12 +55,19 @@ const currentYear = new Date().getFullYear();
     text-align: center;
   }
 
-  .footer-copyright {
+  .footer-brand {
     display: flex;
     align-items: center;
     gap: var(--space-sm);
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: var(--fs-h4);
+    color: var(--text);
+  }
+
+  .footer-copyright {
     font-family: var(--font-mono);
-    font-size: 0.75rem;
+    font-size: var(--fs-mono);
     color: var(--muted);
   }
 
@@ -49,14 +79,14 @@ const currentYear = new Date().getFullYear();
 
   .footer-link {
     font-family: var(--font-mono);
-    font-size: 0.75rem;
+    font-size: var(--fs-mono);
     color: var(--muted);
     text-decoration: none;
     transition: color var(--transition-fast);
   }
 
   .footer-link:hover {
-    color: var(--accent);
+    color: var(--blue);
   }
 
   @media (prefers-reduced-motion: reduce) {

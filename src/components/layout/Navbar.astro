@@ -4,7 +4,10 @@ import Monogram from '../ui/Monogram.astro';
 const navItems = [
   { href: '/', label: 'Home' },
   { href: '/projects', label: 'Projects' },
+  { href: '/research', label: 'Research' },
+  { href: '/blog', label: 'Blog' },
   { href: '/about', label: 'About' },
+  { href: '/stack', label: 'Stack' },
   { href: '/contact', label: 'Contact' },
 ];
 
@@ -13,18 +16,35 @@ const currentPath = Astro.url.pathname;
 
 <nav class="navbar" view-transition-name="nav">
   <div class="container navbar-inner">
-    <a href="/" class="navbar-brand" aria-label="Sakhija Rishi - Home">
-      <Monogram size="sm" />
-      <span class="font-heading font-semibold">Sakhija Rishi</span>
+    <a href="/" class="navbar-brand" aria-label="Rishi Sakhija - Home">
+      <Monogram size="sm" letters="RS" />
+      <span>Rishi Sakhija</span>
     </a>
 
-    <ul class="navbar-nav" role="navigation" aria-label="Main navigation">
+    <button
+      class="mobile-menu-btn"
+      aria-expanded="false"
+      aria-controls="navbar-nav"
+      aria-label="Toggle navigation menu"
+    >
+      <svg class="menu-icon-close" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <line x1="3" y1="12" x2="21" y2="12"/>
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+      <svg class="menu-icon-open" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="display: none;">
+        <line x1="18" y1="6" x2="6" y2="18"/>
+        <line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+
+    <ul id="navbar-nav" class="navbar-nav" role="navigation" aria-label="Main navigation">
       {navItems.map((item) => (
         <li>
           <a
             href={item.href}
-            class={`nav-link ${currentPath === item.href || (currentPath !== '/' && currentPath.startsWith(item.href)) ? 'active' : ''}`}
-            aria-current={currentPath === item.href || (currentPath !== '/' && currentPath.startsWith(item.href)) ? 'page' : undefined}
+            class={`nav-link ${currentPath === item.href || (currentPath !== '/' && currentPath.startsWith(item.href) && item.href !== '/') ? 'active' : ''}`}
+            aria-current={currentPath === item.href || (currentPath !== '/' && currentPath.startsWith(item.href) && item.href !== '/') ? 'page' : undefined}
           >
             {item.label}
           </a>
@@ -34,13 +54,44 @@ const currentPath = Astro.url.pathname;
   </div>
 </nav>
 
+<script>
+  // Mobile menu toggle
+  const menuBtn = document.querySelector('.mobile-menu-btn');
+  const nav = document.getElementById('navbar-nav');
+
+  if (menuBtn && nav) {
+    menuBtn.addEventListener('click', () => {
+      const isExpanded = menuBtn.getAttribute('aria-expanded') === 'true';
+      menuBtn.setAttribute('aria-expanded', String(!isExpanded));
+      nav.classList.toggle('open');
+    });
+
+    // Close menu when clicking a link
+    nav.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        menuBtn.setAttribute('aria-expanded', 'false');
+        nav.classList.remove('open');
+      });
+    });
+
+    // Close menu on escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && nav.classList.contains('open')) {
+        menuBtn.setAttribute('aria-expanded', 'false');
+        nav.classList.remove('open');
+        (menuBtn as HTMLElement).focus();
+      }
+    });
+  }
+</script>
+
 <style>
   .navbar {
     position: sticky;
     top: 0;
     z-index: var(--z-nav);
-    background-color: rgba(10, 13, 18, 0.8);
-    backdrop-filter: blur(12px);
+    background-color: rgba(5, 7, 13, 0.85);
+    backdrop-filter: blur(16px);
     border-bottom: 1px solid var(--border);
     padding: var(--space-md) 0;
   }
@@ -60,12 +111,12 @@ const currentPath = Astro.url.pathname;
     color: var(--text);
     font-family: var(--font-heading);
     font-weight: 600;
-    font-size: 1.125rem;
+    font-size: var(--fs-h4);
     transition: color var(--transition-fast);
   }
 
   .navbar-brand:hover {
-    color: var(--accent);
+    color: var(--blue-glow);
   }
 
   .navbar-nav {
@@ -76,48 +127,132 @@ const currentPath = Astro.url.pathname;
   }
 
   .nav-link {
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
     padding: var(--space-sm) var(--space-md);
-    font-family: var(--font-heading);
-    font-size: 0.875rem;
+    font-family: var(--font-mono);
+    font-size: var(--fs-mono);
     font-weight: 500;
     color: var(--muted);
     border-radius: var(--radius-md);
     text-decoration: none;
     transition: all var(--transition-fast);
+    position: relative;
   }
 
   .nav-link:hover,
   .nav-link.active {
-    color: var(--accent);
-    background-color: rgba(77, 226, 197, 0.08);
+    color: var(--blue);
+    background-color: var(--blue-muted);
   }
 
   .nav-link.active {
-    position: relative;
+    color: var(--blue);
   }
 
   .nav-link.active::after {
     content: '';
     position: absolute;
     bottom: var(--space-xs);
-    left: var(--space-md);
-    right: var(--space-md);
-    height: 2px;
-    background-color: var(--accent);
-    border-radius: 1px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0.5rem;
+    height: 0.5rem;
+    background: var(--red);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--red-glow);
   }
 
-  @media (max-width: 640px) {
+  /* Mobile Menu Button */
+  .mobile-menu-btn {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    color: var(--text);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+  }
+
+  .mobile-menu-btn:hover {
+    border-color: var(--blue);
+    color: var(--blue);
+  }
+
+  .mobile-menu-btn[aria-expanded="true"] .menu-icon-open {
+    display: block;
+  }
+
+  .mobile-menu-btn[aria-expanded="true"] .menu-icon-close {
+    display: none;
+  }
+
+  .mobile-menu-btn[aria-expanded="false"] .menu-icon-open {
+    display: none;
+  }
+
+  .mobile-menu-btn[aria-expanded="false"] .menu-icon-close {
+    display: block;
+  }
+
+  @media (max-width: 768px) {
+    .mobile-menu-btn {
+      display: flex;
+    }
+
     .navbar-nav {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      flex-direction: column;
+      padding: var(--space-md);
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      gap: var(--space-sm);
+      display: none;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .navbar-nav.open {
+      display: flex;
+      animation: nav-slide-down 0.3s ease;
+    }
+
+    @keyframes nav-slide-down {
+      from {
+        opacity: 0;
+        transform: translateY(-0.5rem);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .nav-link {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .nav-link.active::after {
       display: none;
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
     .navbar-brand,
-    .nav-link {
+    .nav-link,
+    .mobile-menu-btn {
       transition: none;
+    }
+    .navbar-nav.open {
+      animation: none;
     }
   }
 </style>

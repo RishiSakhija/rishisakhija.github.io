@@ -1,0 +1,511 @@
+---
+import { terminalScript, TERMINAL_CONFIG } from '../../data/terminal';
+type TerminalLine = typeof terminalScript[number];
+---
+
+<div
+  class="terminal"
+  id="terminal"
+  role="region"
+  aria-label="Terminal simulation showing AI agent workflow commands and outputs"
+  aria-live="off"
+  data-terminal-root
+>
+  <!-- Animated Terminal (default) -->
+  <div class="terminal-animated" data-terminal-animated>
+    <header class="terminal-header">
+      <div class="terminal-dots" aria-hidden="true">
+        <span class="terminal-dot" style="background: var(--red); box-shadow: 0 0 8px var(--red-glow);"></span>
+        <span class="terminal-dot" style="background: var(--amber);"></span>
+        <span class="terminal-dot" style="background: var(--green);"></span>
+      </div>
+      <span class="terminal-title">rishi@agent-hq: ~</span>
+      <div style="width: 48px;"></div> <!-- spacer for symmetry -->
+    </header>
+    <div class="terminal-body" data-terminal-body>
+      <!-- Lines will be injected here by terminal-animation.js -->
+    </div>
+  </div>
+
+  <!-- Static Fallback (reduced motion / no JS) -->
+  <div class="terminal-static" data-terminal-static hidden>
+    <header class="terminal-header">
+      <div class="terminal-dots" aria-hidden="true">
+        <span class="terminal-dot" style="background: var(--red);"></span>
+        <span class="terminal-dot" style="background: var(--amber);"></span>
+        <span class="terminal-dot" style="background: var(--green);"></span>
+      </div>
+      <span class="terminal-title">rishi@agent-hq: ~</span>
+      <div style="width: 48px;"></div>
+    </header>
+    <div class="terminal-body">
+      {terminalScript.map((line, i) => (
+        <div class="terminal-line" data-line-index={i}>
+          {line.type === 'command' && (
+            <>
+              <span class="terminal-prompt">{line.prompt || '$'}</span>
+              <span class="terminal-command">{line.text}</span>
+            </>
+          )}
+          {line.type === 'output' && (
+            <span class="terminal-output">{line.text}</span>
+          )}
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
+
+<script>
+  // Configuration injected at build time
+  const TERMINAL_CONFIG_INJECTED = {
+    typeSpeedMin: 35,
+    typeSpeedMax: 50,
+    eraseSpeed: 20,
+    pauseAfterLine: 1400,
+    pauseBeforeErase: 800,
+  };
+
+  const TERMINAL_SCRIPT_INJECTED = [
+    { type: 'command', text: 'whoami', prompt: '$' },
+    { type: 'output', text: '> Rishi Sakhija: AI/ML builder, agents & automation' },
+    { type: 'command', text: 'cat focus.txt', prompt: '$' },
+    { type: 'output', text: '> agents | automation | search | prompt engineering' },
+    { type: 'command', text: 'agents --status', prompt: '$' },
+    { type: 'output', text: '> supervisor: online | builder: online | analyst: standby' },
+    { type: 'command', text: 'ls projects/', prompt: '$' },
+    { type: 'output', text: '> ai-search-engine/  agentic-team/  virtual-shelf/' },
+    { type: 'command', text: 'echo $STATUS', prompt: '$' },
+    { type: 'output', text: '> open to work, remote, building daily' },
+  ];
+
+  // Terminal Animation Controller
+  class TerminalAnimation {
+    root: HTMLElement | null = null;
+    animated: HTMLElement | null = null;
+    static: HTMLElement | null = null;
+    body: HTMLElement | null = null;
+    script: typeof TERMINAL_SCRIPT_INJECTED;
+    config: typeof TERMINAL_CONFIG_INJECTED;
+
+    currentLineIndex: number = 0;
+    currentCharIndex: number = 0;
+    isTyping: boolean = false;
+    isErasing: boolean = false;
+    isPaused: boolean = false;
+    lineElement: HTMLElement | null = null;
+    contentElement: HTMLElement | null = null;
+    cursorElement: HTMLElement | null = null;
+    observer: IntersectionObserver | null = null;
+    timeoutId: ReturnType<typeof setTimeout> | null = null;
+    prefersReducedMotion: boolean = false;
+
+    constructor() {
+      this.script = TERMINAL_SCRIPT_INJECTED;
+      this.config = TERMINAL_CONFIG_INJECTED;
+      this.init();
+    }
+
+    init() {
+      this.root = document.getElementById('terminal');
+      this.animated = this.root?.querySelector('[data-terminal-animated]') as HTMLElement | null;
+      this.static = this.root?.querySelector('[data-terminal-static]') as HTMLElement | null;
+      this.body = this.root?.querySelector('[data-terminal-body]') as HTMLElement | null;
+
+      if (!this.root || !this.body) return;
+
+      // Check reduced motion preference
+      this.prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (this.prefersReducedMotion) {
+        this.showStatic();
+        return;
+      }
+
+      // Set up Intersection Observer to pause when off-screen
+      this.observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              this.resume();
+            } else {
+              this.pause();
+            }
+          });
+        },
+        { rootMargin: '100px' }
+      );
+
+      this.observer.observe(this.root);
+
+      // Pause when tab is hidden
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+          this.pause();
+        } else {
+          this.resume();
+        }
+      });
+
+      // Start animation
+      this.start();
+    }
+
+    showStatic() {
+      if (this.animated) this.animated.hidden = true;
+      if (this.static) this.static.hidden = false;
+    }
+
+    showAnimated() {
+      if (this.animated) this.animated.hidden = false;
+      if (this.static) this.static.hidden = true;
+    }
+
+    start() {
+      this.showAnimated();
+      this.typeNextLine();
+    }
+
+    pause() {
+      this.isPaused = true;
+      if (this.timeoutId) {
+        clearTimeout(this.timeoutId);
+        this.timeoutId = null;
+      }
+    }
+
+    resume() {
+      if (!this.isPaused) return;
+      this.isPaused = false;
+      this.continueAfterPause();
+    }
+
+    continueAfterPause() {
+      if (this.isErasing) {
+        this.eraseLine();
+      } else if (this.isTyping) {
+        this.typeCurrentLine(() => {});
+      } else {
+        this.typeNextLine();
+      }
+    }
+
+    async typeNextLine() {
+      if (this.isPaused) return;
+      if (this.currentLineIndex >= this.script.length) {
+        this.currentLineIndex = 0; // Loop
+      }
+
+      const lineData = this.script[this.currentLineIndex];
+      await this.typeLine(lineData);
+
+      if (!this.isPaused) {
+        await this.wait(this.config.pauseAfterLine);
+      }
+
+      if (!this.isPaused) {
+        await this.wait(this.config.pauseBeforeErase);
+      }
+
+      if (!this.isPaused) {
+        await this.eraseLine();
+      }
+
+      if (!this.isPaused) {
+        this.currentLineIndex++;
+        this.typeNextLine();
+      }
+    }
+
+    typeLine(lineData: typeof TERMINAL_SCRIPT_INJECTED[number]) {
+      return new Promise<void>((resolve) => {
+        this.isTyping = true;
+
+        // Create line element
+        this.lineElement = document.createElement('div');
+        this.lineElement.className = 'terminal-line';
+        this.lineElement.dataset.lineIndex = String(this.currentLineIndex);
+
+        if (lineData.type === 'command') {
+          const prompt = document.createElement('span');
+          prompt.className = 'terminal-prompt';
+          prompt.textContent = lineData.prompt || '$';
+          this.lineElement.appendChild(prompt);
+
+          this.contentElement = document.createElement('span');
+          this.contentElement.className = 'terminal-command';
+          this.lineElement.appendChild(this.contentElement);
+        } else {
+          this.contentElement = document.createElement('span');
+          this.contentElement.className = 'terminal-output';
+          this.lineElement.appendChild(this.contentElement);
+        }
+
+        // Add cursor
+        this.cursorElement = document.createElement('span');
+        this.cursorElement.className = 'terminal-cursor';
+        this.lineElement.appendChild(this.cursorElement);
+
+        this.body?.appendChild(this.lineElement);
+
+        // Scroll to bottom
+        if (this.body) {
+          this.body.scrollTop = this.body.scrollHeight;
+        }
+
+        this.currentCharIndex = 0;
+        this.typeCurrentLine(resolve);
+      });
+    }
+
+    typeCurrentLine(resolve: () => void) {
+      if (this.isPaused) {
+        this.timeoutId = setTimeout(() => this.typeCurrentLine(resolve), 50);
+        return;
+      }
+
+      const lineData = this.script[this.currentLineIndex];
+      const fullText = lineData.text;
+
+      if (this.currentCharIndex <= fullText.length) {
+        if (this.contentElement) {
+          this.contentElement.textContent = fullText.slice(0, this.currentCharIndex);
+        }
+        this.currentCharIndex++;
+
+        // Randomize typing speed slightly
+        const speed = this.config.typeSpeedMin + Math.random() * (this.config.typeSpeedMax - this.config.typeSpeedMin);
+        this.timeoutId = setTimeout(() => this.typeCurrentLine(resolve), speed);
+      } else {
+        this.isTyping = false;
+        resolve();
+      }
+    }
+
+    eraseLine() {
+      return new Promise<void>((resolve) => {
+        this.isErasing = true;
+
+        const lineData = this.script[this.currentLineIndex];
+        const fullText = lineData.text;
+
+        const doErase = () => {
+          if (this.isPaused) {
+            this.timeoutId = setTimeout(doErase, 50);
+            return;
+          }
+
+          if (this.currentCharIndex >= 0) {
+            if (this.contentElement) {
+              this.contentElement.textContent = fullText.slice(0, this.currentCharIndex);
+            }
+            this.currentCharIndex--;
+            this.timeoutId = setTimeout(doErase, this.config.eraseSpeed);
+          } else {
+            // Remove line element
+            if (this.lineElement && this.lineElement.parentNode) {
+              this.lineElement.remove();
+            }
+            this.lineElement = null;
+            this.contentElement = null;
+            this.cursorElement = null;
+            this.isErasing = false;
+            resolve();
+          }
+        };
+
+        doErase();
+      });
+    }
+
+    wait(ms: number) {
+      return new Promise<void>((resolve) => {
+        this.timeoutId = setTimeout(resolve, ms);
+      });
+    }
+
+    destroy() {
+      if (this.observer) {
+        this.observer.disconnect();
+      }
+      if (this.timeoutId) {
+        clearTimeout(this.timeoutId);
+      }
+    }
+  }
+
+  // Global init function for re-initialization after view transitions
+  window.initTerminal = function() {
+    // Clean up any existing instance
+    if (window.terminalAnimation) {
+      window.terminalAnimation.destroy();
+    }
+    window.terminalAnimation = new TerminalAnimation();
+  };
+
+  // Initialize on DOM ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', window.initTerminal);
+  } else {
+    window.initTerminal();
+  }
+
+  // Re-initialize on Astro View Transitions
+  document.addEventListener('astro:page-load', window.initTerminal);
+  document.addEventListener('astro:after-swap', window.initTerminal);
+</script>
+
+<style>
+  .terminal {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg), var(--shadow-blue);
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .terminal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-sm) var(--space-md);
+    background: var(--surface-elevated);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .terminal-dots {
+    display: flex;
+    gap: var(--space-xs);
+  }
+
+  .terminal-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--border);
+    transition: background var(--transition-fast);
+  }
+
+  .terminal-title {
+    font-family: var(--font-mono);
+    font-size: var(--fs-mono-sm);
+    color: var(--muted);
+    flex: 1;
+    text-align: center;
+  }
+
+  .terminal-body {
+    padding: var(--space-md);
+    font-family: var(--font-mono);
+    font-size: var(--fs-mono);
+    line-height: 1.6;
+    color: var(--text);
+    min-height: 200px;
+    max-height: 400px;
+    overflow: hidden;
+  }
+
+  @media (max-width: 768px) {
+    .terminal-body {
+      min-height: 160px;
+      max-height: 300px;
+    }
+  }
+
+  .terminal-line {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-xs);
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  .terminal-line:last-child {
+    margin-bottom: 0;
+  }
+
+  .terminal-prompt {
+    color: var(--blue);
+    flex-shrink: 0;
+    user-select: none;
+  }
+
+  .terminal-command {
+    color: var(--text);
+    user-select: none;
+  }
+
+  .terminal-output {
+    color: var(--muted);
+    user-select: none;
+  }
+
+  .terminal-output .highlight {
+    color: var(--blue-soft);
+  }
+
+  .terminal-cursor {
+    display: inline-block;
+    width: 0.6em;
+    height: 1em;
+    background: var(--red);
+    margin-left: 2px;
+    animation: cursor-blink 1s step-end infinite;
+    vertical-align: text-bottom;
+  }
+
+  @keyframes cursor-blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .terminal-cursor {
+      animation: none;
+      opacity: 1;
+    }
+  }
+
+  /* Static Fallback */
+  .terminal-static {
+    display: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .terminal-animated {
+      display: none;
+    }
+    .terminal-static {
+      display: block;
+    }
+  }
+
+  .no-js .terminal-animated {
+    display: none;
+  }
+
+  .no-js .terminal-static {
+    display: block;
+  }
+
+  /* Terminal Scrollbar */
+  .terminal-body::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .terminal-body::-webkit-scrollbar-track {
+    background: var(--bg);
+  }
+
+  .terminal-body::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 3px;
+  }
+
+  .terminal-body::-webkit-scrollbar-thumb:hover {
+    background: var(--muted);
+  }
+</style>

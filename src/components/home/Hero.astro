@@ -1,28 +1,36 @@
 ---
 import Button from '../ui/Button.astro';
 import StatusBadge from '../ui/StatusBadge.astro';
+import Terminal from './Terminal.astro';
 ---
 
 <section class="hero" aria-labelledby="hero-heading">
-  <div class="network-container" aria-hidden="true">
+  <div class="hero-network" aria-hidden="true">
     <canvas id="network-canvas" data-network-canvas></canvas>
   </div>
+  <div class="hero-glow" aria-hidden="true"></div>
 
-  <div class="container">
-    <div class="hero-content reveal">
-      <div class="hero-badge" aria-label="Status">
-        <StatusBadge label="Open to work · Remote" />
+  <div class="container hero-inner">
+    <div class="hero-content hero-load hero-load-delay-1">
+      <div class="hero-badge">
+        <StatusBadge label="open to work · remote" />
       </div>
 
-      <h1 id="hero-heading" class="hero-headline">
-        Building intelligent systems for the agentic era.
+      <h1 id="hero-heading" class="hero-name">
+        <span class="name-part">Rishi</span>
+        <span class="name-part">Sakhija</span>
       </h1>
 
-      <p class="hero-subtext">
+      <p class="hero-role hero-load hero-load-delay-2">
+        <span class="red-dot" aria-hidden="true"></span>
+        AI/ML Engineer in the Making · Agents & Automation
+      </p>
+
+      <p class="hero-subtext hero-load hero-load-delay-3">
         Self-taught for 2.5+ years, I design and build AI agents, search systems, and automation that turn complex work into simple workflows.
       </p>
 
-      <div class="hero-actions">
+      <div class="hero-actions hero-load hero-load-delay-4">
         <Button href="/projects" variant="primary" size="lg">
           View Projects
         </Button>
@@ -31,11 +39,16 @@ import StatusBadge from '../ui/StatusBadge.astro';
         </Button>
       </div>
 
-      <div class="hero-status">
-        <span class="monogram-label">SR</span>
-        <span class="monogram-role">AI/ML Engineer in the Making, Agents & Automation</span>
+      <div class="hero-status hero-load hero-load-delay-4">
+        <span class="mono">Rishi Sakhija</span>
+        <span class="mono" aria-hidden="true">|</span>
+        <span class="mono">AI/ML Engineer</span>
       </div>
     </div>
+
+    <aside class="hero-terminal" aria-label="Terminal simulation">
+      <Terminal />
+    </aside>
   </div>
 </section>
 
@@ -49,31 +62,19 @@ import StatusBadge from '../ui/StatusBadge.astro';
     overflow: hidden;
   }
 
-  .hero::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(
-      ellipse at 50% 0%,
-      rgba(77, 226, 197, 0.05) 0%,
-      transparent 70%
-    );
-    pointer-events: none;
+  .hero-inner {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-3xl);
+    align-items: start;
+    width: 100%;
   }
 
-  .network-container {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  .network-container canvas {
-    display: block;
-    width: 100%;
-    height: 100%;
+  @media (min-width: 1024px) {
+    .hero-inner {
+      grid-template-columns: 1fr 420px;
+      gap: var(--space-4xl);
+    }
   }
 
   .hero-content {
@@ -86,13 +87,66 @@ import StatusBadge from '../ui/StatusBadge.astro';
     margin-bottom: var(--space-lg);
   }
 
-  .hero-headline {
+  .hero-name {
+    font-size: var(--fs-hero);
+    font-weight: 700;
+    line-height: 1.05;
     margin-bottom: var(--space-md);
-    line-height: 1.1;
+    background: linear-gradient(135deg, var(--text) 0%, var(--blue-glow) 40%, var(--blue) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 48px rgba(47, 123, 255, 0.3), 0 0 96px rgba(0, 178, 255, 0.15);
+    filter: drop-shadow(0 0 24px rgba(47, 123, 255, 0.2));
+  }
+
+  .hero-name .name-part {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(1.5rem);
+    animation: name-reveal 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+
+  .hero-name .name-part:nth-child(1) { animation-delay: 0ms; }
+  .hero-name .name-part:nth-child(2) { animation-delay: 120ms; }
+
+  @keyframes name-reveal {
+    from {
+      opacity: 0;
+      transform: translateY(1.5rem);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-name .name-part {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .hero-role {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-family: var(--font-mono);
+    font-size: var(--fs-mono);
+    color: var(--muted);
+    margin-bottom: var(--space-lg);
+  }
+
+  .hero-role .red-dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    flex-shrink: 0;
   }
 
   .hero-subtext {
-    font-size: 1.125rem;
+    font-size: var(--fs-hero-sub);
     color: var(--muted);
     max-width: 48ch;
     margin-bottom: var(--space-xl);
@@ -106,29 +160,129 @@ import StatusBadge from '../ui/StatusBadge.astro';
     margin-bottom: var(--space-xl);
   }
 
+  @media (max-width: 640px) {
+    .hero-actions {
+      flex-direction: column;
+    }
+    .hero-actions .btn {
+      width: 100%;
+    }
+  }
+
   .hero-status {
     display: flex;
     align-items: center;
     gap: var(--space-lg);
     font-family: var(--font-mono);
-    font-size: 0.75rem;
+    font-size: var(--fs-mono);
     color: var(--muted);
   }
 
-  .monogram-label {
-    display: flex;
-    align-items: center;
-    gap: var(--space-sm);
+  @media (max-width: 640px) {
+    .hero-status {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-sm);
+    }
   }
 
-  .monogram-role {
-    font-weight: 500;
+  /* Terminal Position in Hero */
+  .hero-terminal {
+    position: sticky;
+    top: var(--space-2xl);
+    height: fit-content;
+  }
+
+  @media (max-width: 1023px) {
+    .hero-terminal {
+      position: static;
+      margin-top: var(--space-2xl);
+    }
+  }
+
+  /* Network Canvas */
+  .hero-network {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .hero-network canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .hero-glow {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80vw;
+    max-width: 800px;
+    height: 60vh;
+    background: radial-gradient(ellipse at center, rgba(47, 123, 255, 0.06) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-glow {
+      display: none;
+    }
+  }
+
+  /* Hero Load Animations */
+  .hero-load {
+    opacity: 0;
+    animation: hero-load-in 0.6s ease forwards;
+  }
+
+  .hero-load-delay-1 { animation-delay: 100ms; }
+  .hero-load-delay-2 { animation-delay: 200ms; }
+  .hero-load-delay-3 { animation-delay: 300ms; }
+  .hero-load-delay-4 { animation-delay: 400ms; }
+
+  @keyframes hero-load-in {
+    from {
+      opacity: 0;
+      transform: translateY(1.5rem);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-load {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @media (max-width: 1023px) {
+    .hero-inner {
+      grid-template-columns: 1fr;
+    }
   }
 
   @media (max-width: 640px) {
     .hero {
       padding: var(--space-3xl) 0;
       min-height: auto;
+    }
+
+    .hero-name {
+      font-size: clamp(2.5rem, 10vw, 4rem);
+    }
+
+    .hero-subtext {
+      font-size: var(--fs-body);
     }
 
     .hero-actions {
@@ -143,12 +297,6 @@ import StatusBadge from '../ui/StatusBadge.astro';
       flex-direction: column;
       align-items: flex-start;
       gap: var(--space-sm);
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .hero::before {
-      display: none;
     }
   }
 </style>

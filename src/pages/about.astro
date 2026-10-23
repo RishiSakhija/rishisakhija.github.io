@@ -1,36 +1,115 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Timeline from '../components/about/Timeline.astro';
-import PlaceholderSection from '../components/about/PlaceholderSection.astro';
+import { experience } from '../data/experience';
+import { education } from '../data/education';
+import Chip from '../components/ui/Chip.astro';
 ---
 
 <BaseLayout
   title="About"
-  description="Learn more about Sakhija Rishi - a self-taught AI/ML engineer focused on agents, automation, and the agentic era."
+  description="Rishi Sakhija — self-taught AI/ML engineer focused on agents, automation, and the agentic era. Learning in public, building for real."
 >
   <section class="about-page" aria-labelledby="about-heading">
     <div class="container">
       <header class="about-intro reveal">
-        <h1 id="about-heading" class="about-intro-heading">Learning in public, building for real.</h1>
+        <h1 id="about-heading" class="about-intro-title">Learning in public, building for real.</h1>
         <p class="about-intro-text">
-          I'm Sakhija Rishi, a Computer Engineering diploma student and a self-taught builder with over 2.5 years of hands-on work in AI and machine learning. My focus is the agentic era: systems that reason, coordinate, and act. I learn by building, and everything here is real work in progress.
+          I'm Rishi Sakhija, a Computer Engineering diploma student and a self-taught builder with over 2.5 years of hands-on work in AI and machine learning. My focus is the agentic era: systems that reason, coordinate, and act. I learn by building, and everything here is real work in progress.
         </p>
         <p class="about-intro-text mono" style="margin-top: var(--space-lg);">
           Location: Remote
         </p>
       </header>
 
-      <Timeline />
+      <div class="about-details">
+        <!-- Experience -->
+        <section aria-labelledby="experience-heading">
+          <h2 id="experience-heading" class="about-section-title">Experience</h2>
+          <div class="timeline" role="list">
+            {experience.map((item) => (
+              <article class="timeline-item" role="listitem">
+                <time class="timeline-date" datetime={item.period}>{item.period}</time>
+                <h3 class="timeline-role">{item.role}</h3>
+                <p class="timeline-company">{item.company}</p>
+                <p class="timeline-description">{item.description}</p>
+              </article>
+            ))}
+          </div>
+        </section>
 
+        <!-- Education -->
+        <section aria-labelledby="education-heading">
+          <h2 id="education-heading" class="about-section-title">Education</h2>
+          <div class="timeline" role="list">
+            {education.map((item) => (
+              <article class="timeline-item" role="listitem">
+                <time class="timeline-date" datetime={item.period}>{item.period}</time>
+                <h3 class="timeline-role">{item.degree}</h3>
+                <p class="timeline-company">{item.institution}</p>
+                <p class="timeline-description">Status: {item.status}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+      </div>
+
+      <!-- Learning Roadmap Placeholder -->
+      <section class="roadmap-placeholder reveal" style="margin-top: var(--space-3xl);">
+        <h2 class="roadmap-title">Learning Roadmap</h2>
+        <div class="roadmap-items">
+          <article class="roadmap-item">
+            <span class="roadmap-item-icon" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              </svg>
+            </span>
+            <span class="roadmap-item-text">Advanced Agent Architectures: multi-agent orchestration, planning, and tool use</span>
+          </article>
+          <article class="roadmap-item">
+            <span class="roadmap-item-icon" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              </svg>
+            </span>
+            <span class="roadmap-item-text">RAG at Scale: chunking strategies, hybrid retrieval, reranking, evaluation</span>
+          </article>
+          <article class="roadmap-item">
+            <span class="roadmap-item-icon" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              </svg>
+            </span>
+            <span class="roadmap-item-text">LLM Fine-tuning: LoRA/QLoRA, preference alignment, distillation</span>
+          </article>
+          <article class="roadmap-item">
+            <span class="roadmap-item-icon" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              </svg>
+            </span>
+            <span class="roadmap-item-text">Systems Engineering: Rust, distributed systems, observability, eval pipelines</span>
+          </article>
+          <article class="roadmap-item">
+            <span class="roadmap-item-icon" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              </svg>
+            </span>
+            <span class="roadmap-item-text">Product Sense: shipping real tools, user feedback loops, iteration velocity</span>
+          </article>
+        </div>
+      </section>
+
+      <!-- Future Sections Placeholder -->
       <div class="about-grid" style="margin-top: var(--space-3xl);">
-        <PlaceholderSection
-          title="Blog"
-          description="Coming soon — technical deep-dives, project retrospectives, and lessons learned while building in public."
-        />
-        <PlaceholderSection
-          title="Proof of Work"
-          description="Coming soon — verified contributions, certifications, and tangible evidence of skills in action."
-        />
+        <article class="placeholder-section reveal" aria-labelledby="blog-placeholder">
+          <h2 id="blog-placeholder" class="placeholder-title">Blog</h2>
+          <p class="placeholder-text">Coming soon — technical deep-dives, project retrospectives, and lessons learned while building in public.</p>
+        </article>
+        <article class="placeholder-section reveal" aria-labelledby="proof-placeholder">
+          <h2 id="proof-placeholder" class="placeholder-title">Proof of Work</h2>
+          <p class="placeholder-text">Coming soon — verified contributions, certifications, and tangible evidence of skills in action.</p>
+        </article>
       </div>
     </div>
   </section>

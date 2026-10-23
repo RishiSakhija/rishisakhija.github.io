@@ -2,7 +2,8 @@ export interface ContactLink {
   label: string;
   href: string;
   icon: string;
-  status: 'active' | 'coming-soon';
+  external?: boolean;
+  status?: 'active' | 'coming-soon';
 }
 
 export const contactLinks: ContactLink[] = [
@@ -10,19 +11,22 @@ export const contactLinks: ContactLink[] = [
     label: 'Email',
     href: 'mailto:rishisakhija7@gmail.com',
     icon: 'mail',
+    external: false,
     status: 'active',
   },
   {
     label: 'GitHub',
-    href: '#',
+    href: 'https://github.com/RishiSakhija',
     icon: 'github',
-    status: 'coming-soon',
+    external: true,
+    status: 'active',
   },
   {
     label: 'LinkedIn',
-    href: '#',
+    href: 'https://www.linkedin.com/in/rishisakhija',
     icon: 'linkedin',
-    status: 'coming-soon',
+    external: true,
+    status: 'active',
   },
 ];
 

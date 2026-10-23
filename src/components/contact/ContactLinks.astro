@@ -1,13 +1,6 @@
 ---
 import { contactLinks } from '../../data/contact';
 
-interface Props {
-  index: number;
-}
-
-const { index } = Astro.props;
-const link = contactLinks[index];
-
 function getIcon(name: string): string {
   switch (name) {
     case 'mail':
@@ -20,14 +13,21 @@ function getIcon(name: string): string {
       return '';
   }
 }
+
+interface Props {
+  index: number;
+}
+
+const { index } = Astro.props;
+const link = contactLinks[index];
 ---
 
 <a
   href={link.href}
   class={`contact-link ${link.status === 'coming-soon' ? 'coming-soon' : ''}`}
   aria-label={link.label}
-  target={link.href.startsWith('http') ? '_blank' : undefined}
-  rel={link.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+  target={link.external ? '_blank' : undefined}
+  rel={link.external ? 'noopener noreferrer' : undefined}
   aria-disabled={link.status === 'coming-soon'}
 >
   <svg class="contact-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" set:html={getIcon(link.icon)} />
@@ -55,11 +55,11 @@ function getIcon(name: string): string {
   }
 
   .contact-link:hover {
-    border-color: var(--accent);
-    color: var(--accent);
-    background-color: rgba(77, 226, 197, 0.05);
+    border-color: var(--blue);
+    color: var(--blue);
+    background-color: rgba(47, 123, 255, 0.05);
     transform: translateY(-2px);
-    box-shadow: var(--shadow-accent);
+    box-shadow: var(--shadow-blue);
   }
 
   .contact-link.coming-soon {
@@ -84,7 +84,7 @@ function getIcon(name: string): string {
   }
 
   .contact-link:hover .contact-link-icon {
-    color: var(--accent);
+    color: var(--blue);
   }
 
   .coming-soon-badge {

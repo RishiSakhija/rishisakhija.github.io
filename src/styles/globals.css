@@ -30,8 +30,8 @@ html {
 
 body {
   font-family: var(--font-body);
-  font-size: 1rem;
-  line-height: 1.6;
+  font-size: var(--fs-body);
+  line-height: 1.7;
   color: var(--text);
   background-color: var(--bg);
   -webkit-font-smoothing: antialiased;
@@ -39,121 +39,102 @@ body {
   overflow-x: hidden;
 }
 
-/* Background Pattern - Faint Grid */
+/* Background Pattern - Faint Dot Grid */
 body::before {
   content: '';
   position: fixed;
   inset: 0;
   background-image:
-    linear-gradient(rgba(77, 226, 197, 0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(77, 226, 197, 0.02) 1px, transparent 1px);
-  background-size: 60px 60px;
+    radial-gradient(circle, rgba(47, 123, 255, 0.025) 1px, transparent 1px);
+  background-size: 48px 48px;
   pointer-events: none;
   z-index: -1;
 }
 
-/* Alternative: Dot Pattern (uncomment to use instead of grid) */
-/*
-body::before {
-  content: '';
+/* Faint Blue Radial Glow Behind Hero (applied via hero section) */
+.hero-glow {
   position: fixed;
-  inset: 0;
-  background-image: radial-gradient(circle, rgba(77, 226, 197, 0.03) 1px, transparent 1px);
-  background-size: 40px 40px;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80vw;
+  max-width: 800px;
+  height: 60vh;
+  background: radial-gradient(ellipse at center, rgba(47, 123, 255, 0.06) 0%, transparent 70%);
   pointer-events: none;
   z-index: -1;
 }
-*/
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-glow {
+    display: none;
+  }
+}
 
 /* Typography */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
   font-weight: 600;
-  line-height: 1.2;
+  line-height: 1.15;
   color: var(--text);
 }
 
-h1 { font-size: clamp(2.5rem, 5vw, 4rem); }
-h2 { font-size: clamp(2rem, 4vw, 3rem); }
-h3 { font-size: clamp(1.5rem, 3vw, 2rem); }
-h4 { font-size: clamp(1.25rem, 2.5vw, 1.5rem); }
+h1 { font-size: var(--fs-h1); }
+h2 { font-size: var(--fs-h2); }
+h3 { font-size: var(--fs-h3); }
+h4 { font-size: var(--fs-h4); }
 
 p {
   color: var(--text);
+  line-height: 1.7;
 }
 
 a {
-  color: var(--accent);
+  color: var(--blue);
   text-decoration: none;
   transition: color var(--transition-fast);
 }
 
 a:hover {
-  color: var(--accent-2);
+  color: var(--blue-glow);
 }
 
 .mono {
   font-family: var(--font-mono);
-  font-size: 0.875rem;
+  font-size: var(--fs-mono);
+}
+
+.mono-sm {
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono-sm);
 }
 
 .muted {
   color: var(--muted);
 }
 
-/* Focus Styles */
-:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
+.text-dim {
+  color: var(--text-dim);
+}
+
+/* Highlight key terms in blue */
+.highlight-blue {
+  color: var(--blue-soft);
 }
 
 /* Selection */
 ::selection {
-  background-color: rgba(77, 226, 197, 0.2);
+  background-color: rgba(47, 123, 255, 0.3);
   color: var(--text);
 }
 
-/* Scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--bg);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--border);
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--muted);
-}
-
-/* Container Utility */
-.container {
-  width: 100%;
-  max-width: var(--container-max);
-  margin: 0 auto;
-  padding: 0 var(--container-padding);
-}
-
-/* Section Base */
-section {
-  padding: var(--space-3xl) 0;
-}
-
-/* Visually Hidden */
-.visually-hidden {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
+/* Print Styles */
+@media print {
+  .navbar, .footer, .hero, .terminal, .transition-overlay {
+    display: none !important;
+  }
+  body {
+    background: white;
+    color: black;
+  }
 }

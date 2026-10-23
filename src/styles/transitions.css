@@ -1,22 +1,22 @@
-/* View Transitions & Motion */
+/* Agent-Style Page Transitions */
 @import './tokens.css';
 
 /* View Transition Names */
 ::view-transition-old(root),
 ::view-transition-new(root) {
-  animation-duration: var(--transition-base);
-  animation-timing-function: ease;
+  animation-duration: var(--transition-agent);
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 ::view-transition-old(root) {
-  animation-name: fade-slide-out;
+  animation-name: vt-fade-slide-out;
 }
 
 ::view-transition-new(root) {
-  animation-name: fade-slide-in;
+  animation-name: vt-fade-slide-in;
 }
 
-@keyframes fade-slide-out {
+@keyframes vt-fade-slide-out {
   from {
     opacity: 1;
     transform: translateX(0);
@@ -27,7 +27,7 @@
   }
 }
 
-@keyframes fade-slide-in {
+@keyframes vt-fade-slide-in {
   from {
     opacity: 0;
     transform: translateX(2rem);
@@ -38,38 +38,218 @@
   }
 }
 
-/* Navigation stays persistent during transitions */
+/* Persistent Elements */
 nav {
   view-transition-name: nav;
 }
 
-/* Smooth page transitions for specific elements */
-.hero-content {
-  view-transition-name: hero-content;
+.footer {
+  view-transition-name: footer;
 }
 
-.projects-grid {
-  view-transition-name: projects-grid;
+.hero-glow {
+  view-transition-name: hero-glow;
 }
 
-/* Reduced Motion - Disable View Transitions */
-@media (prefers-reduced-motion: reduce) {
-  ::view-transition-old(root),
-  ::view-transition-new(root) {
-    animation: none !important;
+/* Transition Overlay */
+.transition-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: var(--z-transition-overlay);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--transition-fast), visibility var(--transition-fast);
+}
+
+.transition-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Sweep Line */
+.transition-sweep {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(180deg, var(--blue) 0%, var(--blue-glow) 50%, var(--blue) 100%);
+  transform: translateX(-100%);
+  transform-origin: left center;
+  will-change: transform;
+}
+
+.transition-sweep::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -2px;
+  width: 8px;
+  height: 8px;
+  background: var(--red);
+  border-radius: 50%;
+  box-shadow: 0 0 12px var(--red-glow), 0 0 24px var(--red);
+}
+
+.transition-overlay.active .transition-sweep {
+  animation: sweep-cross var(--transition-agent) cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes sweep-cross {
+  0% {
+    transform: translateX(-100%);
   }
-
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
+  100% {
+    transform: translateX(calc(100vw + 100%));
   }
 }
 
-/* Scroll Reveal Animations */
+/* Agent Nodes */
+.transition-nodes {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.transition-node {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: var(--blue-glow);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--blue-glow), 0 0 16px var(--blue);
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+.transition-node::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 12px;
+  height: 12px;
+  border: 1px solid var(--blue-glow);
+  border-radius: 50%;
+  opacity: 0.5;
+}
+
+.transition-overlay.active .transition-node {
+  animation: node-travel var(--transition-agent) cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.transition-node:nth-child(1) { animation-delay: 0.1s; }
+.transition-node:nth-child(2) { animation-delay: 0.2s; }
+.transition-node:nth-child(3) { animation-delay: 0.3s; }
+.transition-node:nth-child(4) { animation-delay: 0.4s; }
+.transition-node:nth-child(5) { animation-delay: 0.5s; }
+.transition-node:nth-child(6) { animation-delay: 0.6s; }
+
+@keyframes node-travel {
+  0% {
+    opacity: 0;
+    transform: translateX(-50px) scale(0.5);
+  }
+  15% {
+    opacity: 1;
+    transform: translateX(-10px) scale(1);
+  }
+  85% {
+    opacity: 1;
+    transform: translateX(calc(100vw + 20px)) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(calc(100vw + 50px)) scale(0.5);
+  }
+}
+
+/* Status Chip */
+.transition-status {
+  position: fixed;
+  bottom: var(--space-xl);
+  left: var(--space-xl);
+  padding: var(--space-sm) var(--space-md);
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono-sm);
+  font-weight: 500;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-lg);
+  opacity: 0;
+  transform: translateY(1rem);
+  pointer-events: none;
+  will-change: opacity, transform;
+  z-index: var(--z-transition-overlay);
+}
+
+.transition-status.visible {
+  animation: status-appear 0.3s ease forwards;
+}
+
+.transition-status.hidden {
+  animation: status-disappear 0.3s ease forwards;
+}
+
+@keyframes status-appear {
+  from {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes status-disappear {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-1rem);
+  }
+}
+
+/* Page Content Reveal */
+.page-content {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity var(--transition-slow), transform var(--transition-slow);
+}
+
+.page-content.exiting {
+  opacity: 0;
+  transform: translateY(1rem);
+}
+
+.page-content.entering {
+  opacity: 0;
+  transform: translateY(1rem);
+}
+
+.page-content.entering.visible {
+  animation: content-reveal var(--transition-slow) ease forwards;
+}
+
+@keyframes content-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Staggered Reveal for Sections */
 .reveal {
   opacity: 0;
   transform: translateY(1.5rem);
@@ -81,20 +261,20 @@ nav {
   transform: translateY(0);
 }
 
-/* Staggered Reveal Delays */
-.reveal-delay-1 { transition-delay: 100ms; }
-.reveal-delay-2 { transition-delay: 200ms; }
-.reveal-delay-3 { transition-delay: 300ms; }
-.reveal-delay-4 { transition-delay: 400ms; }
-.reveal-delay-5 { transition-delay: 500ms; }
-.reveal-delay-6 { transition-delay: 600ms; }
+.reveal-delay-1 { transition-delay: 80ms; }
+.reveal-delay-2 { transition-delay: 160ms; }
+.reveal-delay-3 { transition-delay: 240ms; }
+.reveal-delay-4 { transition-delay: 320ms; }
+.reveal-delay-5 { transition-delay: 400ms; }
+.reveal-delay-6 { transition-delay: 480ms; }
 
-/* Hover Transitions for Interactive Elements */
-button,
-a,
-.card,
-.chip,
-.tag {
+/* Named Shared Elements for Morphing */
+.page-title {
+  view-transition-name: page-title;
+}
+
+/* Hover Transitions */
+button, a, .card, .chip, .btn {
   transition:
     transform var(--transition-fast),
     box-shadow var(--transition-fast),
@@ -103,20 +283,62 @@ a,
     color var(--transition-fast);
 }
 
-button:hover,
-a:hover,
-.card:hover {
+button:hover, a:hover, .card:hover {
   transform: translateY(-2px);
 }
 
 .card:hover {
-  box-shadow: var(--shadow-accent);
-  border-color: var(--accent);
+  box-shadow: var(--shadow-blue);
+  border-color: var(--blue);
 }
 
-/* Button Active State */
-button:active,
-a:active {
+button:active, a:active {
   transform: translateY(0);
   transition-duration: 50ms;
+}
+
+/* Reduced Motion - Disable All Animations */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none !important;
+  }
+
+  .transition-overlay {
+    display: none !important;
+  }
+
+  .transition-sweep,
+  .transition-node,
+  .transition-status {
+    display: none !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .page-content.exiting,
+  .page-content.entering {
+    opacity: 1;
+    transform: none;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Mobile Reduced Motion */
+@media (max-width: 768px) and (prefers-reduced-motion: no-preference) {
+  .transition-node {
+    width: 4px;
+    height: 4px;
+  }
 }

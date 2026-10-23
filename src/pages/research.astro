@@ -1,0 +1,52 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Chip from '../components/ui/Chip.astro';
+import Button from '../components/ui/Button.astro';
+---
+
+<BaseLayout
+  title="Research"
+  description="Paper breakdowns, experiments, and learning notes on AI agents, LLMs, RAG, and automation."
+>
+  <section class="content-placeholder" aria-labelledby="research-heading">
+    <div class="container">
+      <header class="content-placeholder-header reveal">
+        <span class="chip primary" style="margin-bottom: var(--space-md);">Research</span>
+        <h1 id="research-heading" class="content-placeholder-title">Research</h1>
+        <p class="content-placeholder-subtext">
+          Paper breakdowns, experiments, and learning notes on AI agents, LLMs, RAG, and automation.
+        </p>
+      </header>
+
+      <div class="content-placeholder-chips reveal" style="--delay: 1">
+        <Chip variant="primary">Agents</Chip>
+        <Chip variant="primary">LLMs</Chip>
+        <Chip variant="primary">RAG</Chip>
+        <Chip variant="primary">Automation</Chip>
+        <Chip variant="primary">Evaluation</Chip>
+        <Chip variant="primary">Fine-tuning</Chip>
+        <Chip variant="primary">Planning</Chip>
+        <Chip variant="primary">Memory</Chip>
+      </div>
+
+      <div class="empty-state reveal" style="--delay: 2">
+        <div class="empty-state-icon" aria-hidden="true">
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+            <path d="M2 12h20"/>
+            <path d="M12 2a15.3 15.3 0 0 0 4 10 15.3 15.3 0 0 0-4 10 15.3 15.3 0 0 0-4-10 15.3 15.3 0 0 0 4-10z"/>
+          </svg>
+        </div>
+        <h2 class="empty-state-title">Research Section — Coming Soon</h2>
+        <p class="empty-state-text">
+          This section will contain structured research notes: paper summaries with key takeaways, experiment logs with configs and results, and learning synthesis posts. Each entry will be tagged, searchable, and cross-referenced with projects.
+        </p>
+        <div style="margin-top: var(--space-xl); display: flex; gap: var(--space-md); justify-content: center; flex-wrap: wrap;">
+          <Button variant="ghost" disabled>Filter by Tag</Button>
+          <Button variant="ghost" disabled>Sort by Date</Button>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

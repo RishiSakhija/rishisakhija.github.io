@@ -1,7 +1,8 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { projects } from '../data/projects';
-import ProjectCard from '../components/projects/ProjectCard.astro';
+import Chip from '../components/ui/Chip.astro';
+import Button from '../components/ui/Button.astro';
 ---
 
 <BaseLayout
@@ -17,9 +18,56 @@ import ProjectCard from '../components/projects/ProjectCard.astro';
         </p>
       </header>
 
-      <div class="projects-grid" role="list">
+      <div class="projects-grid grid-3" role="list">
         {projects.map((project, index) => (
-          <ProjectCard project={project} index={index} />
+          <article class="card reveal" style={`--delay: ${index + 1}`} role="listitem">
+            <header class="card-header">
+              <h3 class="card-title">{project.title}</h3>
+              <Chip
+                class={project.status === 'live' ? 'green' : project.status === 'in-progress' ? 'amber' : 'primary'}
+              >
+                {project.status === 'coming-soon' ? 'Coming Soon' : project.status === 'in-progress' ? 'In Progress' : 'Live'}
+              </Chip>
+            </header>
+
+            <div class="card-simple-words">
+              <strong>In simple words:</strong> {project.simpleWords}
+            </div>
+
+            <p class="card-description">{project.description}</p>
+
+            <div class="card-tags" role="list" aria-label="Technologies">
+              {project.tags.map((tag) => (
+                <Chip>{tag}</Chip>
+              ))}
+            </div>
+
+            <footer class="card-footer">
+              <Button
+                href={`/projects/${project.slug}`}
+                variant="primary"
+                size="sm"
+              >
+                View Case Study
+              </Button>
+              <Button
+                href={project.demoUrl || '#'}
+                variant="secondary"
+                size="sm"
+                disabled={project.status !== 'live'}
+              >
+                Live Demo
+              </Button>
+              <Button
+                href={project.codeUrl || '#'}
+                variant="ghost"
+                size="sm"
+                disabled={project.status !== 'live'}
+              >
+                Code
+              </Button>
+            </footer>
+          </article>
         ))}
       </div>
     </div>
