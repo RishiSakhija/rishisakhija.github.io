@@ -9,6 +9,7 @@ const classes = ['status-badge', className].filter(Boolean).join(' ');
 ---
 
 <span class={classes} {...rest}>
+  <span class="status-dot" aria-hidden="true"></span>
   <slot>{label}</slot>
 </span>
 
@@ -16,27 +17,30 @@ const classes = ['status-badge', className].filter(Boolean).join(' ');
   .status-badge {
     display: inline-flex;
     align-items: center;
-    gap: var(--space-xs);
+    gap: var(--space-sm);
     font-family: var(--font-mono);
-    font-size: 0.75rem;
+    font-size: var(--fs-mono);
     font-weight: 500;
-    color: var(--accent);
+    color: var(--text);
   }
 
-  .status-badge::before {
-    content: '●';
-    color: var(--accent);
-    font-size: 0.5rem;
-    animation: pulse 2s ease-in-out infinite;
+  .status-dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    background: var(--red);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--red-glow), 0 0 16px var(--red);
+    flex-shrink: 0;
+    animation: pulse-red 2s ease-in-out infinite;
   }
 
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
+  @keyframes pulse-red {
+    0%, 100% { opacity: 1; transform: scale(1); box-shadow: 0 0 8px var(--red-glow), 0 0 16px var(--red); }
+    50% { opacity: 0.6; transform: scale(0.9); box-shadow: 0 0 4px var(--red-glow), 0 0 8px var(--red); }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .status-badge::before {
+    .status-dot {
       animation: none;
     }
   }

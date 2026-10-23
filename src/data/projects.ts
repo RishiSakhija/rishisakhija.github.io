@@ -24,7 +24,7 @@ export const projects: Project[] = [
     simpleWords: 'A search engine that only shows tech and AI results, so builders find useful answers faster.',
     description:
       'A compact search engine built exclusively for tech and AI, cutting through the noise to surface what matters to builders.',
-    tags: ['Python', 'Search', 'AI', 'LLMs', 'RAG'],
+    tags: ['Python', 'Search', 'AI'],
     status: 'in-progress',
     demoUrl: '#',
     codeUrl: '#',
@@ -45,7 +45,7 @@ export const projects: Project[] = [
     simpleWords: 'A small team of AI helpers, each with a job, led by a manager AI that coordinates them to take work off my plate.',
     description:
       'A personal team of specialized AI agents that work independently or in coordination under a supervising CEO agent, designed to reduce workload and automate everyday tasks.',
-    tags: ['Python', 'AI Agents', 'Automation', 'LangGraph', 'LangChain'],
+    tags: ['Python', 'AI Agents', 'Automation'],
     status: 'in-progress',
     demoUrl: '#',
     codeUrl: '#',
@@ -66,7 +66,7 @@ export const projects: Project[] = [
     simpleWords: 'Paste a YouTube link and get clean, well-organized notes saved on a personal shelf.',
     description:
       'A web app that converts YouTube links into structured, professional notes and keeps them organized in a personal shelf.',
-    tags: ['Web App', 'AI', 'Automation', 'Next.js', 'TypeScript'],
+    tags: ['Web App', 'AI', 'Automation'],
     status: 'in-progress',
     demoUrl: '#',
     codeUrl: '#',

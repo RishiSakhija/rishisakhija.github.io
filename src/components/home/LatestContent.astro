@@ -1,40 +1,9 @@
 ---
-/**
- * Latest Content Placeholder - Shows teasers for Blog and Research
- */
+interface Props {
+  contentTeasers: any[];
+}
 
-const contentTeasers = [
-  {
-    type: 'blog',
-    icon: `
-      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
-        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
-      </svg>
-    `,
-    label: 'Blog',
-    title: 'Coming Soon',
-    text: 'Technical deep-dives, project retrospectives, and lessons learned building AI systems in public.',
-    chips: ['Agents', 'LLMs', 'RAG', 'Automation', 'Search'],
-    href: '/blog',
-  },
-  {
-    type: 'research',
-    icon: `
-      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-        <circle cx="12" cy="12" r="10"/>
-        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-        <path d="M2 12h20"/>
-        <path d="M12 2a15.3 15.3 0 0 0 4 10 15.3 15.3 0 0 0-4 10 15.3 15.3 0 0 0-4-10 15.3 15.3 0 0 0 4-10z"/>
-      </svg>
-    `,
-    label: 'Research',
-    title: 'Coming Soon',
-    text: 'Paper breakdowns, experiments, and learning notes on agents, LLMs, RAG, and automation.',
-    chips: ['Agents', 'LLMs', 'RAG', 'Automation', 'Eval'],
-    href: '/research',
-  },
-];
+const { contentTeasers } = Astro.props;
 ---
 
 <section class="latest-content" aria-labelledby="latest-heading">
@@ -46,20 +15,16 @@ const contentTeasers = [
     <div class="latest-grid">
       {contentTeasers.map((teaser, index) => (
         <article class="placeholder-card reveal" style={`--delay: ${index + 1}`}>
-          <div class="placeholder-icon" aria-hidden="true">
-            {teaser.icon}
-          </div>
-          <span class="chip primary" style="margin-bottom: var(--space-md);">{teaser.label}</span>
-          <h3 class="placeholder-title">{teaser.title}</h3>
-          <p class="placeholder-text">{teaser.text}</p>
+          <div class="placeholder-icon" aria-hidden="true" set:html={teaser.data.icon} />
+          <span class="chip primary" style="margin-bottom: var(--space-md);">{teaser.data.label}</span>
+          <h3 class="placeholder-title">{teaser.data.title}</h3>
+          <p class="placeholder-text">{teaser.data.text}</p>
           <div class="placeholder-chips">
-            {teaser.chips.map((chip) => (
+            {teaser.data.chips.map((chip: string) => (
               <span class="chip">{chip}</span>
             ))}
           </div>
-          <a href={teaser.href} class="btn btn-secondary btn-block">
-            Explore {teaser.label}
-          </a>
+          <a href={teaser.data.href} class="btn btn-secondary btn-block">Explore {teaser.data.label}</a>
         </article>
       ))}
     </div>
@@ -67,70 +32,13 @@ const contentTeasers = [
 </section>
 
 <style>
-  .latest-content {
-    padding: var(--space-3xl) 0;
-    background: var(--surface);
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-  }
-
-  .latest-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: var(--space-lg);
-  }
-
-  .placeholder-card {
-    padding: var(--space-xl);
-    background: var(--surface-elevated);
-    border: 1px dashed var(--border);
-    border-radius: var(--radius-lg);
-    text-align: center;
-    transition: all var(--transition-base);
-  }
-
-  .placeholder-card:hover {
-    border-color: var(--blue);
-    border-style: solid;
-    box-shadow: var(--shadow-blue);
-  }
-
-  .placeholder-icon {
-    width: 3rem;
-    height: 3rem;
-    margin: 0 auto var(--space-md);
-    color: var(--blue);
-    opacity: 0.5;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .placeholder-title {
-    font-size: var(--fs-h4);
-    margin-bottom: var(--space-sm);
-  }
-
-  .placeholder-text {
-    color: var(--muted);
-    font-size: var(--fs-body-sm);
-    margin-bottom: var(--space-lg);
-  }
-
-  .placeholder-chips {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: var(--space-sm);
-    margin-bottom: var(--space-lg);
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .placeholder-card {
-      transition: none;
-    }
-    .placeholder-card:hover {
-      transform: none;
-    }
-  }
+  .latest-content { padding: var(--space-3xl) 0; background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .latest-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-lg); }
+  .placeholder-card { padding: var(--space-xl); background: var(--surface-elevated); border: 1px dashed var(--border); border-radius: var(--radius-lg); text-align: center; transition: all var(--transition-base); }
+  .placeholder-card:hover { border-color: var(--blue); border-style: solid; box-shadow: var(--shadow-blue); }
+  .placeholder-icon { width: 3rem; height: 3rem; margin: 0 auto var(--space-md); color: var(--blue); opacity: 0.5; display: flex; align-items: center; justify-content: center; }
+  .placeholder-title { font-size: var(--fs-h4); margin-bottom: var(--space-sm); }
+  .placeholder-text { color: var(--muted); font-size: var(--fs-body-sm); margin-bottom: var(--space-lg); }
+  .placeholder-chips { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-sm); margin-bottom: var(--space-lg); }
+  @media (prefers-reduced-motion: reduce) { .placeholder-card { transition: none; } .placeholder-card:hover { transform: none; } }
 </style>

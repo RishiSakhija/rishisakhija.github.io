@@ -25,7 +25,8 @@ const sizeClasses = size !== 'md' ? `btn-${size}` : '';
 const disabledClass = disabled ? 'btn-disabled' : '';
 const classes = [baseClasses, variantClasses, sizeClasses, disabledClass, className].filter(Boolean).join(' ');
 
-const isLink = !!href;
+// When disabled, always render as button to avoid href="#"
+const isLink = !!href && !disabled;
 ---
 
 {isLink ? (
@@ -79,15 +80,16 @@ const isLink = !!href;
 
   /* Variants */
   .btn-primary {
-    background-color: var(--accent);
-    color: var(--bg);
-    border-color: var(--accent);
+    background-color: var(--blue);
+    color: var(--text);
+    border-color: var(--blue);
   }
 
   .btn-primary:hover:not(:disabled) {
-    background-color: #3dd9b8;
-    border-color: #3dd9b8;
-    box-shadow: var(--shadow-accent);
+    background-color: var(--blue-glow);
+    border-color: var(--blue-glow);
+    box-shadow: var(--shadow-blue);
+    color: var(--text);
   }
 
   .btn-secondary {
@@ -97,9 +99,9 @@ const isLink = !!href;
   }
 
   .btn-secondary:hover:not(:disabled) {
-    border-color: var(--accent);
-    color: var(--accent);
-    background-color: rgba(77, 226, 197, 0.05);
+    border-color: var(--blue);
+    color: var(--blue);
+    background-color: var(--blue-muted);
   }
 
   .btn-ghost {
@@ -116,17 +118,17 @@ const isLink = !!href;
   /* Sizes */
   .btn-sm {
     padding: var(--space-xs) var(--space-md);
-    font-size: 0.8125rem;
+    font-size: var(--fs-mono);
   }
 
   .btn-md {
     padding: var(--space-sm) var(--space-lg);
-    font-size: 0.875rem;
+    font-size: var(--fs-body-sm);
   }
 
   .btn-lg {
     padding: var(--space-md) var(--space-xl);
-    font-size: 1rem;
+    font-size: var(--fs-body);
   }
 
   @media (prefers-reduced-motion: reduce) {

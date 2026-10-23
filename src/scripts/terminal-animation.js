@@ -1,23 +1,44 @@
 /**
- * Terminal Animation - Typing/erasing effect with cursor
- * Pauses when tab hidden or off-screen, respects prefers-reduced-motion
+ * Terminal Animation - Single instance module with proper lifecycle management
+ * - Single initialization guarded by global token
+ * - Full cleanup on astro:before-swap
+ * - Single init on astro:page-load
+ * - Static fallback for no-JS and prefers-reduced-motion
  */
 
-// Terminal Animation Controller
+const TERMINAL_SCRIPT = [
+  { type: 'command', text: 'whoami', prompt: '$' },
+  { type: 'output', text: '> Rishi Sakhija: AI/ML builder, agents & automation' },
+  { type: 'command', text: 'cat focus.txt', prompt: '$' },
+  { type: 'output', text: '> agents | automation | search | prompt engineering' },
+  { type: 'command', text: 'agents --status', prompt: '$' },
+  { type: 'output', text: '> supervisor: online | builder: online | analyst: standby' },
+  { type: 'command', text: 'ls projects/', prompt: '$' },
+  { type: 'output', text: '> ai-search-engine/  agentic-team/  virtual-shelf/' },
+  { type: 'command', text: 'echo $STATUS', prompt: '$' },
+  { type: 'output', text: '> open to work, remote, building daily' },
+];
+
+const TERMINAL_CONFIG = {
+  typeSpeedMin: 35,
+  typeSpeedMax: 50,
+  eraseSpeed: 20,
+  pauseAfterLine: 1400,
+  pauseBeforeErase: 800,
+};
+
+// Global token to ensure single initialization
+const INIT_TOKEN = Symbol('term.init');
+let currentToken = null;
+
 class TerminalAnimation {
   constructor(root) {
     this.root = root;
     this.animated = root?.querySelector('[data-terminal-animated]');
     this.static = root?.querySelector('[data-terminal-static]');
     this.body = root?.querySelector('[data-terminal-body]');
-    this.script = window.TERMINAL_SCRIPT_INJECTED || [];
-    this.config = window.TERMINAL_CONFIG_INJECTED || {
-      typeSpeedMin: 35,
-      typeSpeedMax: 50,
-      eraseSpeed: 20,
-      pauseAfterLine: 1400,
-      pauseBeforeErase: 800,
-    };
+    this.script = TERMINAL_SCRIPT;
+    this.config = TERMINAL_CONFIG;
 
     this.currentLineIndex = 0;
     this.currentCharIndex = 0;
@@ -29,6 +50,7 @@ class TerminalAnimation {
     this.cursorElement = null;
     this.observer = null;
     this.timeoutId = null;
+    this.prefersReducedMotion = false;
 
     this.init();
   }
@@ -36,7 +58,6 @@ class TerminalAnimation {
   init() {
     if (!this.root || !this.body) return;
 
-    // Check reduced motion preference
     this.prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     if (this.prefersReducedMotion) {
@@ -44,32 +65,25 @@ class TerminalAnimation {
       return;
     }
 
-    // Set up Intersection Observer to pause when off-screen
+    // Intersection Observer to pause when off-screen
     this.observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            this.resume();
-          } else {
-            this.pause();
-          }
+          if (entry.isIntersecting) this.resume();
+          else this.pause();
         });
       },
       { rootMargin: '100px' }
     );
-
     this.observer.observe(this.root);
 
     // Pause when tab is hidden
-    document.addEventListener('visibilitychange', () => {
-      if (document.hidden) {
-        this.pause();
-      } else {
-        this.resume();
-      }
-    });
+    this._visibilityHandler = () => {
+      if (document.hidden) this.pause();
+      else this.resume();
+    };
+    document.addEventListener('visibilitychange', this._visibilityHandler);
 
-    // Start animation
     this.start();
   }
 
@@ -103,36 +117,23 @@ class TerminalAnimation {
   }
 
   continueAfterPause() {
-    if (this.isErasing) {
-      this.eraseCurrentLine();
-    } else if (this.isTyping) {
-      this.typeCurrentLine();
-    } else {
-      this.typeNextLine();
-    }
+    if (this.isErasing) this.eraseLine();
+    else if (this.isTyping) this.typeCurrentLine();
+    else this.typeNextLine();
   }
 
   async typeNextLine() {
     if (this.isPaused) return;
     if (this.currentLineIndex >= this.script.length) {
-      this.currentLineIndex = 0; // Loop
+      this.currentLineIndex = 0;
     }
 
     const lineData = this.script[this.currentLineIndex];
     await this.typeLine(lineData);
 
-    if (!this.isPaused) {
-      await this.wait(this.config.pauseAfterLine);
-    }
-
-    if (!this.isPaused) {
-      await this.wait(this.config.pauseBeforeErase);
-    }
-
-    if (!this.isPaused) {
-      await this.eraseLine();
-    }
-
+    if (!this.isPaused) await this.wait(this.config.pauseAfterLine);
+    if (!this.isPaused) await this.wait(this.config.pauseBeforeErase);
+    if (!this.isPaused) await this.eraseLine();
     if (!this.isPaused) {
       this.currentLineIndex++;
       this.typeNextLine();
@@ -143,10 +144,9 @@ class TerminalAnimation {
     return new Promise((resolve) => {
       this.isTyping = true;
 
-      // Create line element
       this.lineElement = document.createElement('div');
       this.lineElement.className = 'terminal-line';
-      this.lineElement.dataset.lineIndex = this.currentLineIndex;
+      this.lineElement.dataset.lineIndex = String(this.currentLineIndex);
 
       if (lineData.type === 'command') {
         const prompt = document.createElement('span');
@@ -163,15 +163,12 @@ class TerminalAnimation {
         this.lineElement.appendChild(this.contentElement);
       }
 
-      // Add cursor
       this.cursorElement = document.createElement('span');
       this.cursorElement.className = 'terminal-cursor';
       this.lineElement.appendChild(this.cursorElement);
 
-      this.body.appendChild(this.lineElement);
-
-      // Scroll to bottom
-      this.body.scrollTop = this.body.scrollHeight;
+      this.body?.appendChild(this.lineElement);
+      if (this.body) this.body.scrollTop = this.body.scrollHeight;
 
       this.currentCharIndex = 0;
       this.typeCurrentLine(resolve);
@@ -188,10 +185,11 @@ class TerminalAnimation {
     const fullText = lineData.text;
 
     if (this.currentCharIndex <= fullText.length) {
-      this.contentElement.textContent = fullText.slice(0, this.currentCharIndex);
+      if (this.contentElement) {
+        this.contentElement.textContent = fullText.slice(0, this.currentCharIndex);
+      }
       this.currentCharIndex++;
 
-      // Randomize typing speed slightly
       const speed = this.config.typeSpeedMin + Math.random() * (this.config.typeSpeedMax - this.config.typeSpeedMin);
       this.timeoutId = setTimeout(() => this.typeCurrentLine(resolve), speed);
     } else {
@@ -203,7 +201,6 @@ class TerminalAnimation {
   eraseLine() {
     return new Promise((resolve) => {
       this.isErasing = true;
-
       const lineData = this.script[this.currentLineIndex];
       const fullText = lineData.text;
 
@@ -214,11 +211,12 @@ class TerminalAnimation {
         }
 
         if (this.currentCharIndex >= 0) {
-          this.contentElement.textContent = fullText.slice(0, this.currentCharIndex);
+          if (this.contentElement) {
+            this.contentElement.textContent = fullText.slice(0, this.currentCharIndex);
+          }
           this.currentCharIndex--;
           this.timeoutId = setTimeout(doErase, this.config.eraseSpeed);
         } else {
-          // Remove line element
           if (this.lineElement && this.lineElement.parentNode) {
             this.lineElement.remove();
           }
@@ -229,7 +227,6 @@ class TerminalAnimation {
           resolve();
         }
       };
-
       doErase();
     });
   }
@@ -241,37 +238,61 @@ class TerminalAnimation {
   }
 
   destroy() {
-    if (this.observer) {
-      this.observer.disconnect();
-    }
-    if (this.timeoutId) {
-      clearTimeout(this.timeoutId);
-    }
+    if (this.observer) this.observer.disconnect();
+    if (this._visibilityHandler) document.removeEventListener('visibilitychange', this._visibilityHandler);
+    if (this.timeoutId) clearTimeout(this.timeoutId);
+    this.timeoutId = null;
   }
 }
 
-// Global init function for re-initialization after view transitions
-window.initTerminal = function() {
-  // Find all terminal roots
-  const terminals = document.querySelectorAll('[data-terminal-root]');
-  terminals.forEach((root) => {
-    // Clean up any existing instance
+// Single initialization function with token guard
+function initTerminal() {
+  // Check if already initialized with current token
+  if (window[INIT_TOKEN] === currentToken) return;
+
+  // Clean up any existing instances
+  const roots = document.querySelectorAll('[data-terminal-root]');
+  roots.forEach((root) => {
     if (root.terminalAnimation) {
       root.terminalAnimation.destroy();
+      root.terminalAnimation = null;
     }
-    root.terminalAnimation = new TerminalAnimation(root);
   });
-};
+
+  // Set new token
+  currentToken = INIT_TOKEN;
+  window[INIT_TOKEN] = currentToken;
+
+  // Initialize new instance
+  const root = document.querySelector('[data-terminal-root]');
+  if (root) {
+    root.terminalAnimation = new TerminalAnimation(root);
+  }
+}
+
+// Cleanup function for page transitions
+function cleanupTerminal() {
+  const roots = document.querySelectorAll('[data-terminal-root]');
+  roots.forEach((root) => {
+    if (root.terminalAnimation) {
+      root.terminalAnimation.destroy();
+      root.terminalAnimation = null;
+    }
+  });
+  // Clear token so next init creates new instance
+  currentToken = null;
+}
 
 // Initialize on DOM ready
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', window.initTerminal);
+  document.addEventListener('DOMContentLoaded', initTerminal);
 } else {
-  window.initTerminal();
+  initTerminal();
 }
 
-// Re-initialize on Astro View Transitions
-document.addEventListener('astro:page-load', window.initTerminal);
-document.addEventListener('astro:after-swap', window.initTerminal);
+// Page transition lifecycle
+document.addEventListener('astro:before-swap', cleanupTerminal);
+document.addEventListener('astro:page-load', initTerminal);
+document.addEventListener('astro:after-swap', initTerminal);
 
-export { TerminalAnimation };
+export { initTerminal, cleanupTerminal };

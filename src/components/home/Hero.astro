@@ -12,7 +12,7 @@ import Terminal from './Terminal.astro';
   <div class="hero-red-vignette" aria-hidden="true"></div>
 
   <div class="container hero-inner">
-    <div class="hero-content hero-load hero-load-delay-1">
+    <div class="hero-content">
       <div class="hero-badge">
         <StatusBadge label="open to work · remote" />
       </div>
@@ -25,16 +25,16 @@ import Terminal from './Terminal.astro';
         <span class="visually-hidden">Rishi Sakhija</span>
       </h1>
 
-      <p class="hero-role hero-load hero-load-delay-2">
+      <p class="hero-role">
         <span class="red-dot" aria-hidden="true"></span>
         AI/ML Engineer in the Making · Agents & Automation
       </p>
 
-      <p class="hero-subtext hero-load hero-load-delay-3">
+      <p class="hero-subtext">
         Self-taught for 2.5+ years, I design and build AI agents, search systems, and automation that turn complex work into simple workflows.
       </p>
 
-      <div class="hero-actions hero-load hero-load-delay-4">
+      <div class="hero-actions">
         <Button href="/projects" variant="primary" size="lg">
           View Projects
         </Button>
@@ -43,7 +43,7 @@ import Terminal from './Terminal.astro';
         </Button>
       </div>
 
-      <div class="hero-status hero-load hero-load-delay-4">
+      <div class="hero-status">
         <span class="mono">Rishi Sakhija</span>
         <span class="mono" aria-hidden="true">|</span>
         <span class="mono">AI/ML Engineer</span>
@@ -102,9 +102,6 @@ import Terminal from './Terminal.astro';
     display: inline-flex;
     align-items: baseline;
     gap: 0;
-    opacity: 0;
-    transform: translateY(1.5rem);
-    animation: wordmark-reveal 0.8s ease forwards;
   }
 
   .wordmark-part {
@@ -125,6 +122,13 @@ import Terminal from './Terminal.astro';
     -webkit-text-fill-color: transparent;
   }
 
+  /* Wordmark reveal - progressive enhancement */
+  .js .wordmark {
+    opacity: 0;
+    transform: translateY(1.5rem);
+    animation: wordmark-reveal 0.9s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+
   @keyframes wordmark-reveal {
     from {
       opacity: 0;
@@ -137,7 +141,7 @@ import Terminal from './Terminal.astro';
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .wordmark {
+    .js .wordmark {
       animation: none;
       opacity: 1;
       transform: none;
@@ -145,7 +149,7 @@ import Terminal from './Terminal.astro';
   }
 
   .hero-role {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: var(--space-sm);
     font-family: var(--font-mono);
@@ -158,6 +162,7 @@ import Terminal from './Terminal.astro';
     width: 0.5rem;
     height: 0.5rem;
     flex-shrink: 0;
+    margin-right: var(--space-sm);
   }
 
   .hero-subtext {
@@ -173,6 +178,19 @@ import Terminal from './Terminal.astro';
     flex-wrap: wrap;
     gap: var(--space-md);
     margin-bottom: var(--space-xl);
+  }
+
+  .hero-actions .btn-primary {
+    background: var(--blue);
+    color: var(--text);
+    border-color: var(--blue);
+  }
+
+  .hero-actions .btn-secondary {
+    background: transparent;
+    color: var(--text);
+    border-color: var(--blue);
+    border-width: 2px;
   }
 
   @media (max-width: 640px) {
@@ -263,16 +281,16 @@ import Terminal from './Terminal.astro';
     }
   }
 
-  /* Hero Load Animations */
-  .hero-load {
+  /* Hero Load Animations - Progressive Enhancement */
+  .js .hero-load {
     opacity: 0;
     animation: hero-load-in 0.6s ease forwards;
   }
 
-  .hero-load-delay-1 { animation-delay: 100ms; }
-  .hero-load-delay-2 { animation-delay: 200ms; }
-  .hero-load-delay-3 { animation-delay: 300ms; }
-  .hero-load-delay-4 { animation-delay: 400ms; }
+  .js .hero-load-delay-1 { animation-delay: 100ms; }
+  .js .hero-load-delay-2 { animation-delay: 200ms; }
+  .js .hero-load-delay-3 { animation-delay: 300ms; }
+  .js .hero-load-delay-4 { animation-delay: 400ms; }
 
   @keyframes hero-load-in {
     from {
@@ -286,7 +304,7 @@ import Terminal from './Terminal.astro';
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .hero-load {
+    .js .hero-load {
       animation: none;
       opacity: 1;
       transform: none;
@@ -327,4 +345,11 @@ import Terminal from './Terminal.astro';
       gap: var(--space-sm);
     }
   }
+
+  /* Add .js class to html when JS loads */
 </style>
+
+<script is:inline>
+  // Add .js class immediately to enable progressive enhancement animations
+  document.documentElement.classList.add('js');
+</script>
