@@ -1,61 +1,45 @@
-/**
- * Agent Names for Page Transitions
- * Maps each route to its corresponding agent name
- * Used in transition status chip: "agent_02 -> routing to /projects"
- */
-
-export interface AgentMapping {
-  path: string;
-  agent: string;
-  number: string;
-}
-
-export const agentMappings: AgentMapping[] = [
-  { path: '/', agent: 'supervisor', number: '01' },
-  { path: '/projects', agent: 'builder', number: '02' },
-  { path: '/research', agent: 'analyst', number: '03' },
-  { path: '/blog', agent: 'writer', number: '04' },
-  { path: '/about', agent: 'archivist', number: '05' },
-  { path: '/stack', agent: 'engineer', number: '06' },
-  { path: '/contact', agent: 'courier', number: '07' },
+export const agentData = [
+  {
+    id: 'ceo',
+    name: 'CEO Agent',
+    role: 'Supervises the team and assigns tasks',
+    status: 'online',
+    icon: `<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>`,
+  },
+  {
+    id: 'research',
+    name: 'Research Agent',
+    role: 'Finds and collects information',
+    status: 'online',
+    icon: `<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M2 12h20"/></svg>`,
+  },
+  {
+    id: 'analysis',
+    name: 'Analysis Agent',
+    role: 'Evaluates and summarizes findings',
+    status: 'online',
+    icon: `<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M2 12h20"/></svg>`,
+  },
+  {
+    id: 'content',
+    name: 'Content Agent',
+    role: 'Drafts the final output',
+    status: 'standby',
+    icon: `<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>`,
+  },
 ];
 
-// Dynamic routes
-export const dynamicAgentMappings: Array<{ pattern: RegExp; agent: string; number: string }> = [
-  { pattern: /^\/projects\/[^/]+$/, agent: 'builder', number: '02' },
-  { pattern: /^\/blog\/[^/]+$/, agent: 'writer', number: '04' },
-  { pattern: /^\/research\/[^/]+$/, agent: 'analyst', number: '03' },
-];
+export const AGENT_MAP: Record<string, string> = {
+  '/': 'ceo',
+  '/projects': 'builder',
+  '/lab': 'analyst',
+  '/about': 'archivist',
+  '/contact': 'courier',
+};
 
-/**
- * Get agent info for a given path
- */
-export function getAgentForPath(path: string): { agent: string; number: string } {
-  // Exact match first
-  const exact = agentMappings.find(m => m.path === path);
-  if (exact) return { agent: exact.agent, number: exact.number };
-
-  // Dynamic routes
-  for (const mapping of dynamicAgentMappings) {
-    if (mapping.pattern.test(path)) {
-      return { agent: mapping.agent, number: mapping.number };
-    }
-  }
-
-  return { agent: 'agent', number: '00' };
-}
-
-/**
- * Get all agent names for display
- */
-export function getAllAgents(): Array<{ name: string; number: string; description: string }> {
-  return [
-    { name: 'supervisor', number: '01', description: 'Home - coordinates all agents' },
-    { name: 'builder', number: '02', description: 'Projects - builds and ships' },
-    { name: 'analyst', number: '03', description: 'Research - analyzes and synthesizes' },
-    { name: 'writer', number: '04', description: 'Blog - writes and publishes' },
-    { name: 'archivist', number: '05', description: 'About - preserves history' },
-    { name: 'engineer', number: '06', description: 'Stack - maintains infrastructure' },
-    { name: 'courier', number: '07', description: 'Contact - delivers messages' },
-  ];
+export function getAgentForPath(path: string): string {
+  if (AGENT_MAP[path]) return AGENT_MAP[path];
+  if (path.startsWith('/projects/') && path !== '/projects') return 'builder';
+  if (path.startsWith('/lab/')) return 'analyst';
+  return 'agent';
 }

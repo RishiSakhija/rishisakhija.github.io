@@ -1,0 +1,99 @@
+---
+import SectionNumber from '../ui/SectionNumber.astro';
+---
+
+<section class="now-panel" aria-labelledby="now-heading">
+  <div class="container">
+    <header class="section-header reveal">
+      <SectionNumber number={5} label="NOW" />
+      <h2 id="now-heading" class="section-title">Now</h2>
+      <p class="section-subtext">updated daily as I build</p>
+    </header>
+
+    <div class="now-grid">
+      <article class="now-card reveal" style="--delay: 1">
+        <h3 class="now-card-title">Building</h3>
+        <ul class="now-list">
+          <li>My personal agentic AI team</li>
+          <li>A compact search engine for tech and AI</li>
+        </ul>
+      </article>
+
+      <article class="now-card reveal" style="--delay: 2">
+        <h3 class="now-card-title">Learning</h3>
+        <ul class="now-list">
+          <li>Real-world tech, AI, ML, and the agentic era</li>
+        </ul>
+      </article>
+
+      <article class="now-card reveal" style="--delay: 3">
+        <h3 class="now-card-title">Aiming For</h3>
+        <ul class="now-list">
+          <li>A professional personal brand and digital identity</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<style>
+  .now-panel {
+    padding: var(--space-3xl) 0;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-subtext {
+    color: var(--muted);
+    font-size: var(--fs-mono);
+    font-family: var(--font-mono);
+    margin-top: var(--space-xs);
+  }
+
+  .now-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--space-lg);
+    margin-top: var(--space-xl);
+  }
+
+  .now-card {
+    padding: var(--space-xl);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    transition: all var(--transition-base);
+  }
+
+  .now-card:hover {
+    border-color: var(--amethyst);
+    box-shadow: var(--shadow-amethyst);
+    transform: translateY(-4px);
+  }
+
+  .now-card-title {
+    font-size: var(--fs-h4);
+    margin-bottom: var(--space-lg);
+    color: var(--cyan);
+    font-family: var(--font-mono);
+  }
+
+  .now-list {
+    list-style: none;
+    font-family: var(--font-mono);
+    font-size: var(--fs-mono-sm);
+    color: var(--muted);
+    line-height: 2;
+  }
+
+  .now-list li::before {
+    content: '> ';
+    color: var(--cyan);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .now-card { transition: none; }
+    .now-card:hover { transform: none; }
+  }
+</style>

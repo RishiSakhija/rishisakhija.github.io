@@ -1,15 +1,21 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/home/Hero.astro';
+import Ticker from '../components/home/Ticker.astro';
+import AgentHQ from '../components/home/AgentHQ.astro';
 import FeaturedProjects from '../components/home/FeaturedProjects.astro';
-import ContactCTA from '../components/home/ContactCTA.astro';
+import NowPanel from '../components/home/NowPanel.astro';
+import ClosingCTA from '../components/home/ClosingCTA.astro';
 ---
 
 <BaseLayout
   title="Rishi Sakhija"
-  description="AI/ML Engineer building intelligent systems for the agentic era. AI agents, search systems, and automation."
+  description="AI/ML builder focused on agents, automation, and search systems. Self-taught, remote, open to work."
 >
   <Hero />
+  <Ticker />
+  <AgentHQ />
   <FeaturedProjects />
-  <ContactCTA />
+  <NowPanel />
+  <ClosingCTA />
 </BaseLayout>

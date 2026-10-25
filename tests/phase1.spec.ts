@@ -21,7 +21,7 @@ test('screenshots at 1440px and 390px', async ({ page }) => {
   console.log('Get in Touch visible:', await getInTouchBtn.isVisible());
 
   // Check for duplicate name
-  const heroStatusText = await page.locator('.hero-status').textContent();
+  const heroStatusText = await page.locator('.hero-stats').textContent();
   console.log('Hero status text:', heroStatusText);
 
   // Check red status dot

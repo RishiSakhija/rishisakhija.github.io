@@ -12,7 +12,7 @@ const TERMINAL_SCRIPT = [
   { type: 'command', text: 'cat focus.txt', prompt: '$' },
   { type: 'output', text: '> agents | automation | search | prompt engineering' },
   { type: 'command', text: 'agents --status', prompt: '$' },
-  { type: 'output', text: '> supervisor: online | builder: online | analyst: standby' },
+  { type: 'output', text: '> ceo: online | research: online | analysis: online | content: standby' },
   { type: 'command', text: 'ls projects/', prompt: '$' },
   { type: 'output', text: '> ai-search-engine/  agentic-team/  virtual-shelf/' },
   { type: 'command', text: 'echo $STATUS', prompt: '$' },
@@ -245,12 +245,10 @@ class TerminalAnimation {
   }
 }
 
-// Single initialization function with token guard
+// Global init function with token guard
 function initTerminal() {
-  // Check if already initialized with current token
   if (window[INIT_TOKEN] === currentToken) return;
 
-  // Clean up any existing instances
   const roots = document.querySelectorAll('[data-terminal-root]');
   roots.forEach((root) => {
     if (root.terminalAnimation) {
@@ -259,18 +257,15 @@ function initTerminal() {
     }
   });
 
-  // Set new token
   currentToken = INIT_TOKEN;
   window[INIT_TOKEN] = currentToken;
 
-  // Initialize new instance
   const root = document.querySelector('[data-terminal-root]');
   if (root) {
     root.terminalAnimation = new TerminalAnimation(root);
   }
 }
 
-// Cleanup function for page transitions
 function cleanupTerminal() {
   const roots = document.querySelectorAll('[data-terminal-root]');
   roots.forEach((root) => {
@@ -279,7 +274,6 @@ function cleanupTerminal() {
       root.terminalAnimation = null;
     }
   });
-  // Clear token so next init creates new instance
   currentToken = null;
 }
 

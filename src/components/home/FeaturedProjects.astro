@@ -23,7 +23,11 @@ const featuredProjects = projects.slice(0, 3);
         <article class="card reveal" style={`--delay: ${index + 1}`} role="listitem">
           <header class="card-header">
             <h3 class="card-title">{project.title}</h3>
-            <Chip variant="primary">{project.status === 'coming-soon' ? 'Coming Soon' : project.status === 'in-progress' ? 'In Progress' : 'Live'}</Chip>
+            <Chip
+              class={project.status === 'live' ? 'cyan' : project.status === 'in-progress' ? 'primary' : 'secondary'}
+            >
+              {project.status === 'coming-soon' ? 'Coming Soon' : project.status === 'in-progress' ? 'In Progress' : 'Live'}
+            </Chip>
           </header>
 
           <div class="card-simple-words">

@@ -1,0 +1,49 @@
+---
+import Button from '../ui/Button.astro';
+import Icon from '../ui/Icon.astro';
+---
+
+<section class="closing-cta" aria-labelledby="closing-heading">
+  <div class="container">
+    <header class="section-header reveal">
+      <h2 id="closing-heading" class="section-title">Open to opportunities, collaborations, and conversations about AI.</h2>
+    </header>
+
+    <div class="cta-buttons reveal" style="--delay: 1">
+      <Button href="/contact" variant="primary" size="lg">
+        <Icon name="mail" size={20} /> Get in Touch
+      </Button>
+      <Button href="https://github.com/RishiSakhija" variant="secondary" size="lg" external>
+        <Icon name="github" size={20} /> GitHub
+      </Button>
+      <Button href="https://www.linkedin.com/in/rishisakhija" variant="secondary" size="lg" external>
+        <Icon name="linkedin" size={20} /> LinkedIn
+      </Button>
+    </div>
+  </div>
+</section>
+
+<style>
+  .closing-cta {
+    padding: var(--space-4xl) 0;
+    text-align: center;
+  }
+
+  .section-title {
+    max-width: 48ch;
+    margin: 0 auto var(--space-xl);
+  }
+
+  .cta-buttons {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: var(--space-md);
+  }
+
+  .cta-buttons .btn-external {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+</style>
