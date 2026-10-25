@@ -4,6 +4,7 @@ import GateOverlay from '../components/layout/GateOverlay.astro';
 import { ClientRouter } from 'astro:transitions';
 import '../styles/globals.css';
 import '../styles/transitions.css';
+import '../styles/gate.css';
 
 interface Props {
   title: string;
@@ -75,13 +76,13 @@ const imageURL = new URL(ogImage, siteURL);
     <!-- Scripts -->
     <script type="module" src="/scripts/network-animation.js"></script>
     <script type="module" src="/scripts/terminal-animation.js"></script>
-    <script type="module" src="/scripts/ticker-animation.js"></script>
     <script type="module" src="/scripts/gate-controller.js"></script>
 
     <!-- Scroll Reveal & Page Initialization -->
     <script>
       function initScrollReveal() {
         const revealElements = document.querySelectorAll('.reveal:not(.visible)');
+
         const revealObserver = new IntersectionObserver(
           (entries) => {
             entries.forEach((entry) => {
@@ -93,6 +94,7 @@ const imageURL = new URL(ogImage, siteURL);
           },
           { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
         );
+
         revealElements.forEach((el) => revealObserver.observe(el));
       }
 

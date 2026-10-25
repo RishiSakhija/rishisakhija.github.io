@@ -1,0 +1,224 @@
+/* Gate Transition Styles */
+@import './tokens.css';
+
+/* Gate Overlay */
+.gate-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: var(--z-transition-overlay);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 100ms ease, visibility 100ms ease;
+}
+
+.gate-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Door Panels */
+.gate-panel {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  background: var(--bg);
+  border: 1px solid var(--amethyst);
+  border-image: linear-gradient(180deg, var(--amethyst) 0%, var(--amethyst-deep) 100%) 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  will-change: transform;
+  transition: transform var(--transition-gate) cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.gate-panel-left {
+  left: 0;
+  transform: translateX(-100%);
+  border-right: none;
+}
+
+.gate-panel-right {
+  right: 0;
+  transform: translateX(100%);
+  border-left: none;
+}
+
+.gate-overlay.active .gate-panel {
+  transform: translateX(0);
+}
+
+.gate-panel-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.gate-logo-half {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: clamp(3rem, 8vw, 7rem);
+  line-height: 1;
+  color: var(--text);
+  opacity: 0.8;
+}
+
+.gate-logo-left { color: var(--text); }
+.gate-logo-right {
+  background: linear-gradient(135deg, var(--amethyst-soft) 0%, var(--amethyst) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Cyan Seam Glow */
+.gate-seam {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 2px;
+  background: linear-gradient(180deg, transparent, var(--cyan), transparent);
+  transform: translateX(-50%) scaleY(0);
+  transform-origin: center;
+  will-change: transform;
+  transition: transform var(--transition-gate) cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.gate-overlay.active .gate-seam {
+  transform: translateX(-50%) scaleY(1);
+}
+
+/* Agent Bots */
+.gate-agents {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  pointer-events: none;
+}
+
+.gate-agent {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  background: var(--cyan);
+  border-radius: 50%;
+  box-shadow: 0 0 12px var(--cyan), 0 0 24px var(--cyan);
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.5);
+  will-change: transform, opacity;
+}
+
+.gate-agent::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--cyan);
+  border-radius: 50%;
+  opacity: 0.4;
+}
+
+.gate-agent-lead { width: 12px; height: 12px; z-index: 1; }
+
+.gate-overlay.active .gate-agent {
+  animation: agent-appear var(--transition-reveal) cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.gate-agent:nth-child(1) { animation-delay: var(--delay); }
+.gate-agent:nth-child(2) { animation-delay: calc(var(--delay) + 0.1s); }
+.gate-agent:nth-child(3) { animation-delay: calc(var(--delay) + 0.2s); }
+
+@keyframes agent-appear {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) translateX(-60px) scale(0.5);
+  }
+  60% {
+    opacity: 1;
+    transform: translate(-50%, -50%) translateX(-10px) scale(1);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) translateX(0) scale(1);
+  }
+}
+
+/* Status Chip */
+.gate-status {
+  position: fixed;
+  bottom: var(--space-xl);
+  left: var(--space-xl);
+  padding: var(--space-sm) var(--space-md);
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono-sm);
+  font-weight: 500;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-lg), var(--shadow-cyan);
+  opacity: 0;
+  transform: translateY(1rem);
+  pointer-events: none;
+  will-change: opacity, transform;
+  z-index: var(--z-transition-overlay);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.gate-status.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.gate-status.hidden {
+  opacity: 0;
+  transform: translateY(-1rem);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gate-overlay {
+    display: none !important;
+  }
+
+  .gate-panel,
+  .gate-seam,
+  .gate-agent,
+  .gate-status {
+    display: none !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .gate-status {
+    bottom: var(--space-md);
+    left: var(--space-md);
+    right: var(--space-md);
+    text-align: center;
+  }
+
+  .gate-logo-half {
+    font-size: clamp(2rem, 6vw, 4rem);
+  }
+
+  .gate-agent {
+    width: 6px;
+    height: 6px;
+  }
+  .gate-agent-lead {
+    width: 8px;
+    height: 8px;
+  }
+}
