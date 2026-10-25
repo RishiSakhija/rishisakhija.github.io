@@ -32,7 +32,7 @@ const canonicalURL = `/projects/${project.slug}`;
         <span class="chip primary" style="margin-bottom: var(--space-md);">Case Study</span>
         <h1 id="project-title" class="project-detail-title">{project.title}</h1>
         <div class="project-detail-meta">
-          <Chip variant="primary">{project.status === 'live' ? 'Live' : project.status === 'in-progress' ? 'In Progress' : 'Coming Soon'}</Chip>
+          <Chip variant="primary">{project.status === 'live' ? 'Live' : project.status === 'in-progress' ? 'In Progress' : project.status === 'planned' ? 'Planned' : 'Coming Soon'}</Chip>
           <span class="mono muted">{new Date().getFullYear()}</span>
         </div>
       </header>
@@ -55,7 +55,7 @@ const canonicalURL = `/projects/${project.slug}`;
         <section class="project-detail-section reveal" style="--delay: 4">
           <h3>How It Works</h3>
           <div style="white-space: pre-line; color: var(--text-dim); line-height: 1.7;">
-            {project.architecture}
+            {project.howItWorks}
           </div>
         </section>
 
@@ -76,11 +76,11 @@ const canonicalURL = `/projects/${project.slug}`;
         <section class="project-detail-section reveal" style="--delay: 7">
           <h3>Status</h3>
           <span class="project-status {project.status}">
-            {project.status === 'live' ? 'Live' : project.status === 'in-progress' ? 'In Progress' : 'Coming Soon'}
+            {project.status === 'live' ? 'Live' : project.status === 'in-progress' ? 'In Progress' : project.status === 'planned' ? 'Planned' : 'Coming Soon'}
           </span>
           <p style="margin-top: var(--space-md); color: var(--muted); font-size: var(--fs-body-sm);">
             {project.status === 'in-progress' && 'Actively building. Core architecture in place, working on evaluation and polish.'}
-            {project.status === 'coming-soon' && 'Planning phase. Architecture designed, starting implementation soon.'}
+            {project.status === 'planned' && 'Planning phase. Architecture designed, starting implementation soon.'}
             {project.status === 'live' && 'Deployed and in use. Monitoring and iterating based on real usage.'}
           </p>
         </section>

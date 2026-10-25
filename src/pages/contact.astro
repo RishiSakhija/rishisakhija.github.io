@@ -1,20 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { contactLinks } from '../data/contact';
 import Chip from '../components/ui/Chip.astro';
-
-function getIcon(name: string): string {
-  switch (name) {
-    case 'mail':
-      return '<path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>';
-    case 'github':
-      return '<path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>';
-    case 'linkedin':
-      return '<path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/>';
-    default:
-      return '';
-  }
-}
 ---
 
 <BaseLayout
@@ -31,38 +17,68 @@ function getIcon(name: string): string {
       </header>
 
       <div class="contact-buttons" role="list">
-        {contactLinks.map((link, index) => (
-          <a
-            href={link.href}
-            class="contact-btn"
-            role="listitem"
-            target={link.external ? '_blank' : undefined}
-            rel={link.external ? 'noopener noreferrer' : undefined}
-            style={`--delay: ${index + 1}`}
-          >
-            <span class="contact-btn-icon" aria-hidden="true" set:html={getIcon(link.icon)} />
-            <span>{link.label}</span>
-            {link.external && (
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-                <polyline points="15 3 21 3 21 9"/>
-                <line x1="10" y1="14" x2="21" y2="3"/>
-              </svg>
-            )}
-          </a>
-        ))}
-        {/* Resume download slot - uncomment when ready
-        <a href="/resume.pdf" class="contact-btn" download>
+        <a
+          href="mailto:rishisakhija7@gmail.com"
+          class="contact-btn"
+          role="listitem"
+        >
+          <span class="contact-btn-icon" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+              <polyline points="22,6 12,13 2,6"/>
+            </svg>
+          </span>
+          <span>Email</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+            <polyline points="15 3 21 3 21 9"/>
+            <line x1="10" y1="14" x2="21" y2="3"/>
+          </svg>
+        </a>
+
+        <a
+          href="https://github.com/RishiSakhija"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="contact-btn"
+          role="listitem"
+        >
+          <span class="contact-btn-icon" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+            </svg>
+          </span>
+          <span>GitHub</span>
+        </a>
+
+        <a
+          href="https://www.linkedin.com/in/rishisakhija"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="contact-btn"
+          role="listitem"
+        >
+          <span class="contact-btn-icon" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+              <rect x="2" y="9" width="4" height="12"/>
+              <circle cx="4" cy="4" r="2"/>
+            </svg>
+          </span>
+          <span>LinkedIn</span>
+        </a>
+
+        {/* Resume download slot - uncomment when ready */}
+        {/* <a href="/resume.pdf" class="contact-btn" download>
           <span class="contact-btn-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
               <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
               <polyline points="7 10 12 15 17 10"/>
               <line x1="12" y1="15" x2="12" y2="3"/>
             </svg>
           </span>
           <span>Download Resume</span>
-        </a>
-        */}
+        </a> */}
       </div>
 
       <p class="contact-closing">
@@ -71,87 +87,3 @@ function getIcon(name: string): string {
     </div>
   </section>
 </BaseLayout>
-
-<style>
-  .contact-page {
-    padding: var(--space-3xl) 0;
-  }
-
-  .contact-page-header {
-    text-align: center;
-    max-width: 48ch;
-    margin: 0 auto var(--space-3xl);
-  }
-
-  .contact-page-title {
-    margin-bottom: var(--space-md);
-  }
-
-  .contact-page-subtext {
-    color: var(--muted);
-    font-size: var(--fs-hero-sub);
-  }
-
-  .contact-buttons {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--space-md);
-    max-width: 32rem;
-    margin: 0 auto var(--space-3xl);
-  }
-
-  .contact-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--space-md);
-    width: 100%;
-    padding: var(--space-md) var(--space-lg);
-    font-family: var(--font-heading);
-    font-size: var(--fs-body);
-    font-weight: 500;
-    color: var(--text);
-    background-color: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-md);
-    text-decoration: none;
-    transition: all var(--transition-base);
-  }
-
-  .contact-btn:hover {
-    border-color: var(--blue);
-    color: var(--blue);
-    background-color: var(--blue-muted);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-blue);
-  }
-
-  .contact-btn-icon {
-    width: 1.25rem;
-    height: 1.25rem;
-    flex-shrink: 0;
-    color: var(--muted);
-    transition: color var(--transition-fast);
-  }
-
-  .contact-btn:hover .contact-btn-icon {
-    color: var(--blue);
-  }
-
-  .contact-closing {
-    text-align: center;
-    color: var(--muted);
-    font-family: var(--font-mono);
-    font-size: var(--fs-mono);
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .contact-btn {
-      transition: none;
-    }
-    .contact-btn-icon {
-      transition: none;
-    }
-  }
-</style>

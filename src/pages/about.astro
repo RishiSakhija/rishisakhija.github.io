@@ -2,7 +2,9 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { experience } from '../data/experience';
 import { education } from '../data/education';
+import { skillGroups } from '../data/skills';
 import Chip from '../components/ui/Chip.astro';
+import SectionNumber from '../components/ui/SectionNumber.astro';
 ---
 
 <BaseLayout
@@ -12,6 +14,7 @@ import Chip from '../components/ui/Chip.astro';
   <section class="about-page" aria-labelledby="about-heading">
     <div class="container">
       <header class="about-intro reveal">
+        <SectionNumber number={1} label="ABOUT" />
         <h1 id="about-heading" class="about-intro-title">Learning in public, building for real.</h1>
         <p class="about-intro-text">
           I'm Rishi Sakhija, a Computer Engineering diploma student and a self-taught builder with over 2.5 years of hands-on work in AI and machine learning. My focus is the agentic era: systems that reason, coordinate, and act. I learn by building, and everything here is real work in progress.
@@ -22,8 +25,8 @@ import Chip from '../components/ui/Chip.astro';
       </header>
 
       <div class="about-details">
-        <!-- Experience -->
         <section aria-labelledby="experience-heading">
+          <SectionNumber number={2} label="EXPERIENCE" />
           <h2 id="experience-heading" class="about-section-title">Experience</h2>
           <div class="timeline" role="list">
             {experience.map((item) => (
@@ -37,8 +40,8 @@ import Chip from '../components/ui/Chip.astro';
           </div>
         </section>
 
-        <!-- Education -->
         <section aria-labelledby="education-heading">
+          <SectionNumber number={3} label="EDUCATION" />
           <h2 id="education-heading" class="about-section-title">Education</h2>
           <div class="timeline" role="list">
             {education.map((item) => (
@@ -51,56 +54,25 @@ import Chip from '../components/ui/Chip.astro';
             ))}
           </div>
         </section>
+
+        <section aria-labelledby="skills-heading">
+          <SectionNumber number={4} label="SKILLS" />
+          <h2 id="skills-heading" class="about-section-title">Skills</h2>
+          <div class="skill-groups">
+            {skillGroups.map((group, index) => (
+              <section class="skill-group reveal" style={`--delay: ${index + 1}`}>
+                <h3 class="skill-group-label">{group.category}</h3>
+                <div class="skill-chips" role="list" aria-label={`${group.category} skills`}>
+                  {group.skills.map((skill) => (
+                    <Chip role="listitem">{skill}</Chip>
+                  ))}
+                </div>
+              </section>
+            ))}
+          </div>
+        </section>
       </div>
 
-      <!-- Learning Roadmap Placeholder -->
-      <section class="roadmap-placeholder reveal" style="margin-top: var(--space-3xl);">
-        <h2 class="roadmap-title">Learning Roadmap</h2>
-        <div class="roadmap-items">
-          <article class="roadmap-item">
-            <span class="roadmap-item-icon" aria-hidden="true">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-              </svg>
-            </span>
-            <span class="roadmap-item-text">Advanced Agent Architectures: multi-agent orchestration, planning, and tool use</span>
-          </article>
-          <article class="roadmap-item">
-            <span class="roadmap-item-icon" aria-hidden="true">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-              </svg>
-            </span>
-            <span class="roadmap-item-text">RAG at Scale: chunking strategies, hybrid retrieval, reranking, evaluation</span>
-          </article>
-          <article class="roadmap-item">
-            <span class="roadmap-item-icon" aria-hidden="true">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-              </svg>
-            </span>
-            <span class="roadmap-item-text">LLM Fine-tuning: LoRA/QLoRA, preference alignment, distillation</span>
-          </article>
-          <article class="roadmap-item">
-            <span class="roadmap-item-icon" aria-hidden="true">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-              </svg>
-            </span>
-            <span class="roadmap-item-text">Systems Engineering: Rust, distributed systems, observability, eval pipelines</span>
-          </article>
-          <article class="roadmap-item">
-            <span class="roadmap-item-icon" aria-hidden="true">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-              </svg>
-            </span>
-            <span class="roadmap-item-text">Product Sense: shipping real tools, user feedback loops, iteration velocity</span>
-          </article>
-        </div>
-      </section>
-
-      <!-- Future Sections Placeholder -->
       <div class="about-grid" style="margin-top: var(--space-3xl);">
         <article class="placeholder-section reveal" aria-labelledby="blog-placeholder">
           <h2 id="blog-placeholder" class="placeholder-title">Blog</h2>

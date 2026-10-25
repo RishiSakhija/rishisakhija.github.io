@@ -24,7 +24,7 @@ import Button from '../components/ui/Button.astro';
             <header class="card-header">
               <h3 class="card-title">{project.title}</h3>
               <Chip
-                class={project.status === 'live' ? 'green' : project.status === 'in-progress' ? 'amber' : 'primary'}
+                class={project.status === 'live' ? 'cyan' : project.status === 'in-progress' ? 'primary' : 'secondary'}
               >
                 {project.status === 'coming-soon' ? 'Coming Soon' : project.status === 'in-progress' ? 'In Progress' : 'Live'}
               </Chip>
