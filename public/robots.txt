@@ -1,5 +1,0 @@
-# robots.txt for rishisakhija.github.io
-User-agent: *
-Allow: /
-
-Sitemap: https://RishiSakhija.github.io/rishisakhija.github.io/sitemap-index.xml

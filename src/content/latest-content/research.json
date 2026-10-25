@@ -1,9 +1,0 @@
-{
-  "type": "research",
-  "label": "Research",
-  "title": "Coming Soon",
-  "text": "Paper breakdowns, experiments, and learning notes on agents, LLMs, RAG, and automation.",
-  "chips": ["Agents", "LLMs", "RAG", "Automation", "Eval"],
-  "href": "/research",
-  "icon": "<svg width=\"48\" height=\"48\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z\"/><path d=\"M2 12h20\"/><path d=\"M12 2a15.3 15.3 0 0 0 4 10 15.3 15.3 0 0 0-4 10 15.3 15.3 0 0 0-4-10 15.3 15.3 0 0 0-4-10 15.3 15.3 0 0 0 4-10z\"/></svg>"
-}
