@@ -1,10 +1,12 @@
 ---
 import Navbar from './Navbar.astro';
+import ScanLine from './ScanLine.astro';
 import Footer from './Footer.astro';
 ---
 
 <div class="layout">
   <Navbar />
+  <ScanLine />
   <main id="main-content">
     <slot />
   </main>
@@ -12,13 +14,6 @@ import Footer from './Footer.astro';
 </div>
 
 <style>
-  .layout {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-  }
-
-  main {
-    flex: 1;
-  }
+  .layout { display: flex; flex-direction: column; min-height: 100vh; }
+  main { flex: 1; }
 </style>

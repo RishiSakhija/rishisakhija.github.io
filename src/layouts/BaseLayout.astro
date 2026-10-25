@@ -1,12 +1,9 @@
 ---
 import Layout from '../components/layout/Layout.astro';
-import TransitionOverlay from '../components/layout/TransitionOverlay.astro';
+import GateOverlay from '../components/layout/GateOverlay.astro';
 import { ClientRouter } from 'astro:transitions';
 import '../styles/globals.css';
-import '../styles/components.css';
 import '../styles/transitions.css';
-import '../styles/hero.css';
-import '../styles/terminal.css';
 
 interface Props {
   title: string;
@@ -65,11 +62,11 @@ const imageURL = new URL(ogImage, siteURL);
     <ClientRouter />
   </head>
   <body>
-    <!-- Hero Glow (persists across transitions) -->
-    <div class="hero-glow" view-transition-name="hero-glow" aria-hidden="true"></div>
+    <!-- Deep Vignette (persists across transitions) -->
+    <div class="deep-vignette" view-transition-name="deep-vignette" aria-hidden="true"></div>
 
-    <!-- Transition Overlay (persists across transitions) -->
-    <TransitionOverlay />
+    <!-- Gate Overlay (persists across transitions) -->
+    <GateOverlay />
 
     <Layout>
       <slot />
@@ -78,14 +75,13 @@ const imageURL = new URL(ogImage, siteURL);
     <!-- Scripts -->
     <script type="module" src="/scripts/network-animation.js"></script>
     <script type="module" src="/scripts/terminal-animation.js"></script>
-    <script type="module" src="/scripts/transition-controller.js"></script>
+    <script type="module" src="/scripts/ticker-animation.js"></script>
+    <script type="module" src="/scripts/gate-controller.js"></script>
 
     <!-- Scroll Reveal & Page Initialization -->
     <script>
-      // Initialize scroll reveal
       function initScrollReveal() {
         const revealElements = document.querySelectorAll('.reveal:not(.visible)');
-
         const revealObserver = new IntersectionObserver(
           (entries) => {
             entries.forEach((entry) => {
@@ -95,37 +91,19 @@ const imageURL = new URL(ogImage, siteURL);
               }
             });
           },
-          {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px',
-          }
+          { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
         );
-
         revealElements.forEach((el) => revealObserver.observe(el));
       }
 
-      // Initialize page-specific components
       function initPageComponents() {
         initScrollReveal();
-
-        // Re-initialize terminal if present
-        if (typeof window.initTerminal === 'function') {
-          window.initTerminal();
-        }
-
-        // Re-initialize network animation if present
-        if (typeof window.initNetworkAnimation === 'function') {
-          window.initNetworkAnimation();
-        }
+        if (typeof window.initTerminal === 'function') window.initTerminal();
+        if (typeof window.initNetworkAnimation === 'function') window.initNetworkAnimation();
       }
 
-      // Initial load
       document.addEventListener('DOMContentLoaded', initPageComponents);
-
-      // Re-initialize on Astro View Transitions (page load after swap)
       document.addEventListener('astro:page-load', initPageComponents);
-
-      // Also handle astro:after-swap for backward compatibility
       document.addEventListener('astro:after-swap', initPageComponents);
     </script>
   </body>

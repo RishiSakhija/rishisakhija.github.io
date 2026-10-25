@@ -1,17 +1,37 @@
 ---
 interface Props {
   size?: 'sm' | 'md' | 'lg';
+  split?: boolean;
   class?: string;
-  letters?: string;
+  'aria-hidden'?: boolean;
 }
 
-const { size = 'md', class: className = '', letters = 'SR', ...rest } = Astro.props;
-const classes = ['monogram', size !== 'md' ? `monogram-${size}` : '', className].filter(Boolean).join(' ');
+const { size = 'md', split = false, class: className = '', 'aria-hidden': ariaHidden = 'true', ...rest } = Astro.props;
+
+const sizes = {
+  sm: { width: '2rem', height: '2rem', fontSize: '0.875rem' },
+  md: { width: '2.5rem', height: '2.5rem', fontSize: '1rem' },
+  lg: { width: '3rem', height: '3rem', fontSize: '1.25rem' },
+};
+
+const s = sizes[size];
 ---
 
-<span class={classes} {...rest} aria-hidden="true">
-  {letters}
-</span>
+{!split ? (
+  <span
+    class={['monogram', className].filter(Boolean).join(' ')}
+    style={`width: ${s.width}; height: ${s.height}; font-size: ${s.fontSize};`}
+    aria-hidden={ariaHidden}
+    {...rest}
+  >
+    RS
+  </span>
+) : (
+  <span class={['monogram-split', className].filter(Boolean).join(' ')} {...rest}>
+    <span class="monogram-half monogram-rishi" style={`font-size: ${s.fontSize};`} aria-hidden="true">R</span>
+    <span class="monogram-half monogram-sakhija" style={`font-size: ${s.fontSize};`} aria-hidden="true">S</span>
+  </span>
+)}
 
 <style>
   .monogram {
@@ -21,25 +41,29 @@ const classes = ['monogram', size !== 'md' ? `monogram-${size}` : '', className]
     font-family: var(--font-heading);
     font-weight: 700;
     color: var(--bg);
-    background-color: var(--accent);
+    background: linear-gradient(135deg, var(--amethyst) 0%, var(--amethyst-soft) 100%);
     border-radius: var(--radius-md);
+    box-shadow: var(--shadow-amethyst);
+    flex-shrink: 0;
   }
 
-  .monogram-sm {
-    width: 2.5rem;
-    height: 2.5rem;
-    font-size: 1rem;
+  .monogram-split {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0;
   }
 
-  .monogram-md {
-    width: 3rem;
-    height: 3rem;
-    font-size: 1.25rem;
+  .monogram-half {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    line-height: 1;
   }
 
-  .monogram-lg {
-    width: 4rem;
-    height: 4rem;
-    font-size: 1.5rem;
+  .monogram-rishi { color: var(--text); }
+  .monogram-sakhija {
+    background: linear-gradient(135deg, var(--amethyst-soft) 0%, var(--amethyst) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 </style>

@@ -2,10 +2,11 @@
 interface Props {
   class?: string;
   hoverable?: boolean;
+  elevated?: boolean;
 }
 
-const { class: className = '', hoverable = true, ...rest } = Astro.props;
-const classes = ['card', hoverable ? 'card-hover' : '', className].filter(Boolean).join(' ');
+const { class: className = '', hoverable = true, elevated = false, ...rest } = Astro.props;
+const classes = ['card', hoverable ? 'card-hover' : '', elevated ? 'card-elevated' : '', className].filter(Boolean).join(' ');
 ---
 
 <div class={classes} {...rest}>
@@ -19,22 +20,61 @@ const classes = ['card', hoverable ? 'card-hover' : '', className].filter(Boolea
     border-radius: var(--radius-lg);
     padding: var(--space-lg);
     transition: all var(--transition-base);
+    position: relative;
+  }
+
+  .card-elevated {
+    background-color: var(--surface-2);
+    box-shadow: var(--shadow-md);
   }
 
   .card-hover:hover {
-    border-color: var(--accent);
-    box-shadow: var(--shadow-accent);
-    transform: translateY(-2px);
+    border-color: transparent;
+    border-image: linear-gradient(135deg, var(--amethyst) 0%, var(--cyan) 100%) 1;
+    box-shadow: var(--shadow-amethyst), 0 0 32px rgba(0, 229, 255, 0.1);
+    transform: translateY(-4px);
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .card,
-    .card-hover {
-      transition: none;
-    }
+  .card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-md);
+    margin-bottom: var(--space-md);
+  }
 
-    .card-hover:hover {
-      transform: none;
-    }
+  .card-title {
+    font-family: var(--font-heading);
+    font-size: var(--fs-h4);
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.25;
+  }
+
+  .card-description {
+    color: var(--muted);
+    font-size: var(--fs-body-sm);
+    line-height: 1.6;
+    margin-bottom: var(--space-lg);
+  }
+
+  .card-tags { display: flex; flex-wrap: wrap; gap: var(--space-sm); margin-bottom: var(--space-lg); }
+  .card-footer { display: flex; flex-wrap: wrap; gap: var(--space-sm); }
+
+  .card-simple-words {
+    padding: var(--space-md);
+    background: rgba(123, 63, 228, 0.08);
+    border: 1px solid rgba(123, 63, 228, 0.2);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-lg);
+    font-size: var(--fs-body-sm);
+    line-height: 1.6;
+    color: var(--text-dim);
+  }
+  .card-simple-words strong { color: var(--amethyst-soft); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card, .card-hover { transition: none; }
+    .card-hover:hover { transform: none; }
   }
 </style>

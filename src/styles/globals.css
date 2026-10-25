@@ -11,22 +11,10 @@
 @import '@fontsource/jetbrains-mono/500.css';
 
 /* CSS Reset */
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-html {
-  font-size: 16px;
-  scroll-behavior: smooth;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-}
+html { font-size: 16px; scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 
 body {
   font-family: var(--font-body);
@@ -44,15 +32,15 @@ body::before {
   content: '';
   position: fixed;
   inset: 0;
-  background-image:
-    radial-gradient(circle, rgba(47, 123, 255, 0.025) 1px, transparent 1px);
+  background-image: radial-gradient(circle, rgba(123, 63, 228, 0.025) 1px, transparent 1px);
   background-size: 48px 48px;
   pointer-events: none;
   z-index: -1;
 }
 
-/* Faint Blue Radial Glow Behind Hero (applied via hero section) */
-.hero-glow {
+/* Amethyst Radial Glow Top-Left */
+body::after {
+  content: '';
   position: fixed;
   top: 0;
   left: 50%;
@@ -60,15 +48,25 @@ body::before {
   width: 80vw;
   max-width: 800px;
   height: 60vh;
-  background: radial-gradient(ellipse at center, rgba(47, 123, 255, 0.06) 0%, transparent 70%);
+  background: radial-gradient(ellipse at center, rgba(123, 63, 228, 0.06) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Deep Amethyst Vignette Bottom-Right */
+.deep-vignette {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 50%;
+  height: 50%;
+  background: radial-gradient(ellipse at bottom right, rgba(75, 29, 150, 0.15) 0%, transparent 70%);
   pointer-events: none;
   z-index: -1;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-glow {
-    display: none;
-  }
+  body::after, .deep-vignette { display: none; }
 }
 
 /* Typography */
@@ -78,63 +76,26 @@ h1, h2, h3, h4, h5, h6 {
   line-height: 1.15;
   color: var(--text);
 }
-
 h1 { font-size: var(--fs-h1); }
 h2 { font-size: var(--fs-h2); }
 h3 { font-size: var(--fs-h3); }
 h4 { font-size: var(--fs-h4); }
 
-p {
-  color: var(--text);
-  line-height: 1.7;
-}
+p { color: var(--text); line-height: 1.7; }
 
 a {
-  color: var(--blue);
+  color: var(--amethyst-soft);
   text-decoration: none;
   transition: color var(--transition-fast);
 }
+a:hover { color: var(--cyan); }
 
-a:hover {
-  color: var(--blue-glow);
-}
-
-.mono {
-  font-family: var(--font-mono);
-  font-size: var(--fs-mono);
-}
-
-.mono-sm {
-  font-family: var(--font-mono);
-  font-size: var(--fs-mono-sm);
-}
-
-.muted {
-  color: var(--muted);
-}
-
-.text-dim {
-  color: var(--text-dim);
-}
-
-/* Highlight key terms in blue */
-.highlight-blue {
-  color: var(--blue-soft);
-}
-
-/* Selection */
-::selection {
-  background-color: rgba(47, 123, 255, 0.3);
-  color: var(--text);
-}
+.mono { font-family: var(--font-mono); font-size: var(--fs-mono); }
+.mono-sm { font-family: var(--font-mono); font-size: var(--fs-mono-sm); }
+.muted { color: var(--muted); }
 
 /* Print Styles */
 @media print {
-  .navbar, .footer, .hero, .terminal, .transition-overlay {
-    display: none !important;
-  }
-  body {
-    background: white;
-    color: black;
-  }
+  .navbar, .footer, .hero, .terminal, .gate-overlay, .scan-line { display: none !important; }
+  body { background: white; color: black; }
 }

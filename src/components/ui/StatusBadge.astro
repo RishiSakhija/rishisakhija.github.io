@@ -27,21 +27,17 @@ const classes = ['status-badge', className].filter(Boolean).join(' ');
   .status-dot {
     width: 0.5rem;
     height: 0.5rem;
-    background: var(--red);
+    background: var(--cyan);
     border-radius: 50%;
-    box-shadow: 0 0 8px var(--red-glow), 0 0 16px var(--red);
+    box-shadow: 0 0 8px var(--cyan), 0 0 16px rgba(0, 229, 255, 0.3);
     flex-shrink: 0;
-    animation: pulse-red 2s ease-in-out infinite;
+    animation: pulse-cyan 2s ease-in-out infinite;
   }
 
-  @keyframes pulse-red {
-    0%, 100% { opacity: 1; transform: scale(1); box-shadow: 0 0 8px var(--red-glow), 0 0 16px var(--red); }
-    50% { opacity: 0.6; transform: scale(0.9); box-shadow: 0 0 4px var(--red-glow), 0 0 8px var(--red); }
+  @keyframes pulse-cyan {
+    0%, 100% { opacity: 1; transform: scale(1); box-shadow: 0 0 8px var(--cyan), 0 0 16px rgba(0, 229, 255, 0.3); }
+    50% { opacity: 0.6; transform: scale(0.9); box-shadow: 0 0 4px var(--cyan), 0 0 8px rgba(0, 229, 255, 0.3); }
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .status-dot {
-      animation: none;
-    }
-  }
+  @media (prefers-reduced-motion: reduce) { .status-dot { animation: none; } }
 </style>

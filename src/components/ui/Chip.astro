@@ -1,12 +1,12 @@
 ---
 interface Props {
-  variant?: 'default' | 'primary';
+  variant?: 'default' | 'primary' | 'secondary' | 'cyan' | 'amethyst';
   class?: string;
   role?: 'listitem' | 'option' | 'tab' | 'button' | 'link' | 'menuitem' | 'treeitem';
 }
 
 const { variant = 'default', class: className = '', role, ...rest } = Astro.props;
-const classes = ['chip', variant === 'primary' ? 'chip-primary' : '', className].filter(Boolean).join(' ');
+const classes = ['chip', variant !== 'default' ? `chip-${variant}` : '', className].filter(Boolean).join(' ');
 ---
 
 <span class={classes} role={role} {...rest}>
@@ -19,7 +19,7 @@ const classes = ['chip', variant === 'primary' ? 'chip-primary' : '', className]
     align-items: center;
     padding: var(--space-xs) var(--space-sm);
     font-family: var(--font-mono);
-    font-size: 0.75rem;
+    font-size: var(--fs-mono-sm);
     font-weight: 500;
     color: var(--muted);
     background-color: var(--surface);
@@ -28,24 +28,18 @@ const classes = ['chip', variant === 'primary' ? 'chip-primary' : '', className]
     transition: all var(--transition-fast);
   }
 
-  .chip:hover {
-    border-color: var(--accent);
-    color: var(--accent);
-  }
+  .chip:hover { border-color: var(--amethyst); color: var(--amethyst-soft); }
 
-  .chip-primary {
-    color: var(--accent);
-    border-color: var(--accent);
-    background-color: rgba(77, 226, 197, 0.08);
-  }
+  .chip-primary { color: var(--amethyst-soft); border-color: var(--amethyst); background-color: rgba(123, 63, 228, 0.1); }
+  .chip-primary:hover { background-color: rgba(123, 63, 228, 0.2); }
 
-  .chip-primary:hover {
-    background-color: rgba(77, 226, 197, 0.15);
-  }
+  .chip-secondary { color: var(--muted); border-color: var(--border); background-color: var(--surface); }
 
-  @media (prefers-reduced-motion: reduce) {
-    .chip {
-      transition: none;
-    }
-  }
+  .chip-cyan { color: var(--cyan); border-color: var(--cyan); background-color: rgba(0, 229, 255, 0.1); }
+  .chip-cyan:hover { background-color: rgba(0, 229, 255, 0.2); }
+
+  .chip-amethyst { color: var(--amethyst-soft); border-color: var(--amethyst); background-color: rgba(123, 63, 228, 0.1); }
+  .chip-amethyst:hover { background-color: rgba(123, 63, 228, 0.2); }
+
+  @media (prefers-reduced-motion: reduce) { .chip { transition: none; } }
 </style>
