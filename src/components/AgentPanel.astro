@@ -1,0 +1,316 @@
+---
+import HudCard from './HudCard.astro';
+import StatusDot from './StatusDot.astro';
+import { agents } from '../data/agents.js';
+---
+
+<style>
+  .agent-panel {
+    height: 100%;
+    min-height: 420px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .agent-panel__agents {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-4);
+    margin-bottom: var(--space-5);
+  }
+
+  .agent-panel__agent {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-4);
+    background: var(--surface-2);
+    border: var(--card-border);
+    border-radius: var(--radius-card);
+    transition: border-color 0.2s ease, background 0.2s ease;
+  }
+
+  .agent-panel__agent:hover {
+    border-color: var(--blue);
+    background: var(--surface);
+  }
+
+  .agent-panel__agent--ceo {
+    grid-column: 1 / -1;
+    position: relative;
+  }
+
+  .agent-panel__agent--ceo::after {
+    content: '';
+    position: absolute;
+    bottom: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1px;
+    height: 12px;
+    background: linear-gradient(180deg, var(--blue-soft), transparent);
+    opacity: 0.4;
+  }
+
+  .agent-panel__agent-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+  }
+
+  .agent-panel__agent-name {
+    font-family: var(--font-heading);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .agent-panel__agent-desc {
+    font-family: var(--font-body);
+    font-size: 12.5px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .agent-panel__connectors {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-6);
+    padding-top: var(--space-3);
+    position: relative;
+  }
+
+  .agent-panel__connector {
+    width: 1px;
+    height: 24px;
+    background: linear-gradient(180deg, var(--blue-soft), transparent);
+    opacity: 0.3;
+    position: relative;
+  }
+
+  .agent-panel__connector::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--blue-soft);
+    opacity: 0;
+    animation: connector-pulse 3s ease-in-out infinite;
+  }
+
+  .agent-panel__connector:nth-child(2)::before {
+    animation-delay: 0.5s;
+  }
+
+  .agent-panel__connector:nth-child(3)::before {
+    animation-delay: 1s;
+  }
+
+  @keyframes connector-pulse {
+    0%, 100% { opacity: 0; transform: translateX(-50%) scale(1); }
+    50% { opacity: 0.8; transform: translateX(-50%) scale(2); }
+  }
+
+  .agent-panel__log {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-4);
+    background: var(--surface-2);
+    border: var(--card-border);
+    border-radius: var(--radius-card);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    line-height: 1.6;
+    color: var(--text-fade);
+    overflow: hidden;
+    min-height: 120px;
+  }
+
+  .agent-panel__log-line {
+    opacity: 0;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  .agent-panel__log-line--visible {
+    opacity: 1;
+  }
+
+  .agent-panel__log-prefix {
+    color: var(--blue-soft);
+    margin-right: var(--space-2);
+  }
+
+  .agent-panel__tag {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: var(--space-3);
+  }
+
+  .agent-panel__tag::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    border: 1px solid var(--muted);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .agent-panel__connector::before {
+      animation: none;
+      opacity: 0.4;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .agent-panel__agents {
+      grid-template-columns: 1fr;
+    }
+
+    .agent-panel__agent--ceo::after {
+      display: none;
+    }
+
+    .agent-panel__connectors {
+      display: none;
+    }
+  }
+</style>
+
+<HudCard label="AGENT HQ" class="agent-panel" elevated>
+  <div class="agent-panel__tag" aria-hidden="true">simulated preview</div>
+  <div class="agent-panel__agents" role="list" aria-label="Agent status">
+    {agents.map((agent, index) => (
+      <div class="agent-panel__agent {index === 0 ? 'agent-panel__agent--ceo' : ''}" role="listitem">
+        <div class="agent-panel__agent-header">
+          <span class="agent-panel__agent-name">{agent.name}</span>
+          <StatusDot status={agent.status} label={agent.status} />
+        </div>
+        <p class="agent-panel__agent-desc">{agent.description}</p>
+      </div>
+    ))}
+  </div>
+
+  {agents.length > 1 && (
+    <div class="agent-panel__connectors" aria-hidden="true">
+      <div class="agent-panel__connector"></div>
+      <div class="agent-panel__connector"></div>
+      <div class="agent-panel__connector"></div>
+    </div>
+  )}
+
+  <div class="agent-panel__log" role="log" aria-live="polite" aria-atomic="false" id="agent-log">
+    <div class="agent-panel__log-line agent-panel__log-line--visible"><span class="agent-panel__log-prefix">></span> ceo: task received</div>
+    <div class="agent-panel__log-line"><span class="agent-panel__log-prefix">></span> research: collecting sources...</div>
+    <div class="agent-panel__log-line"><span class="agent-panel__log-prefix">></span> analysis: summarizing findings</div>
+    <div class="agent-panel__log-line"><span class="agent-panel__log-prefix">></span> content: draft ready</div>
+  </div>
+</HudCard>
+
+<script>
+  (() => {
+    const log = document.getElementById('agent-log');
+    if (!log) return;
+
+    const lines = log.querySelectorAll('.agent-panel__log-line');
+    if (lines.length < 2) return;
+
+    let current = 0;
+    let timer = null;
+    let isVisible = true;
+
+    const TYPING_SPEED = 25;
+    const HOLD_TIME = 1200;
+    const ERASE_SPEED = 15;
+
+    function typeLine(line, text, callback) {
+      let i = 0;
+      line.textContent = '> ';
+      function tick() {
+        if (i < text.length) {
+          line.textContent += text[i];
+          i++;
+          timer = setTimeout(tick, TYPING_SPEED);
+        } else {
+          timer = setTimeout(callback, HOLD_TIME);
+        }
+      }
+      tick();
+    }
+
+    function eraseLine(line, callback) {
+      const fullText = line.textContent;
+      let i = fullText.length;
+      function tick() {
+        if (i > 2) {
+          line.textContent = fullText.slice(0, i - 1);
+          i--;
+          timer = setTimeout(tick, ERASE_SPEED);
+        } else {
+          callback();
+        }
+      }
+      tick();
+    }
+
+    function cycle() {
+      if (!isVisible) return;
+      const line = lines[current];
+      const nextIndex = (current + 1) % lines.length;
+      const nextLine = lines[nextIndex];
+      const text = line.dataset.text || line.textContent.trim();
+
+      line.classList.add('agent-panel__log-line--visible');
+      typeLine(line, text, () => {
+        if (!isVisible) return;
+        eraseLine(line, () => {
+          line.classList.remove('agent-panel__log-line--visible');
+          current = nextIndex;
+          cycle();
+        });
+      });
+    }
+
+    function handleVisibilityChange() {
+      isVisible = !document.hidden;
+    }
+
+    function init() {
+      lines.forEach((line, i) => {
+        if (i === 0) return;
+        line.dataset.text = line.textContent.trim();
+        line.textContent = '';
+      });
+      lines[0].dataset.text = lines[0].textContent.trim();
+      cycle();
+      document.addEventListener('visibilitychange', handleVisibilityChange);
+    }
+
+    function cleanup() {
+      if (timer) clearTimeout(timer);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init, { once: true });
+    } else {
+      init();
+    }
+
+    window.addEventListener('pagehide', cleanup, { once: true });
+  })();
+</script>

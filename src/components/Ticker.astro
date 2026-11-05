@@ -1,0 +1,96 @@
+---
+const items = [
+  'Python',
+  'Git/GitHub',
+  'Machine Learning',
+  'AI Agents',
+  'Prompt Engineering',
+  'Automation',
+  'AI Search Engine',
+  'Agentic Team',
+  'Virtual Shelf',
+];
+---
+
+<style>
+  .ticker {
+    width: 100%;
+    overflow: hidden;
+    background: linear-gradient(90deg, transparent, var(--surface), transparent);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: var(--space-4) 0;
+    mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+  }
+
+  .ticker__track {
+    display: flex;
+    gap: var(--space-6);
+    animation: ticker-scroll 40s linear infinite;
+    will-change: transform;
+  }
+
+  .ticker:hover .ticker__track {
+    animation-play-state: paused;
+  }
+
+  .ticker__item {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-fade);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .ticker__item::before {
+    content: '';
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--blue-soft);
+    opacity: 0.5;
+    flex-shrink: 0;
+  }
+
+  .ticker__item:first-child::before {
+    display: none;
+  }
+
+  .ticker__dupe {
+    display: flex;
+    gap: var(--space-6);
+  }
+
+  @keyframes ticker-scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ticker__track {
+      animation: none;
+    }
+    .ticker {
+      mask-image: none;
+    }
+  }
+</style>
+
+<div class="ticker" aria-hidden="true" role="list">
+  <div class="ticker__track">
+    <div class="ticker__dupe" role="list">
+      {items.map(item => (
+        <span class="ticker__item" role="listitem">{item}</span>
+      ))}
+    </div>
+    <div class="ticker__dupe" aria-hidden="true" role="list">
+      {items.map(item => (
+        <span class="ticker__item" role="listitem">{item}</span>
+      ))}
+    </div>
+  </div>
+</div>

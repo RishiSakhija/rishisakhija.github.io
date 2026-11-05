@@ -1,0 +1,64 @@
+---
+interface Props {
+  size?: number;
+  class?: string;
+  ariaLabel?: string;
+}
+
+const { size = 44, class: className = '', ariaLabel = 'Rishi Sakhija' } = Astro.props;
+const fontSize = Math.round(size * 0.36);
+const dotSize = Math.round(size * 0.14);
+const dotOffset = Math.round(size * 0.32);
+---
+
+<style>
+  .rs-logo {
+    display: inline-grid;
+    place-items: center;
+    flex: none;
+    width: {size}px;
+    height: {size}px;
+    border-radius: 50%;
+    border: 1.5px solid color-mix(in srgb, var(--text) 85%, transparent);
+    position: relative;
+    overflow: visible;
+  }
+
+  .rs-logo__text {
+    font-family: var(--font-heading);
+    font-weight: 800;
+    font-size: {fontSize}px;
+    line-height: 1;
+    color: var(--text);
+    letter-spacing: -0.02em;
+    z-index: 1;
+  }
+
+  .rs-logo__dot {
+    position: absolute;
+    top: calc(-{dotSize}px / 2 + {dotOffset}px);
+    right: calc(-{dotSize}px / 2 + {dotOffset}px);
+    width: {dotSize}px;
+    height: {dotSize}px;
+    border-radius: 50%;
+    background: var(--red);
+    box-shadow: 0 0 {Math.round(dotSize * 1.5)}px var(--red-glow);
+    z-index: 2;
+  }
+
+  a:has(.rs-logo) {
+    text-decoration: none;
+  }
+
+  a:has(.rs-logo):focus-visible .rs-logo {
+    outline: 2px solid var(--blue-soft);
+    outline-offset: 3px;
+    border-radius: 50%;
+  }
+</style>
+
+<div class="rs-logo {className}" aria-label={ariaLabel} role="img">
+  <span class="rs-logo__text">RS</span>
+  <span class="rs-logo__dot" aria-hidden="true"></span>
+  <span class="sr-only">Rishi Sakhija</span>
+</div>

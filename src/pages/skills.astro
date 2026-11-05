@@ -1,0 +1,88 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import HudCard from '../components/HudCard.astro';
+import SectionHeader from '../components/SectionHeader.astro';
+import Chip from '../components/Chip.astro';
+---
+
+<BaseLayout title="Skills | Rishi Sakhija" description="AI/ML builder focused on agents, automation, and search systems. Self-taught, remote, open to work.">
+
+  <section class="section" aria-labelledby="skills-title">
+    <div class="container">
+      <SectionHeader number="01" label="Capabilities" title="Skills" id="skills-title" />
+
+      <div class="skills-grid">
+        <article class="reveal-target">
+          <HudCard label="LANGUAGES & TOOLS">
+            <div class="chip-group">
+              <Chip>Python</Chip>
+              <Chip>Git</Chip>
+              <Chip>GitHub</Chip>
+            </div>
+          </HudCard>
+        </article>
+
+        <article class="reveal-target">
+          <HudCard label="AI & ML">
+            <div class="chip-group">
+              <Chip>Machine Learning</Chip>
+              <Chip>Prompt Engineering</Chip>
+              <Chip>AI Agents</Chip>
+            </div>
+          </HudCard>
+        </article>
+
+        <article class="reveal-target">
+          <HudCard label="AUTOMATION">
+            <div class="chip-group">
+              <Chip>Workflow Automation <span class="chip__level">(moderate)</span></Chip>
+            </div>
+          </HudCard>
+        </article>
+
+        <article class="reveal-target">
+          <HudCard label="CURRENTLY LEARNING">
+            <div class="chip-group">
+              <Chip>The agentic era</Chip>
+              <Chip>New AI/ML tools</Chip>
+              <Chip>New techniques</Chip>
+            </div>
+          </HudCard>
+        </article>
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>
+
+<style>
+  .skills-grid {
+    display: grid;
+    gap: var(--card-gap);
+  }
+
+  @media (min-width: 768px) {
+    .skills-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .skills-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .chip-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .chip__level {
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    margin-left: var(--space-1);
+  }
+</style>

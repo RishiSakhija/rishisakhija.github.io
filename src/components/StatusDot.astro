@@ -1,0 +1,60 @@
+---
+interface Props {
+  status: 'live' | 'standby' | 'offline';
+  label: string;
+  class?: string;
+}
+
+const { status, label, class: className = '' } = Astro.props;
+---
+
+<style>
+  .status-dot {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .status-dot::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .status-dot--live::before {
+    background: var(--red);
+    box-shadow: 0 0 8px var(--red-glow);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  .status-dot--standby::before {
+    background: transparent;
+    border: 1px solid var(--blue-soft);
+  }
+
+  .status-dot--offline::before {
+    background: var(--muted);
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(0.9); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .status-dot--live::before {
+      animation: none;
+    }
+  }
+</style>
+
+<span class="status-dot status-dot--{status} {className}" aria-label={label}>
+  <span aria-hidden="true"></span>
+  <span>{label}</span>
+</span>

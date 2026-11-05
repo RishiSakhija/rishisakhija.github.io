@@ -1,0 +1,118 @@
+---
+interface Props {
+  label?: string;
+  class?: string;
+  elevated?: boolean;
+}
+
+const { label, class: className = '', elevated = false } = Astro.props;
+const slot = Astro.slots.has('default') ? Astro.slots.render('default') : '';
+---
+
+<style>
+  .hud-card {
+    position: relative;
+    background: var(--surface);
+    border: var(--card-border);
+    border-radius: var(--radius-card);
+    padding: var(--card-padding);
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .hud-card--elevated:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+  }
+
+  .hud-card__corner {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border: 1px solid color-mix(in srgb, var(--blue-soft) 60%, transparent);
+    transition: width 0.2s ease, height 0.2s ease, border-color 0.2s ease;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .hud-card__corner--tl {
+    top: 0;
+    left: 0;
+    border-right: none;
+    border-bottom: none;
+    border-radius: var(--radius-card) 0 0 0;
+  }
+
+  .hud-card__corner--tr {
+    top: 0;
+    right: 0;
+    border-left: none;
+    border-bottom: none;
+    border-radius: 0 var(--radius-card) 0 0;
+  }
+
+  .hud-card__corner--bl {
+    bottom: 0;
+    left: 0;
+    border-right: none;
+    border-top: none;
+    border-radius: 0 0 0 var(--radius-card);
+  }
+
+  .hud-card__corner--br {
+    bottom: 0;
+    right: 0;
+    border-left: none;
+    border-top: none;
+    border-radius: 0 0 var(--radius-card) 0;
+  }
+
+  .hud-card:hover .hud-card__corner,
+  .hud-card:focus-within .hud-card__corner {
+    width: 18px;
+    height: 18px;
+    border-color: var(--red);
+  }
+
+  .hud-card__label {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--blue-soft);
+    margin-bottom: var(--space-4);
+    padding-left: 2px;
+  }
+
+  .hud-card__label::before {
+    content: '';
+    width: 12px;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.5;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hud-card,
+    .hud-card__corner {
+      transition: none;
+    }
+  }
+</style>
+
+<article class="hud-card {elevated ? 'hud-card--elevated' : ''} {className}">
+  <div class="hud-card__corner hud-card__corner--tl" aria-hidden="true"></div>
+  <div class="hud-card__corner hud-card__corner--tr" aria-hidden="true"></div>
+  <div class="hud-card__corner hud-card__corner--bl" aria-hidden="true"></div>
+  <div class="hud-card__corner hud-card__corner--br" aria-hidden="true"></div>
+
+  {label && <div class="hud-card__label" aria-hidden="true">{label}</div>}
+  <div class="hud-card__content">
+    <slot />
+  </div>
+</article>

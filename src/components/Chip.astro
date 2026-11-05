@@ -1,0 +1,64 @@
+---
+interface Props {
+  variant?: 'default' | 'status' | 'tag';
+  class?: string;
+}
+
+const { variant = 'default', class: className = '' } = Astro.props;
+const slot = Astro.slots.has('default') ? Astro.slots.render('default') : '';
+---
+
+<style>
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    border-radius: var(--radius-pill);
+    white-space: nowrap;
+  }
+
+  .chip--default {
+    padding: var(--space-1) var(--space-3);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    color: var(--text-fade);
+  }
+
+  .chip--status {
+    padding: var(--space-1) var(--space-3);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+  }
+
+  .chip--tag {
+    padding: var(--space-1) var(--space-2);
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 11px;
+  }
+
+  .chip--status--in-progress {
+    border-color: var(--blue);
+    color: var(--blue-soft);
+  }
+
+  .chip--status--planned {
+    border-color: var(--muted);
+    color: var(--muted);
+  }
+
+  .chip--status--live {
+    border-color: var(--red);
+    color: var(--red);
+  }
+</style>
+
+<span class="chip chip--{variant} {className}" data-status={variant === 'status' ? slot.trim().toLowerCase().replace(' ', '-') : ''}>
+  <slot />
+</span>

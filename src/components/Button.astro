@@ -1,0 +1,91 @@
+---
+interface Props {
+  variant?: 'primary' | 'secondary';
+  href?: string;
+  disabled?: boolean;
+  class?: string;
+  type?: 'button' | 'submit' | 'reset';
+  ariaLabel?: string;
+}
+
+const { variant = 'primary', href, disabled = false, class: className = '', type = 'button', ariaLabel } = Astro.props;
+const slot = Astro.slots.has('default') ? Astro.slots.render('default') : '';
+const isLink = !!href && !disabled;
+const Tag = isLink ? 'a' : 'button';
+---
+
+<style>
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: var(--space-3) var(--space-5);
+    border-radius: var(--radius-card);
+    border: 1px solid transparent;
+    transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+    white-space: nowrap;
+    min-width: 140px;
+  }
+
+  .btn:focus-visible {
+    outline: 2px solid var(--blue-soft);
+    outline-offset: 3px;
+  }
+
+  .btn:active:not(:disabled) {
+    transform: scale(0.98);
+  }
+
+  .btn--primary {
+    background: var(--text);
+    color: var(--bg);
+    border-color: var(--text);
+  }
+
+  .btn--primary:hover:not(:disabled) {
+    background: var(--text-fade);
+    border-color: var(--text-fade);
+  }
+
+  .btn--secondary {
+    background: transparent;
+    color: var(--text);
+    border-color: var(--border);
+  }
+
+  .btn--secondary:hover:not(:disabled) {
+    border-color: var(--red);
+    color: var(--red);
+    background: rgba(255, 59, 78, 0.08);
+  }
+
+  .btn--disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  .btn--disabled:hover {
+    transform: none;
+    background: inherit;
+    border-color: inherit;
+    color: inherit;
+  }
+</style>
+
+<Tag
+  class="btn btn--{variant} {disabled ? 'btn--disabled' : ''} {className}"
+  {isLink ? 'href=' + href : ''}
+  {disabled ? 'disabled' : ''}
+  {ariaLabel ? 'aria-label=' + ariaLabel : ''}
+  {(!isLink && type) ? 'type=' + type : ''}
+  {disabled ? 'aria-disabled="true"' : ''}
+>
+  <slot />
+</Tag>

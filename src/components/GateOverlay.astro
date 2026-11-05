@@ -1,0 +1,522 @@
+---
+---
+
+<style>
+  .gate {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    pointer-events: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .gate__panel {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 50%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform-origin: center;
+    will-change: transform, opacity;
+  }
+
+  .gate__panel--left {
+    left: 0;
+    border-right: none;
+    border-radius: 0;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  }
+
+  .gate__panel--right {
+    right: 0;
+    border-left: none;
+    border-radius: 0;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  }
+
+  .gate__logo-half {
+    position: relative;
+    width: clamp(120px, 25vw, 200px);
+    height: clamp(120px, 25vw, 200px);
+    border-radius: 50%;
+    border: 2px solid color-mix(in srgb, var(--text) 85%, transparent);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  .gate__panel--left .gate__logo-half {
+    clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%);
+  }
+
+  .gate__panel--right .gate__logo-half {
+    clip-path: polygon(50% 0, 100% 0, 100% 100%, 50% 100%);
+  }
+
+  .gate__logo-text {
+    font-family: var(--font-heading);
+    font-weight: 800;
+    font-size: clamp(40px, 8vw, 72px);
+    line-height: 1;
+    color: var(--text);
+    letter-spacing: -0.02em;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    white-space: nowrap;
+  }
+
+  .gate__panel--left .gate__logo-text {
+    transform: translate(-100%, -50%);
+  }
+
+  .gate__panel--right .gate__logo-text {
+    transform: translate(0, -50%);
+  }
+
+  .gate__seam {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--red);
+    box-shadow: 0 0 24px var(--red-glow), 0 0 48px var(--red-glow);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .gate__agents {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .gate__agent {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: scale(0) translateY(20px);
+    opacity: 0;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+  }
+
+  .gate__agent svg {
+    width: 16px;
+    height: 16px;
+    stroke: var(--text-fade);
+  }
+
+  .gate__agent--main {
+    width: 40px;
+    height: 40px;
+    background: var(--surface);
+    border-color: var(--blue);
+    z-index: 1;
+  }
+
+  .gate__agent--main svg {
+    width: 22px;
+    height: 22px;
+    stroke: var(--blue-soft);
+  }
+
+  .gate__status {
+    position: absolute;
+    bottom: clamp(24px, 5vh, 48px);
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--blue-soft);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-pill);
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    z-index: 3;
+  }
+
+  /* Animations */
+  .gate--closing .gate__panel--left {
+    animation: gate-close-left 380ms cubic-bezier(0.76, 0, 0.24, 1) forwards;
+  }
+
+  .gate--closing .gate__panel--right {
+    animation: gate-close-right 380ms cubic-bezier(0.76, 0, 0.24, 1) forwards;
+  }
+
+  .gate--closing .gate__seam {
+    animation: gate-seam-in 380ms ease-out forwards;
+  }
+
+  .gate--closing .gate__agents {
+    animation: gate-agents-in 400ms cubic-bezier(0.34, 1.56, 0.64, 1) 300ms forwards;
+  }
+
+  .gate--closing .gate__agent--main {
+    animation: gate-agent-main-in 350ms cubic-bezier(0.34, 1.56, 0.64, 1) 350ms forwards;
+  }
+
+  .gate--closing .gate__agent--sub:nth-child(1) {
+    animation: gate-agent-sub-in 300ms cubic-bezier(0.34, 1.56, 0.64, 1) 450ms forwards;
+  }
+
+  .gate--closing .gate__agent--sub:nth-child(2) {
+    animation: gate-agent-sub-in 300ms cubic-bezier(0.34, 1.56, 0.64, 1) 550ms forwards;
+  }
+
+  .gate--closing .gate__agent--sub:nth-child(3) {
+    animation: gate-agent-sub-in 300ms cubic-bezier(0.34, 1.56, 0.64, 1) 650ms forwards;
+  }
+
+  .gate--closing .gate__status {
+    animation: gate-status-in 200ms ease-out 380ms forwards;
+  }
+
+  .gate--opening .gate__panel--left {
+    animation: gate-open-left 420ms cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  }
+
+  .gate--opening .gate__panel--right {
+    animation: gate-open-right 420ms cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  }
+
+  .gate--opening .gate__seam {
+    animation: gate-seam-out 300ms ease-out forwards;
+  }
+
+  .gate--opening .gate__agents {
+    animation: gate-agents-out 250ms ease-in forwards;
+  }
+
+  .gate--opening .gate__status {
+    animation: gate-status-out 150ms ease-in forwards;
+  }
+
+  @keyframes gate-close-left {
+    to { transform: translateX(50%); }
+  }
+
+  @keyframes gate-close-right {
+    to { transform: translateX(-50%); }
+  }
+
+  @keyframes gate-open-left {
+    from { transform: translateX(50%); }
+    to { transform: translateX(-100%); }
+  }
+
+  @keyframes gate-open-right {
+    from { transform: translateX(-50%); }
+    to { transform: translateX(100%); }
+  }
+
+  @keyframes gate-seam-in {
+    0% { opacity: 0; width: 0; }
+    50% { width: 8px; }
+    100% { opacity: 1; width: 4px; }
+  }
+
+  @keyframes gate-seam-out {
+    from { opacity: 1; }
+    to { opacity: 0; width: 0; }
+  }
+
+  @keyframes gate-agents-in {
+    to { opacity: 1; }
+  }
+
+  @keyframes gate-agents-out {
+    from { opacity: 1; }
+    to { opacity: 0; }
+  }
+
+  @keyframes gate-agent-main-in {
+    to { transform: scale(1) translateY(0); opacity: 1; }
+  }
+
+  @keyframes gate-agent-sub-in {
+    to { transform: scale(1) translateY(0); opacity: 1; }
+  }
+
+  @keyframes gate-status-in {
+    to { opacity: 1; }
+  }
+
+  @keyframes gate-status-out {
+    from { opacity: 1; }
+    to { opacity: 0; }
+  }
+
+  .gate--reduced .gate__panel--left,
+  .gate--reduced .gate__panel--right,
+  .gate--reduced .gate__seam,
+  .gate--reduced .gate__agents,
+  .gate--reduced .gate__status {
+    animation: none !important;
+    transition: opacity 150ms ease !important;
+  }
+
+  .gate--reduced.gate--closing .gate__panel--left,
+  .gate--reduced.gate--closing .gate__panel--right {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .gate--reduced.gate--closing .gate__seam,
+  .gate--reduced.gate--closing .gate__agents,
+  .gate--reduced.gate--closing .gate__status {
+    opacity: 1;
+  }
+
+  .gate--reduced.gate--opening .gate__panel--left {
+    transform: translateX(-100%);
+  }
+
+  .gate--reduced.gate--opening .gate__panel--right {
+    transform: translateX(100%);
+  }
+
+  .gate--reduced.gate--opening .gate__seam,
+  .gate--reduced.gate--opening .gate__agents,
+  .gate--reduced.gate--opening .gate__status {
+    opacity: 0;
+  }
+
+  .gate--shut .gate__panel--left {
+    transform: translateX(50%);
+  }
+
+  .gate--shut .gate__panel--right {
+    transform: translateX(-50%);
+  }
+
+  .gate--shut .gate__seam {
+    opacity: 1;
+  }
+
+  .gate--shut .gate__agents {
+    opacity: 1;
+  }
+
+  .gate--shut .gate__agent {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+
+  .gate--shut .gate__status {
+    opacity: 1;
+  }
+</style>
+
+<div class="gate" id="gate" aria-hidden="true">
+  <div class="gate__panel gate__panel--left">
+    <div class="gate__logo-half">
+      <span class="gate__logo-text">RS</span>
+    </div>
+  </div>
+  <div class="gate__panel gate__panel--right">
+    <div class="gate__logo-half">
+      <span class="gate__logo-text">RS</span>
+    </div>
+  </div>
+  <div class="gate__seam" aria-hidden="true"></div>
+  <div class="gate__agents" aria-hidden="true">
+    <div class="gate__agent gate__agent--main">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="3" y="3" width="18" height="18" rx="4"/>
+        <line x1="12" y1="3" x2="12" y2="0"/>
+        <circle cx="9" cy="11" r="1.5"/>
+        <circle cx="15" cy="11" r="1.5"/>
+      </svg>
+    </div>
+    <div class="gate__agent gate__agent--sub">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="4" y="4" width="16" height="16" rx="3"/>
+        <circle cx="9" cy="11" r="1"/>
+        <circle cx="15" cy="11" r="1"/>
+      </svg>
+    </div>
+    <div class="gate__agent gate__agent--sub">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="4" y="4" width="16" height="16" rx="3"/>
+        <circle cx="9" cy="11" r="1"/>
+        <circle cx="15" cy="11" r="1"/>
+      </svg>
+    </div>
+    <div class="gate__agent gate__agent--sub">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="4" y="4" width="16" height="16" rx="3"/>
+        <circle cx="9" cy="11" r="1"/>
+        <circle cx="15" cy="11" r="1"/>
+      </svg>
+    </div>
+  </div>
+  <div class="gate__status" id="gate-status" aria-live="polite">rs_guide → routing...</div>
+</div>
+
+<script>
+  (() => {
+    const gate = document.getElementById('gate');
+    const statusEl = document.getElementById('gate-status');
+    if (!gate || !statusEl) return;
+
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let isAnimating = false;
+    let pendingHref = null;
+    let gateTimeout = null;
+
+    function setStatus(text) {
+      statusEl.textContent = text;
+    }
+
+    function closeGate(href) {
+      if (isAnimating) return;
+      isAnimating = true;
+      pendingHref = href;
+
+      if (prefersReduced) {
+        gate.classList.add('gate--reduced', 'gate--closing');
+        setStatus('rs_guide → routing to ' + new URL(href, window.location.origin).pathname);
+        gateTimeout = setTimeout(() => {
+          gate.classList.add('gate--shut');
+          sessionStorage.setItem('gate', '1');
+          navigate();
+        }, 150);
+        return;
+      }
+
+      gate.classList.add('gate--closing');
+      const destPath = new URL(href, window.location.origin).pathname;
+      setStatus('rs_guide → routing to ' + destPath);
+
+      gateTimeout = setTimeout(() => {
+        gate.classList.add('gate--shut');
+        sessionStorage.setItem('gate', '1');
+        const minShutTime = Date.now() + 250;
+        const waitTime = Math.max(0, minShutTime - Date.now());
+        setTimeout(navigate, waitTime);
+      }, 380);
+    }
+
+    function navigate() {
+      if (pendingHref) {
+        window.location.href = pendingHref;
+      }
+    }
+
+    function openGate() {
+      if (prefersReduced) {
+        gate.classList.add('gate--reduced', 'gate--opening');
+        setTimeout(() => {
+          gate.classList.remove('gate--closing', 'gate--opening', 'gate--shut', 'gate--reduced');
+          isAnimating = false;
+          pendingHref = null;
+          triggerReveals();
+        }, 150);
+        return;
+      }
+
+      gate.classList.remove('gate--closing');
+      gate.classList.add('gate--opening');
+
+      gateTimeout = setTimeout(() => {
+        gate.classList.remove('gate--closing', 'gate--opening', 'gate--shut');
+        isAnimating = false;
+        pendingHref = null;
+        triggerReveals();
+      }, 420);
+    }
+
+    function triggerReveals() {
+      document.querySelectorAll('.reveal:not([style*="animation"])').forEach((el, i) => {
+        el.style.animationDelay = (i * 100) + 'ms';
+      });
+    }
+
+    function handleClick(e) {
+      const link = e.target.closest('a');
+      if (!link) return;
+
+      const href = link.getAttribute('href');
+      if (!href) return;
+
+      if (link.target === '_blank' || link.hasAttribute('download') || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:') || href.startsWith('http') && !href.startsWith(window.location.origin)) {
+        return;
+      }
+
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+
+      e.preventDefault();
+      closeGate(href);
+    }
+
+    function handlePageshow(e) {
+      if (e.persisted || sessionStorage.getItem('gate') === '1') {
+        openGate();
+      }
+    }
+
+    function safetyTimeout() {
+      if (gate.classList.contains('gate--shut') || gate.classList.contains('gate--closing')) {
+        gate.classList.remove('gate--closing');
+        openGate();
+      }
+    }
+
+    function init() {
+      document.addEventListener('click', handleClick, true);
+      window.addEventListener('pageshow', handlePageshow);
+
+      if (sessionStorage.getItem('gate') === '1') {
+        gate.classList.add('gate--shut');
+        sessionStorage.removeItem('gate');
+        openGate();
+      } else {
+        gate.style.display = 'none';
+      }
+
+      gateTimeout = setTimeout(safetyTimeout, 3000);
+    }
+
+    function cleanup() {
+      if (gateTimeout) clearTimeout(gateTimeout);
+      document.removeEventListener('click', handleClick, true);
+      window.removeEventListener('pageshow', handlePageshow);
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init, { once: true });
+    } else {
+      init();
+    }
+
+    window.addEventListener('pagehide', cleanup, { once: true });
+  })();
+</script>

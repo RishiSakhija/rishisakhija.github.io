@@ -1,0 +1,183 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import HudCard from '../components/HudCard.astro';
+import SectionHeader from '../components/SectionHeader.astro';
+import StatusDot from '../components/StatusDot.astro';
+---
+
+<BaseLayout title="About | Rishi Sakhija" description="AI/ML builder focused on agents, automation, and search systems. Self-taught, remote, open to work.">
+
+  <section class="section" aria-labelledby="about-title">
+    <div class="container">
+      <h1 id="about-title" class="about__name reveal-target">
+        <span style="color: var(--text); -webkit-text-fill-color: var(--text); background: none;">Learning in public, building for real.</span>
+      </h1>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="bio-title">
+    <div class="container">
+      <SectionHeader number="01" label="Profile" title="About Me" id="bio-title" />
+
+      <div class="about__bio reveal-target">
+        <HudCard>
+          <p>I'm Rishi Sakhija, a Computer Engineering diploma student and a self-taught builder with over 2.5 years of hands-on work in AI and machine learning.</p>
+          <p>My focus is the agentic era: systems that reason, coordinate, and act. I learn by building, and everything here is real work in progress.</p>
+        </HudCard>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="timeline-title">
+    <div class="container">
+      <SectionHeader number="02" label="History" title="Timeline" id="timeline-title" />
+
+      <div class="timeline">
+        <article class="timeline__item reveal-target">
+          <HudCard>
+            <div class="timeline__header">
+              <div>
+                <h3 class="timeline__role">Independent Builder</h3>
+                <p class="timeline__org">Self-directed</p>
+              </div>
+              <span class="timeline__period">~2.5 years</span>
+            </div>
+            <p class="timeline__desc">AI, ML, agents, automation — building, breaking, and learning in public.</p>
+          </HudCard>
+        </article>
+
+        <article class="timeline__item reveal-target">
+          <HudCard>
+            <div class="timeline__header">
+              <div>
+                <h3 class="timeline__role">Diploma in Computer Engineering</h3>
+                <p class="timeline__org">Currently 5th semester</p>
+              </div>
+              <span class="timeline__period">Present</span>
+            </div>
+            <p class="timeline__desc">Formal education alongside hands-on AI/ML work.</p>
+          </HudCard>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="status-title">
+    <div class="container">
+      <SectionHeader number="03" label="Status" title="Current Status" id="status-title" />
+
+      <div class="status-grid">
+        <div class="reveal-target">
+          <HudCard label="LOCATION">
+            <div class="status-item">
+              <StatusDot status="live" label="Remote" />
+            </div>
+          </HudCard>
+        </div>
+        <div class="reveal-target">
+          <HudCard label="AVAILABILITY">
+            <div class="status-item">
+              <StatusDot status="live" label="Open to work" />
+            </div>
+          </HudCard>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>
+
+<style>
+  .about__name {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    text-align: center;
+    background: linear-gradient(90deg, var(--text), var(--text-fade));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: var(--space-8);
+  }
+
+  .about__bio {
+    max-width: 800px;
+  }
+
+  .timeline {
+    display: flex;
+    flex-direction: column;
+    gap: var(--card-gap);
+  }
+
+  .timeline__item {
+    position: relative;
+  }
+
+  .timeline__item:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    left: 20px;
+    top: 60px;
+    bottom: -24px;
+    width: 1px;
+    background: linear-gradient(180deg, var(--border), transparent);
+  }
+
+  @media (min-width: 768px) {
+    .timeline__item:not(:last-child)::before {
+      left: calc(var(--card-padding) + 20px);
+    }
+  }
+
+  .timeline__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-4);
+    margin-bottom: var(--space-3);
+    flex-wrap: wrap;
+  }
+
+  .timeline__role {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 1.125rem;
+    color: var(--text);
+  }
+
+  .timeline__org {
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    color: var(--blue-soft);
+    margin-top: var(--space-1);
+  }
+
+  .timeline__period {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--muted);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .timeline__desc {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--text-fade);
+  }
+
+  .status-grid {
+    display: grid;
+    gap: var(--card-gap);
+  }
+
+  @media (min-width: 768px) {
+    .status-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .status-item {
+    display: flex;
+    align-items: center;
+  }
+</style>

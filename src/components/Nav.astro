@@ -1,0 +1,260 @@
+---
+import RSLogo from './RSLogo.astro';
+---
+
+<style>
+  .nav {
+    position: sticky;
+    top: 16px;
+    z-index: 1000;
+    margin: 0 auto var(--space-6);
+    width: min(1100px, 100% - 32px);
+    background: color-mix(in srgb, var(--surface) 80%, transparent);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: var(--card-border);
+    border-radius: var(--radius-pill);
+    padding: var(--space-2) var(--space-5);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    height: 64px;
+  }
+
+  .nav__brand {
+    flex: none;
+    display: flex;
+    align-items: center;
+  }
+
+  .nav__brand:hover .rs-logo {
+    border-color: var(--blue-soft);
+  }
+
+  .nav__links {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    flex: 1;
+    justify-content: center;
+  }
+
+  .nav__link {
+    display: flex;
+    align-items: center;
+    padding: var(--space-2) var(--space-4);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-radius: var(--radius-pill);
+    position: relative;
+    transition: color 0.15s ease;
+  }
+
+  .nav__link:hover {
+    color: var(--text);
+  }
+
+  .nav__link:focus-visible {
+    outline: 2px solid var(--blue-soft);
+    outline-offset: 3px;
+  }
+
+  .nav__link[aria-current="page"] {
+    color: var(--text);
+  }
+
+  .nav__link[aria-current="page"]::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--red);
+    box-shadow: 0 0 8px var(--red-glow);
+  }
+
+  .nav__menu-btn {
+    display: none;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-card);
+    justify-content: center;
+    align-items: center;
+    color: var(--text);
+    background: transparent;
+    border: 1px solid transparent;
+    transition: background 0.15s ease, border-color 0.15s ease;
+  }
+
+  .nav__menu-btn:hover {
+    background: var(--surface-2);
+    border-color: var(--border);
+  }
+
+  .nav__menu-btn:focus-visible {
+    outline: 2px solid var(--blue-soft);
+    outline-offset: 2px;
+  }
+
+  .nav__menu-btn svg {
+    width: 22px;
+    height: 22px;
+    stroke: currentColor;
+  }
+
+  .nav__dropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 16px;
+    right: 16px;
+    background: var(--surface);
+    border: var(--card-border);
+    border-radius: var(--radius-card);
+    padding: var(--space-3);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4);
+    z-index: 1001;
+  }
+
+  .nav__dropdown--open {
+    display: block;
+    animation: dropdown-in 0.2s ease;
+  }
+
+  @keyframes dropdown-in {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .nav__dropdown-link {
+    display: block;
+    padding: var(--space-3) var(--space-4);
+    font-family: var(--font-mono);
+    font-size: 13.5px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-radius: var(--radius-card);
+    transition: color 0.15s ease, background 0.15s ease;
+  }
+
+  .nav__dropdown-link:hover {
+    color: var(--text);
+    background: var(--surface-2);
+  }
+
+  .nav__dropdown-link:focus-visible {
+    outline: 2px solid var(--blue-soft);
+    outline-offset: 2px;
+  }
+
+  .nav__dropdown-link[aria-current="page"] {
+    color: var(--text);
+  }
+
+  @media (max-width: 767px) {
+    .nav__links {
+      display: none;
+    }
+
+    .nav__menu-btn {
+      display: flex;
+    }
+
+    .nav__dropdown--open {
+      display: block;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nav__dropdown--open {
+      animation: none;
+    }
+  }
+</style>
+
+<nav class="nav" role="navigation" aria-label="Main navigation">
+  <a class="nav__brand" href="/" aria-label="Rishi Sakhija - Home">
+    <RSLogo size={44} />
+  </a>
+
+  <div class="nav__links" role="menubar">
+    <a class="nav__link" href="/" role="menuitem" aria-current={Astro.url.pathname === '/' ? 'page' : undefined}>Home</a>
+    <a class="nav__link" href="/projects" role="menuitem" aria-current={Astro.url.pathname.startsWith('/projects') && Astro.url.pathname !== '/projects/' ? 'page' : undefined}>Projects</a>
+    <a class="nav__link" href="/skills" role="menuitem" aria-current={Astro.url.pathname === '/skills' ? 'page' : undefined}>Skills</a>
+    <a class="nav__link" href="/about" role="menuitem" aria-current={Astro.url.pathname === '/about' ? 'page' : undefined}>About</a>
+    <a class="nav__link" href="/contact" role="menuitem" aria-current={Astro.url.pathname === '/contact' ? 'page' : undefined}>Contact</a>
+  </div>
+
+  <button class="nav__menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="nav-dropdown" id="nav-menu-btn">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <line x1="3" y1="6" x2="21" y2="6"/>
+      <line x1="3" y1="12" x2="21" y2="12"/>
+      <line x1="3" y1="18" x2="21" y2="18"/>
+    </svg>
+  </button>
+
+  <div class="nav__dropdown" id="nav-dropdown" role="menu" aria-label="Mobile menu">
+    <a class="nav__dropdown-link" href="/" role="menuitem" aria-current={Astro.url.pathname === '/' ? 'page' : undefined}>Home</a>
+    <a class="nav__dropdown-link" href="/projects" role="menuitem" aria-current={Astro.url.pathname.startsWith('/projects') && Astro.url.pathname !== '/projects/' ? 'page' : undefined}>Projects</a>
+    <a class="nav__dropdown-link" href="/skills" role="menuitem" aria-current={Astro.url.pathname === '/skills' ? 'page' : undefined}>Skills</a>
+    <a class="nav__dropdown-link" href="/about" role="menuitem" aria-current={Astro.url.pathname === '/about' ? 'page' : undefined}>About</a>
+    <a class="nav__dropdown-link" href="/contact" role="menuitem" aria-current={Astro.url.pathname === '/contact' ? 'page' : undefined}>Contact</a>
+  </div>
+</nav>
+
+<script>
+  (() => {
+    const menuBtn = document.getElementById('nav-menu-btn');
+    const dropdown = document.getElementById('nav-dropdown');
+    if (!menuBtn || !dropdown) return;
+
+    let isOpen = false;
+
+    function open() {
+      isOpen = true;
+      dropdown.classList.add('nav__dropdown--open');
+      menuBtn.setAttribute('aria-expanded', 'true');
+      document.addEventListener('click', handleClickOutside);
+      document.addEventListener('keydown', handleKeydown);
+    }
+
+    function close() {
+      isOpen = false;
+      dropdown.classList.remove('nav__dropdown--open');
+      menuBtn.setAttribute('aria-expanded', 'false');
+      document.removeEventListener('click', handleClickOutside);
+      document.removeEventListener('keydown', handleKeydown);
+    }
+
+    function handleClickOutside(e) {
+      if (!dropdown.contains(e.target) && !menuBtn.contains(e.target)) {
+        close();
+      }
+    }
+
+    function handleKeydown(e) {
+      if (e.key === 'Escape') {
+        close();
+        menuBtn.focus();
+      }
+    }
+
+    menuBtn.addEventListener('click', () => {
+      isOpen ? close() : open();
+    });
+
+    dropdown.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', close);
+    });
+  })();
+</script>
