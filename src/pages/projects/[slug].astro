@@ -1,13 +1,14 @@
 ---
-import { getStaticPaths } from 'astro';
-import BaseLayout from '../../../layouts/BaseLayout.astro';
-import HudCard from '../../../components/HudCard.astro';
-import SectionHeader from '../../../components/SectionHeader.astro';
-import Chip from '../../../components/Chip.astro';
-import Button from '../../../components/Button.astro';
-import { projects, getProjectPaths, getPrevNext, getProject } from '../../../data/projects.js';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import HudCard from '../../components/HudCard.astro';
+import SectionHeader from '../../components/SectionHeader.astro';
+import Chip from '../../components/Chip.astro';
+import Button from '../../components/Button.astro';
+import { projects, getPrevNext, getProject } from '../../data/projects.js';
 
-export const getStaticPaths = () => getProjectPaths();
+export function getStaticPaths() {
+  return projects.map(p => ({ params: { slug: p.slug } }));
+}
 
 const { slug } = Astro.params;
 const project = getProject(slug as string);
@@ -24,7 +25,7 @@ if (!project) {
     <div class="container">
       <header class="project-header reveal-target">
         <div class="project-header__meta">
-          <Chip variant="status">{project.status}</Chip>
+          <Chip variant="status" status={project.status === 'In progress' ? 'in-progress' : 'planned'}>{project.status}</Chip>
           <div class="project-header__tags">
             {project.tags.map(tag => <Chip variant="tag">{tag}</Chip>)}
           </div>

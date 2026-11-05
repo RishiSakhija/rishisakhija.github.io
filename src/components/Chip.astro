@@ -1,11 +1,11 @@
 ---
 interface Props {
   variant?: 'default' | 'status' | 'tag';
+  status?: 'in-progress' | 'planned' | 'live';
   class?: string;
 }
 
-const { variant = 'default', class: className = '' } = Astro.props;
-const slot = Astro.slots.has('default') ? Astro.slots.render('default') : '';
+const { variant = 'default', status, class: className = '' } = Astro.props;
 ---
 
 <style>
@@ -59,6 +59,6 @@ const slot = Astro.slots.has('default') ? Astro.slots.render('default') : '';
   }
 </style>
 
-<span class="chip chip--{variant} {className}" data-status={variant === 'status' ? slot.trim().toLowerCase().replace(' ', '-') : ''}>
+<span class="chip chip--{variant} {status ? `chip--status--{status}` : ''} {className}">
   <slot />
 </span>

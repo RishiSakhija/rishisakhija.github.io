@@ -81,11 +81,11 @@ const Tag = isLink ? 'a' : 'button';
 
 <Tag
   class="btn btn--{variant} {disabled ? 'btn--disabled' : ''} {className}"
-  {isLink ? 'href=' + href : ''}
-  {disabled ? 'disabled' : ''}
-  {ariaLabel ? 'aria-label=' + ariaLabel : ''}
-  {(!isLink && type) ? 'type=' + type : ''}
-  {disabled ? 'aria-disabled="true"' : ''}
+  href={isLink ? href : undefined}
+  disabled={disabled ? true : undefined}
+  aria-label={ariaLabel}
+  type={!isLink ? type : undefined}
+  aria-disabled={disabled ? 'true' : undefined}
 >
   <slot />
 </Tag>

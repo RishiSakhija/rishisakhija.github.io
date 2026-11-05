@@ -19,7 +19,7 @@ import { projects } from '../../data/projects.js';
               <div class="project-card">
                 <div class="project-card__header">
                   <h3 class="project-card__name">{project.name}</h3>
-                  <Chip variant="status">{project.status}</Chip>
+                  <Chip variant="status" status={project.status === 'In progress' ? 'in-progress' : 'planned'}>{project.status}</Chip>
                 </div>
                 <p class="project-card__desc">{project.description}</p>
                 <p class="project-card__plain">{project.plainWords}</p>
