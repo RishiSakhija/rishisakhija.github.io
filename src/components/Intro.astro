@@ -50,7 +50,7 @@ import Button from './Button.astro';
   }
 
   .intro__logo-ring .intro__ring-progress {
-    stroke: var(--blue-soft);
+    stroke: var(--signal);
     stroke-dasharray: 472;
     stroke-dashoffset: 472;
     transition: stroke-dashoffset 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -115,8 +115,8 @@ import Button from './Button.astro';
   }
 
   .intro__status-line--live .intro__status-dot {
-    background: var(--red);
-    box-shadow: 0 0 8px var(--red-glow);
+    background: var(--data);
+    box-shadow: 0 0 8px var(--data-glow);
     animation: pulse 1.5s ease-in-out infinite;
   }
 
@@ -171,13 +171,13 @@ import Button from './Button.astro';
   }
 
   .intro__topic-btn:hover {
-    border-color: var(--blue);
-    color: var(--blue-soft);
+    border-color: var(--signal);
+    color: var(--signal);
     background: var(--surface-2);
   }
 
   .intro__topic-btn:focus-visible {
-    outline: 2px solid var(--blue-soft);
+    outline: 2px solid var(--signal);
     outline-offset: 2px;
   }
 
@@ -200,12 +200,12 @@ import Button from './Button.astro';
   }
 
   .intro__skip:hover {
-    border-color: var(--red);
-    color: var(--red);
+    border-color: var(--signal);
+    color: var(--signal);
   }
 
   .intro__skip:focus-visible {
-    outline: 2px solid var(--blue-soft);
+    outline: 2px solid var(--signal);
     outline-offset: 3px;
   }
 
@@ -329,9 +329,13 @@ import Button from './Button.astro';
 
     function navigateTo(href) {
       skipIntro();
-      const link = document.createElement('a');
-      link.href = href;
-      link.click();
+      if (typeof window.gateNavigate === 'function') {
+        window.gateNavigate(href);
+      } else {
+        const link = document.createElement('a');
+        link.href = href;
+        link.click();
+      }
     }
 
     function runSequence() {

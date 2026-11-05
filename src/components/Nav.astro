@@ -9,9 +9,7 @@ import RSLogo from './RSLogo.astro';
     z-index: 1000;
     margin: 0 auto var(--space-6);
     width: min(1100px, 100% - 32px);
-    background: color-mix(in srgb, var(--surface) 80%, transparent);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background: var(--surface);
     border: var(--card-border);
     border-radius: var(--radius-pill);
     padding: var(--space-2) var(--space-5);
@@ -29,7 +27,7 @@ import RSLogo from './RSLogo.astro';
   }
 
   .nav__brand:hover .rs-logo {
-    border-color: var(--blue-soft);
+    border-color: var(--muted);
   }
 
   .nav__links {
@@ -60,7 +58,7 @@ import RSLogo from './RSLogo.astro';
   }
 
   .nav__link:focus-visible {
-    outline: 2px solid var(--blue-soft);
+    outline: 2px solid var(--signal);
     outline-offset: 3px;
   }
 
@@ -77,8 +75,8 @@ import RSLogo from './RSLogo.astro';
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: var(--red);
-    box-shadow: 0 0 8px var(--red-glow);
+    background: var(--signal);
+    box-shadow: 0 0 8px var(--signal-glow);
   }
 
   .nav__menu-btn {
@@ -100,7 +98,7 @@ import RSLogo from './RSLogo.astro';
   }
 
   .nav__menu-btn:focus-visible {
-    outline: 2px solid var(--blue-soft);
+    outline: 2px solid var(--signal);
     outline-offset: 2px;
   }
 
@@ -120,7 +118,7 @@ import RSLogo from './RSLogo.astro';
     border: var(--card-border);
     border-radius: var(--radius-card);
     padding: var(--space-3);
-    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
     z-index: 1001;
   }
 
@@ -153,7 +151,7 @@ import RSLogo from './RSLogo.astro';
   }
 
   .nav__dropdown-link:focus-visible {
-    outline: 2px solid var(--blue-soft);
+    outline: 2px solid var(--signal);
     outline-offset: 2px;
   }
 

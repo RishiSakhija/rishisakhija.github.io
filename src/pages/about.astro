@@ -7,17 +7,22 @@ import StatusDot from '../components/StatusDot.astro';
 
 <BaseLayout title="About | Rishi Sakhija" description="AI/ML builder focused on agents, automation, and search systems. Self-taught, remote, open to work.">
 
-  <section class="section" aria-labelledby="about-title">
+  <!-- Page Header Band -->
+  <header class="page-header" aria-hidden="true">
     <div class="container">
-      <h1 id="about-title" class="about__name reveal-target">
-        <span style="color: var(--text); -webkit-text-fill-color: var(--text); background: none;">Learning in public, building for real.</span>
-      </h1>
+      <nav class="page-header__breadcrumb" aria-label="Breadcrumb">
+        <span>HOME</span>
+        <span aria-hidden="true">/</span>
+        <span>ABOUT</span>
+      </nav>
+      <div class="page-header__number">01</div>
+      <h1 class="page-header__title">About</h1>
     </div>
-  </section>
+  </header>
 
   <section class="section" aria-labelledby="bio-title">
     <div class="container">
-      <SectionHeader number="01" label="Profile" title="About Me" id="bio-title" />
+      <SectionHeader number="02" label="Profile" title="About Me" id="bio-title" />
 
       <div class="about__bio reveal-target">
         <HudCard>
@@ -30,7 +35,7 @@ import StatusDot from '../components/StatusDot.astro';
 
   <section class="section" aria-labelledby="timeline-title">
     <div class="container">
-      <SectionHeader number="02" label="History" title="Timeline" id="timeline-title" />
+      <SectionHeader number="03" label="History" title="Timeline" id="timeline-title" />
 
       <div class="timeline">
         <article class="timeline__item reveal-target">
@@ -62,11 +67,11 @@ import StatusDot from '../components/StatusDot.astro';
     </div>
   </section>
 
-  <section class="section" aria-labelledby="status-title">
+  <section class="section" aria-labelledby="facts-title">
     <div class="container">
-      <SectionHeader number="03" label="Status" title="Current Status" id="status-title" />
+      <SectionHeader number="04" label="System" title="Facts" id="facts-title" />
 
-      <div class="status-grid">
+      <div class="facts-grid">
         <div class="reveal-target">
           <HudCard label="LOCATION">
             <div class="status-item">
@@ -81,6 +86,38 @@ import StatusDot from '../components/StatusDot.astro';
             </div>
           </HudCard>
         </div>
+        <div class="reveal-target">
+          <HudCard label="EDUCATION">
+            <div class="fact-readout">
+              <span class="fact-readout__value">Diploma</span>
+              <span class="fact-readout__label">Computer Engineering · 5th semester</span>
+            </div>
+          </HudCard>
+        </div>
+        <div class="reveal-target">
+          <HudCard label="EXPERIENCE">
+            <div class="fact-readout">
+              <span class="fact-readout__value">2.5+ yrs</span>
+              <span class="fact-readout__label">Self-taught AI/ML hands-on</span>
+            </div>
+          </HudCard>
+        </div>
+        <div class="reveal-target">
+          <HudCard label="FOCUS">
+            <div class="fact-readout">
+              <span class="fact-readout__value">Agentic era</span>
+              <span class="fact-readout__label">Agents, automation, search</span>
+            </div>
+          </HudCard>
+        </div>
+        <div class="reveal-target">
+          <HudCard label="APPROACH">
+            <div class="fact-readout">
+              <span class="fact-readout__value">Build first</span>
+              <span class="fact-readout__label">Learn by doing, share in public</span>
+            </div>
+          </HudCard>
+        </div>
       </div>
     </div>
   </section>
@@ -88,14 +125,54 @@ import StatusDot from '../components/StatusDot.astro';
 </BaseLayout>
 
 <style>
-  .about__name {
-    font-size: clamp(2rem, 5vw, 3.5rem);
-    text-align: center;
+  /* Page Header Band */
+  .page-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding: var(--space-6) 0;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    margin-bottom: calc(var(--section-padding) - var(--space-6));
+  }
+
+  .page-header__breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: var(--space-2);
+  }
+
+  .page-header__breadcrumb span:not([aria-hidden]) {
+    color: var(--text-fade);
+  }
+
+  .page-header__number {
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--signal);
+    margin-bottom: var(--space-1);
+  }
+
+  .page-header__title {
+    font-family: var(--font-heading);
+    font-weight: 800;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    line-height: 1.1;
+    letter-spacing: -0.03em;
     background: linear-gradient(90deg, var(--text), var(--text-fade));
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    margin-bottom: var(--space-8);
   }
 
   .about__bio {
@@ -147,7 +224,7 @@ import StatusDot from '../components/StatusDot.astro';
   .timeline__org {
     font-family: var(--font-mono);
     font-size: 12.5px;
-    color: var(--blue-soft);
+    color: var(--muted);
     margin-top: var(--space-1);
   }
 
@@ -163,6 +240,46 @@ import StatusDot from '../components/StatusDot.astro';
     font-size: 15px;
     line-height: 1.6;
     color: var(--text-fade);
+  }
+
+  .facts-grid {
+    display: grid;
+    gap: var(--card-gap);
+  }
+
+  @media (min-width: 768px) {
+    .facts-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .facts-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .fact-readout {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .fact-readout__value {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    line-height: 1.2;
+    color: var(--text);
+  }
+
+  .fact-readout__label {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
   }
 
   .status-grid {

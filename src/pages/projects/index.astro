@@ -8,9 +8,22 @@ import { projects } from '../../data/projects.js';
 
 <BaseLayout title="Projects | Rishi Sakhija" description="AI/ML builder focused on agents, automation, and search systems. Self-taught, remote, open to work.">
 
+  <!-- Page Header Band -->
+  <header class="page-header" aria-hidden="true">
+    <div class="container">
+      <nav class="page-header__breadcrumb" aria-label="Breadcrumb">
+        <span>HOME</span>
+        <span aria-hidden="true">/</span>
+        <span>PROJECTS</span>
+      </nav>
+      <div class="page-header__number">01</div>
+      <h1 class="page-header__title">Projects</h1>
+    </div>
+  </header>
+
   <section class="section" aria-labelledby="projects-title">
     <div class="container">
-      <SectionHeader number="01" label="Portfolio" title="Projects" id="projects-title" />
+      <SectionHeader number="02" label="Portfolio" title="Projects" id="projects-title" />
 
       <div class="projects-grid">
         {projects.map(project => (
@@ -23,6 +36,48 @@ import { projects } from '../../data/projects.js';
                 </div>
                 <p class="project-card__desc">{project.description}</p>
                 <p class="project-card__plain">{project.plainWords}</p>
+                <div class="project-card__diagram" aria-label={`${project.name} concept diagram`}>
+                  {project.slug === 'agentic-team' && (
+                    <svg viewBox="0 0 240 140" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="diag-title-1">
+                      <title id="diag-title-1">Agentic Team concept: CEO agent connected to Research, Analysis, and Content agents</title>
+                      <circle cx="120" cy="25" r="30" stroke="var(--border)" stroke-width="1.5" fill="var(--surface-2)"/>
+                      <text x="120" y="30" text-anchor="middle" font-family="var(--font-mono)" font-size="9" fill="var(--text)">CEO</text>
+                      <circle cx="40" cy="95" r="28" stroke="var(--border)" stroke-width="1.5" fill="var(--surface-2)"/>
+                      <text x="40" y="100" text-anchor="middle" font-family="var(--font-mono)" font-size="8" fill="var(--text)">Research</text>
+                      <circle cx="120" cy="100" r="28" stroke="var(--border)" stroke-width="1.5" fill="var(--surface-2)"/>
+                      <text x="120" y="105" text-anchor="middle" font-family="var(--font-mono)" font-size="8" fill="var(--text)">Analysis</text>
+                      <circle cx="200" cy="95" r="28" stroke="var(--border)" stroke-width="1.5" fill="var(--surface-2)"/>
+                      <text x="200" y="100" text-anchor="middle" font-family="var(--font-mono)" font-size="8" fill="var(--text)">Content</text>
+                      <line x1="120" y1="55" x2="68" y2="67" stroke="var(--muted)" stroke-width="1" stroke-dasharray="4 4"/>
+                      <line x1="120" y1="55" x2="120" y2="72" stroke="var(--muted)" stroke-width="1" stroke-dasharray="4 4"/>
+                      <line x1="120" y1="55" x2="172" y2="67" stroke="var(--muted)" stroke-width="1" stroke-dasharray="4 4"/>
+                    </svg>
+                  )}
+                  {project.slug === 'ai-search-engine' && (
+                    <svg viewBox="0 0 240 100" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="diag-title-2">
+                      <title id="diag-title-2">AI Search Engine concept: query flows to tech-and-AI index, then to results</title>
+                      <rect x="20" y="30" width="60" height="40" rx="6" stroke="var(--border)" stroke-width="1.5" fill="var(--surface-2)"/>
+                      <text x="50" y="55" text-anchor="middle" font-family="var(--font-mono)" font-size="9" fill="var(--text)">query</text>
+                      <path d="M80 50 L100 50 L100 30 L140 30 L140 70 L100 70 L100 50" stroke="var(--muted)" stroke-width="1.5" fill="none" stroke-dasharray="4 4"/>
+                      <rect x="160" y="20" width="60" height="60" rx="6" stroke="var(--border)" stroke-width="1.5" fill="var(--surface-2)"/>
+                      <text x="190" y="55" text-anchor="middle" font-family="var(--font-mono)" font-size="9" fill="var(--text)">results</text>
+                      <rect x="100" y="30" width="60" height="40" rx="6" stroke="var(--signal)" stroke-width="1.5" fill="var(--surface)"/>
+                      <text x="130" y="55" text-anchor="middle" font-family="var(--font-mono)" font-size="8" fill="var(--signal)">tech & AI index</text>
+                    </svg>
+                  )}
+                  {project.slug === 'virtual-shelf' && (
+                    <svg viewBox="0 0 240 100" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="diag-title-3">
+                      <title id="diag-title-3">Virtual Shelf concept: YouTube link converts to notes, saved on shelf</title>
+                      <rect x="20" y="30" width="60" height="40" rx="6" stroke="var(--border)" stroke-width="1.5" fill="var(--surface-2)"/>
+                      <text x="50" y="55" text-anchor="middle" font-family="var(--font-mono)" font-size="9" fill="var(--text)">YouTube</text>
+                      <path d="M80 50 L100 50 L100 30 L140 30 L140 70 L100 70 L100 50" stroke="var(--muted)" stroke-width="1.5" fill="none" stroke-dasharray="4 4"/>
+                      <rect x="160" y="20" width="60" height="60" rx="6" stroke="var(--border)" stroke-width="1.5" fill="var(--surface-2)"/>
+                      <text x="190" y="55" text-anchor="middle" font-family="var(--font-mono)" font-size="9" fill="var(--text)">shelf</text>
+                      <rect x="100" y="30" width="60" height="40" rx="6" stroke="var(--signal)" stroke-width="1.5" fill="var(--surface)"/>
+                      <text x="130" y="55" text-anchor="middle" font-family="var(--font-mono)" font-size="8" fill="var(--signal)">notes</text>
+                    </svg>
+                  )}
+                </div>
                 <div class="project-card__tags">
                   {project.tags.map(tag => (
                     <Chip variant="tag">{tag}</Chip>
@@ -46,6 +101,56 @@ import { projects } from '../../data/projects.js';
 </BaseLayout>
 
 <style>
+  /* Page Header Band */
+  .page-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding: var(--space-6) 0;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    margin-bottom: calc(var(--section-padding) - var(--space-6));
+  }
+
+  .page-header__breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: var(--space-2);
+  }
+
+  .page-header__breadcrumb span:not([aria-hidden]) {
+    color: var(--text-fade);
+  }
+
+  .page-header__number {
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--signal);
+    margin-bottom: var(--space-1);
+  }
+
+  .page-header__title {
+    font-family: var(--font-heading);
+    font-weight: 800;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    background: linear-gradient(90deg, var(--text), var(--text-fade));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
   .projects-grid {
     display: grid;
     gap: var(--card-gap);
@@ -100,6 +205,17 @@ import { projects } from '../../data/projects.js';
     border-left: 1px solid var(--border);
   }
 
+  .project-card__diagram {
+    margin-bottom: var(--space-4);
+    overflow: hidden;
+  }
+
+  .project-card__diagram svg {
+    width: 100%;
+    height: auto;
+    max-height: 140px;
+  }
+
   .project-card__tags {
     display: flex;
     flex-wrap: wrap;
@@ -116,18 +232,18 @@ import { projects } from '../../data/projects.js';
     font-weight: 500;
     letter-spacing: 0.04em;
     text-transform: uppercase;
-    color: var(--blue-soft);
+    color: var(--muted);
     transition: color 0.15s ease, gap 0.15s ease;
     margin-top: auto;
   }
 
   .project-card__link:hover {
-    color: var(--red);
+    color: var(--signal);
     gap: var(--space-3);
   }
 
   .project-card__link:focus-visible {
-    outline: 2px solid var(--blue-soft);
+    outline: 2px solid var(--signal);
     outline-offset: 3px;
     border-radius: var(--radius-card);
   }

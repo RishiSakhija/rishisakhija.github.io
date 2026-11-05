@@ -58,12 +58,12 @@ html:not(.js) .js-only {
 
 .skip-link:focus {
   top: var(--space-4);
-  outline: 2px solid var(--blue-soft);
+  outline: 2px solid var(--signal);
   outline-offset: 3px;
 }
 
 :focus-visible {
-  outline: 2px solid var(--blue-soft);
+  outline: 2px solid var(--signal);
   outline-offset: 3px;
 }
 
@@ -84,8 +84,7 @@ body::before {
   z-index: -1;
   pointer-events: none;
   background:
-    radial-gradient(ellipse 80% 50% at 50% 0%, var(--bg-blue) 0%, transparent 70%),
-    radial-gradient(ellipse 60% 40% at 50% 100%, color-mix(in srgb, var(--bg-blue) 40%, transparent) 0%, transparent 60%),
+    radial-gradient(ellipse 100% 60% at 50% 0%, var(--bg-warm) 0%, transparent 70%),
     var(--bg);
 }
 
@@ -95,12 +94,13 @@ body::after {
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  opacity: 0.03;
+  opacity: 0.04;
   background-image:
-    radial-gradient(circle 1px at 20px 20px, var(--text) 1px, transparent 0),
-    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.02) 2px, rgba(255,255,255,0.02) 4px);
-  background-size: 40px 40px, 100% 4px;
-  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, #000 0%, transparent 100%);
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cpath d='M0 64V0h64v64H0z' fill='none' stroke='%238F8B7E' stroke-width='1' stroke-opacity='0.05'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  background-size: 64px 64px, cover;
+  background-repeat: repeat, no-repeat;
+  background-position: 0 0, center;
 }
 
 @media (min-width: 1280px) {
@@ -157,7 +157,7 @@ button {
   font-weight: 500;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--blue-soft);
+  color: var(--muted);
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -208,18 +208,18 @@ h3 {
 }
 
 .status-dot--live::before {
-  background: var(--red);
-  box-shadow: 0 0 8px var(--red-glow);
+  background: var(--data);
+  box-shadow: 0 0 8px var(--data-glow);
   animation: pulse 2s ease-in-out infinite;
 }
 
 .status-dot--standby::before {
   background: transparent;
-  border: 1px solid var(--blue-soft);
+  border: 1px solid var(--muted);
 }
 
 .status-dot--offline::before {
-  background: var(--muted);
+  background: var(--border-strong);
 }
 
 @keyframes pulse {
@@ -240,7 +240,7 @@ h3 {
   left: 0;
   right: 0;
   height: 2px;
-  background: linear-gradient(90deg, transparent, var(--red), transparent);
+  background: linear-gradient(90deg, transparent, var(--signal), transparent);
   z-index: 9999;
   pointer-events: none;
   transform: translateX(-100%);
@@ -255,8 +255,8 @@ h3 {
 }
 
 ::selection {
-  background: var(--red);
-  color: var(--text);
+  background: var(--signal);
+  color: var(--bg);
 }
 
 @keyframes fade-up {

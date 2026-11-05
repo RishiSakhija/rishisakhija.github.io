@@ -34,7 +34,7 @@ const dotOffset = Math.round(size * 0.32);
   .rs-logo__dot {
     position: absolute;
     border-radius: 50%;
-    background: var(--red);
+    background: var(--signal);
     z-index: 2;
   }
 
@@ -43,7 +43,7 @@ const dotOffset = Math.round(size * 0.32);
   }
 
   a:has(.rs-logo):focus-visible .rs-logo {
-    outline: 2px solid var(--blue-soft);
+    outline: 2px solid var(--signal);
     outline-offset: 3px;
     border-radius: 50%;
   }
@@ -59,7 +59,7 @@ const dotOffset = Math.round(size * 0.32);
   <span
     class="rs-logo__dot"
     aria-hidden="true"
-    style="top: calc(-{dotSize}px / 2 + {dotOffset}px); right: calc(-{dotSize}px / 2 + {dotOffset}px); width: {dotSize}px; height: {dotSize}px; box-shadow: 0 0 {Math.round(dotSize * 1.5)}px var(--red-glow);"
+    style="top: calc(-{dotSize}px / 2 + {dotOffset}px); right: calc(-{dotSize}px / 2 + {dotOffset}px); width: {dotSize}px; height: {dotSize}px; box-shadow: 0 0 {Math.round(dotSize * 1.5)}px var(--signal-glow);"
   ></span>
   <span class="sr-only">Rishi Sakhija</span>
 </div>

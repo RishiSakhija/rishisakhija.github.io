@@ -9,6 +9,30 @@ import RSLogo from './RSLogo.astro';
     background: var(--surface);
   }
 
+  .footer__wordmark {
+    width: 100%;
+    text-align: center;
+    margin-bottom: var(--space-8);
+    pointer-events: none;
+  }
+
+  .footer__wordmark-text {
+    font-family: var(--font-heading);
+    font-weight: 800;
+    font-size: clamp(3rem, 8vw, 6rem);
+    letter-spacing: -0.03em;
+    color: transparent;
+    -webkit-text-stroke: 1px var(--border);
+    paint-order: stroke fill;
+    line-height: 1.1;
+  }
+
+  @media (max-width: 767px) {
+    .footer__wordmark-text {
+      -webkit-text-stroke: 0.5px var(--border);
+    }
+  }
+
   .footer__grid {
     display: grid;
     grid-template-columns: 1.5fr 1fr 1fr;
@@ -58,7 +82,7 @@ import RSLogo from './RSLogo.astro';
     font-weight: 500;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: var(--blue-soft);
+    color: var(--muted);
     margin-bottom: var(--space-4);
   }
 
@@ -76,11 +100,11 @@ import RSLogo from './RSLogo.astro';
   }
 
   .footer__link:hover {
-    color: var(--blue-soft);
+    color: var(--signal);
   }
 
   .footer__link:focus-visible {
-    outline: 2px solid var(--blue-soft);
+    outline: 2px solid var(--signal);
     outline-offset: 3px;
     border-radius: var(--radius-card);
   }
@@ -102,11 +126,11 @@ import RSLogo from './RSLogo.astro';
   }
 
   .footer__contact-item:hover {
-    color: var(--text);
+    color: var(--signal);
   }
 
   .footer__contact-item:focus-visible {
-    outline: 2px solid var(--blue-soft);
+    outline: 2px solid var(--signal);
     outline-offset: 3px;
     border-radius: var(--radius-card);
   }
@@ -120,7 +144,49 @@ import RSLogo from './RSLogo.astro';
   }
 
   .footer__contact-item:hover .footer__contact-icon {
-    stroke: var(--blue-soft);
+    stroke: var(--signal);
+  }
+
+  .footer__status {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--muted);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--border);
+    margin-top: var(--space-4);
+    flex-wrap: wrap;
+  }
+
+  .footer__status-dot {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+  }
+
+  .footer__status-dot::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--data);
+    box-shadow: 0 0 6px var(--data-glow);
+  }
+
+  .footer__back-to-top {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    transition: color 0.15s ease;
+  }
+
+  .footer__back-to-top:hover {
+    color: var(--signal);
   }
 
   .footer__bottom {
@@ -149,6 +215,10 @@ import RSLogo from './RSLogo.astro';
 
 <footer class="footer" role="contentinfo">
   <div class="container">
+    <div class="footer__wordmark" aria-hidden="true">
+      <span class="footer__wordmark-text">RishiSakhija</span>
+    </div>
+
     <div class="footer__grid">
       <div class="footer__brand">
         <a class="footer__logo" href="/" aria-label="Rishi Sakhija - Home">
@@ -164,7 +234,7 @@ import RSLogo from './RSLogo.astro';
         <h3 class="footer__section-title">Pages</h3>
         <ul class="footer__links">
           <li><a class="footer__link" href="/">Home</a></li>
-          <li><a class="footer__link" href="/projects">Projects</a></li>
+          <li><a class="footer__link" href="/projects">Projects</a></li
           <li><a class="footer__link" href="/skills">Skills</a></li>
           <li><a class="footer__link" href="/about">About</a></li>
           <li><a class="footer__link" href="/contact">Contact</a></li>
@@ -193,6 +263,16 @@ import RSLogo from './RSLogo.astro';
           <span>rishisakhija7@gmail.com</span>
         </a>
       </div>
+    </div>
+
+    <div class="footer__status" role="status" aria-label="System status">
+      <span class="footer__status-dot" aria-hidden="true"></span>
+      <span>SYS ONLINE</span>
+      <span aria-hidden="true">·</span>
+      <span>REMOTE</span>
+      <span aria-hidden="true">·</span>
+      <span>OPEN TO WORK</span>
+      <a href="#" class="footer__back-to-top" aria-label="Back to top">↑ Top</a>
     </div>
 
     <div class="footer__bottom">

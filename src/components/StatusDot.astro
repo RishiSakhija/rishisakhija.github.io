@@ -28,18 +28,18 @@ const { status, label, class: className = '' } = Astro.props;
   }
 
   .status-dot--live::before {
-    background: var(--red);
-    box-shadow: 0 0 8px var(--red-glow);
+    background: var(--data);
+    box-shadow: 0 0 8px var(--data-glow);
     animation: pulse 2s ease-in-out infinite;
   }
 
   .status-dot--standby::before {
     background: transparent;
-    border: 1px solid var(--blue-soft);
+    border: 1px solid var(--muted);
   }
 
   .status-dot--offline::before {
-    background: var(--muted);
+    background: var(--border-strong);
   }
 
   @keyframes pulse {

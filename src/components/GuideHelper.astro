@@ -7,12 +7,13 @@ import { guideTopics } from '../data/guide.js';
 <style>
   .guide-helper {
     position: fixed;
-    bottom: var(--space-6);
-    right: var(--space-6);
+    bottom: max(var(--space-6), env(safe-area-inset-bottom));
+    right: max(var(--space-6), env(safe-area-inset-right));
     z-index: 9990;
   }
 
   .guide-helper__trigger {
+    position: relative;
     width: 52px;
     height: 52px;
     border-radius: 50%;
@@ -28,12 +29,12 @@ import { guideTopics } from '../data/guide.js';
   }
 
   .guide-helper__trigger:hover {
-    border-color: var(--blue-soft);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5), 0 0 24px var(--blue-soft);
+    border-color: var(--signal);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5), 0 0 24px var(--signal-glow);
   }
 
   .guide-helper__trigger:focus-visible {
-    outline: 2px solid var(--blue-soft);
+    outline: 2px solid var(--signal);
     outline-offset: 3px;
   }
 
@@ -47,11 +48,59 @@ import { guideTopics } from '../data/guide.js';
     stroke: var(--text);
   }
 
+  .guide-helper__trigger-dot {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--data);
+    box-shadow: 0 0 8px var(--data-glow);
+    border: 2px solid var(--bg);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(0.9); }
+  }
+
+  .guide-helper__trigger-label {
+    position: absolute;
+    right: 60px;
+    top: 50%;
+    transform: translateY(-50%);
+    white-space: nowrap;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-pill);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+    pointer-events: none;
+  }
+
+  @media (min-width: 768px) {
+    .guide-helper__trigger:hover .guide-helper__trigger-label {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
   .guide-helper__panel {
     position: absolute;
-    bottom: 72px;
+    bottom: 68px;
     right: 0;
-    width: clamp(300px, 80vw, 420px);
+    width: clamp(300px, 80vw, 380px);
+    max-height: 70svh;
     background: var(--surface);
     border: var(--card-border);
     border-radius: var(--radius-card);
@@ -68,8 +117,8 @@ import { guideTopics } from '../data/guide.js';
   @media (max-width: 480px) {
     .guide-helper__panel {
       right: calc(-50vw + 156px);
-      width: 85vw;
-      max-width: 380px;
+      width: 90vw;
+      max-width: 360px;
     }
   }
 
@@ -114,7 +163,7 @@ import { guideTopics } from '../data/guide.js';
   }
 
   .guide-helper__close:focus-visible {
-    outline: 2px solid var(--blue-soft);
+    outline: 2px solid var(--signal);
     outline-offset: 2px;
   }
 
@@ -128,7 +177,7 @@ import { guideTopics } from '../data/guide.js';
     display: flex;
     flex-direction: column;
     gap: var(--space-4);
-    max-height: 60vh;
+    max-height: 70svh;
     overflow-y: auto;
   }
 
@@ -137,6 +186,68 @@ import { guideTopics } from '../data/guide.js';
     font-size: 14px;
     line-height: 1.6;
     color: var(--text-fade);
+  }
+
+  .guide-helper__input-wrapper {
+    display: flex;
+    gap: var(--space-2);
+    margin-top: var(--space-2);
+  }
+
+  .guide-helper__input {
+    flex: 1;
+    padding: var(--space-2) var(--space-3);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: var(--text);
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .guide-helper__input::placeholder {
+    color: var(--muted);
+  }
+
+  .guide-helper__input:focus {
+    outline: none;
+    border-color: var(--signal);
+    box-shadow: 0 0 0 3px var(--signal-glow);
+  }
+
+  .guide-helper__input-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-card);
+    background: var(--signal);
+    color: var(--bg);
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.15s ease;
+    flex-shrink: 0;
+  }
+
+  .guide-helper__input-btn:hover {
+    background: var(--signal-deep);
+  }
+
+  .guide-helper__input-btn:focus-visible {
+    outline: 2px solid var(--signal);
+    outline-offset: 2px;
+  }
+
+  .guide-helper__input-btn:active {
+    transform: scale(0.95);
+  }
+
+  .guide-helper__input-btn svg {
+    width: 18px;
+    height: 18px;
+    stroke: currentColor;
   }
 
   .guide-helper__topics {
@@ -162,17 +273,17 @@ import { guideTopics } from '../data/guide.js';
   }
 
   .guide-helper__topic-btn:hover {
-    border-color: var(--blue);
+    border-color: var(--signal);
     background: var(--surface);
   }
 
   .guide-helper__topic-btn:focus-visible {
-    outline: 2px solid var(--blue-soft);
+    outline: 2px solid var(--signal);
     outline-offset: 2px;
   }
 
   .guide-helper__topic-btn[aria-expanded="true"] {
-    border-color: var(--blue);
+    border-color: var(--signal);
     background: var(--surface);
   }
 
@@ -185,7 +296,7 @@ import { guideTopics } from '../data/guide.js';
   .guide-helper__topic-icon {
     width: 20px;
     height: 20px;
-    stroke: var(--blue-soft);
+    stroke: var(--muted);
     flex-shrink: 0;
   }
 
@@ -242,13 +353,13 @@ import { guideTopics } from '../data/guide.js';
   }
 
   .guide-helper__question-btn:focus-visible {
-    outline: 2px solid var(--blue-soft);
+    outline: 2px solid var(--signal);
     outline-offset: 2px;
   }
 
   .guide-helper__question-btn::before {
     content: '>';
-    color: var(--blue-soft);
+    color: var(--signal);
     flex-shrink: 0;
   }
 
@@ -286,12 +397,41 @@ import { guideTopics } from '../data/guide.js';
     display: block;
   }
 
+  .guide-helper__typing {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--muted);
+    padding: var(--space-1) var(--space-2);
+  }
+
+  .guide-helper__typing-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--signal);
+    animation: typing-bounce 1.4s ease-in-out infinite both;
+  }
+
+  .guide-helper__typing-dot:nth-child(2) { animation-delay: 0.2s; }
+  .guide-helper__typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+  @keyframes typing-bounce {
+    0%, 80%, 100% { transform: scale(0.8); opacity: 0.5; }
+    40% { transform: scale(1); opacity: 1; }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .guide-helper__panel,
     .guide-helper__questions,
     .guide-helper__reply {
       animation: none;
       transition: none;
+    }
+    .guide-helper__typing-dot {
+      animation: none;
     }
   }
 </style>
@@ -304,11 +444,13 @@ import { guideTopics } from '../data/guide.js';
     aria-controls="guide-panel"
     id="guide-trigger"
   >
+    <span class="guide-helper__trigger-dot" aria-hidden="true"></span>
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
       <circle cx="12" cy="12" r="10"/>
       <path d="M12 8v4l2 2"/>
       <circle cx="12" cy="16" r="1" fill="currentColor"/>
     </svg>
+    <span class="guide-helper__trigger-label">Ask RS Guide</span>
   </button>
 
   <div class="guide-helper__panel" id="guide-panel" role="dialog" aria-label="RS Guide" aria-modal="true">
@@ -329,6 +471,23 @@ import { guideTopics } from '../data/guide.js';
       <p class="guide-helper__greeting" id="guide-greeting">
         Welcome to Rishi's control room. I'm RS Guide. What would you like to explore first?
       </p>
+
+      <div class="guide-helper__input-wrapper">
+        <input
+          type="text"
+          class="guide-helper__input"
+          id="guide-input"
+          placeholder="Ask about Rishi..."
+          aria-label="Ask about Rishi"
+          autocomplete="off"
+        />
+        <button class="guide-helper__input-btn" id="guide-input-btn" aria-label="Send question">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="22" y1="2" x2="11" y2="13"/>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+          </svg>
+        </button>
+      </div>
 
       <div class="guide-helper__topics" role="list" aria-label="Topics">
         {guideTopics.map((topic, idx) => (
@@ -391,12 +550,15 @@ import { guideTopics } from '../data/guide.js';
     const topicBtns = helper.querySelectorAll('.guide-helper__topic-btn');
     const questionBtns = helper.querySelectorAll('.guide-helper__question-btn');
     const greeting = helper.querySelector('#guide-greeting');
+    const input = helper.querySelector('#guide-input');
+    const inputBtn = helper.querySelector('#guide-input-btn');
 
     let isOpen = false;
     let activeTopic = null;
     let activeQuestion = null;
     let focusTrapElements = [];
     let lastFocused = null;
+    let typingAnimation = null;
 
     const currentPath = window.location.pathname;
 
@@ -405,22 +567,37 @@ import { guideTopics } from '../data/guide.js';
         const mod = await import('../data/guide.js');
         return mod.getReply(topicId, questionId);
       } catch {
-        return 'Data unavailable.';
+        return null;
+      }
+    }
+
+    async function getReplyForInput(inputText) {
+      try {
+        const mod = await import('../data/guide.js');
+        return mod.getReplyForInput(inputText);
+      } catch {
+        return { reply: "I don't have that yet. The fastest way to reach Rishi is rishisakhija7@gmail.com.", topicId: 'contact' };
       }
     }
 
     function typeReply(element, text) {
       element.textContent = '';
       let i = 0;
-      const speed = 15;
+      const speed = 12;
       function tick() {
         if (i < text.length) {
           element.textContent += text[i];
           i++;
-          setTimeout(tick, speed);
+          typingAnimation = setTimeout(tick, speed);
+        } else {
+          typingAnimation = null;
         }
       }
       tick();
+    }
+
+    function showTyping(element) {
+      element.innerHTML = '<span class="guide-helper__typing"><span class="guide-helper__typing-dot"></span><span class="guide-helper__typing-dot"></span><span class="guide-helper__typing-dot"></span></span>';
     }
 
     function updateFocusTrap() {
@@ -459,7 +636,7 @@ import { guideTopics } from '../data/guide.js';
       }, 50);
       document.addEventListener('keydown', trapFocus);
       document.addEventListener('keydown', handleEscape);
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = '';
     }
 
     function closePanel() {
@@ -475,6 +652,7 @@ import { guideTopics } from '../data/guide.js';
     }
 
     function resetState() {
+      if (typingAnimation) clearTimeout(typingAnimation);
       topicBtns.forEach(btn => {
         btn.setAttribute('aria-expanded', 'false');
         const qId = `guide-questions-${btn.dataset.topicId}`;
@@ -487,7 +665,8 @@ import { guideTopics } from '../data/guide.js';
       });
       activeTopic = null;
       activeQuestion = null;
-      greeting.textContent = 'Welcome to Rishi\'s control room. I\'m RS Guide. What would you like to explore first?';
+      input.value = '';
+      greeting.textContent = "Welcome to Rishi's control room. I'm RS Guide. What would you like to explore first?";
     }
 
     function handleEscape(e) {
@@ -546,12 +725,48 @@ import { guideTopics } from '../data/guide.js';
       if (!replyEl || !replyTextEl) return;
 
       replyEl.classList.add('guide-helper__reply--open');
+      showTyping(replyTextEl);
       const replyText = await getReply(topicId, questionId);
-      typeReply(replyTextEl, replyText);
+      if (replyText) {
+        typeReply(replyTextEl, replyText);
+      } else {
+        replyTextEl.textContent = 'No information available.';
+      }
 
       const nav = helper.querySelector(`#guide-nav-${topicId}`);
       nav?.classList.add('guide-helper__nav--open');
       updateFocusTrap();
+    }
+
+    async function handleInputQuestion() {
+      const text = input.value.trim();
+      if (!text) return;
+
+      input.value = '';
+      inputBtn.disabled = true;
+
+      const replyEl = helper.querySelector(`#guide-reply-contact`);
+      const replyTextEl = replyEl?.querySelector('.guide-helper__reply-text');
+      if (!replyEl || !replyTextEl) return;
+
+      if (activeTopic && activeTopic !== 'contact') {
+        closeTopic();
+      }
+      activeTopic = 'contact';
+      const contactBtn = helper.querySelector('[data-topic-id="contact"]');
+      const contactQuestions = helper.querySelector('#guide-questions-contact');
+      const contactNav = helper.querySelector('#guide-nav-contact');
+      contactBtn?.setAttribute('aria-expanded', 'true');
+      contactQuestions?.classList.add('guide-helper__questions--open');
+      contactNav?.classList.add('guide-helper__nav--open');
+
+      replyEl.classList.add('guide-helper__reply--open');
+      showTyping(replyTextEl);
+      const result = await getReplyForInput(text);
+      typeReply(replyTextEl, result.reply);
+
+      updateFocusTrap();
+      inputBtn.disabled = false;
     }
 
     function closeQuestion() {
@@ -584,6 +799,14 @@ import { guideTopics } from '../data/guide.js';
         btn.addEventListener('click', () => openQuestion(btn.dataset.topicId, btn.dataset.questionId));
       });
 
+      inputBtn.addEventListener('click', handleInputQuestion);
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault();
+          handleInputQuestion();
+        }
+      });
+
       document.addEventListener('click', handleClickOutside);
 
       const currentTopic = guideTopics.find(t => currentPath.startsWith(t.target));
@@ -593,6 +816,7 @@ import { guideTopics } from '../data/guide.js';
     }
 
     function cleanup() {
+      if (typingAnimation) clearTimeout(typingAnimation);
       document.removeEventListener('click', handleClickOutside);
       document.removeEventListener('keydown', trapFocus);
       document.removeEventListener('keydown', handleEscape);

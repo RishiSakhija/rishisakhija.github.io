@@ -7,9 +7,22 @@ import Chip from '../components/Chip.astro';
 
 <BaseLayout title="Skills | Rishi Sakhija" description="AI/ML builder focused on agents, automation, and search systems. Self-taught, remote, open to work.">
 
+  <!-- Page Header Band -->
+  <header class="page-header" aria-hidden="true">
+    <div class="container">
+      <nav class="page-header__breadcrumb" aria-label="Breadcrumb">
+        <span>HOME</span>
+        <span aria-hidden="true">/</span>
+        <span>SKILLS</span>
+      </nav>
+      <div class="page-header__number">01</div>
+      <h1 class="page-header__title">Skills</h1>
+    </div>
+  </header>
+
   <section class="section" aria-labelledby="skills-title">
     <div class="container">
-      <SectionHeader number="01" label="Capabilities" title="Skills" id="skills-title" />
+      <SectionHeader number="02" label="Capabilities" title="Skills" id="skills-title" />
 
       <div class="skills-grid">
         <article class="reveal-target">
@@ -19,6 +32,7 @@ import Chip from '../components/Chip.astro';
               <Chip>Git</Chip>
               <Chip>GitHub</Chip>
             </div>
+            <p class="skill-usage">Daily driver for all projects. Python for ML pipelines and agents. Git/GitHub for version control and collaboration.</p>
           </HudCard>
         </article>
 
@@ -29,6 +43,7 @@ import Chip from '../components/Chip.astro';
               <Chip>Prompt Engineering</Chip>
               <Chip>AI Agents</Chip>
             </div>
+            <p class="skill-usage">Building and orchestrating agents. Fine-tuning prompts for consistent outputs. Classical ML for classification and search ranking.</p>
           </HudCard>
         </article>
 
@@ -37,6 +52,7 @@ import Chip from '../components/Chip.astro';
             <div class="chip-group">
               <Chip>Workflow Automation <span class="chip__level">(moderate)</span></Chip>
             </div>
+            <p class="skill-usage">Scripting repetitive tasks into agent workflows. Connecting APIs, scheduling, and data pipelines to reduce manual steps.</p>
           </HudCard>
         </article>
 
@@ -47,6 +63,7 @@ import Chip from '../components/Chip.astro';
               <Chip>New AI/ML tools</Chip>
               <Chip>New techniques</Chip>
             </div>
+            <p class="skill-usage">Multi-agent coordination patterns. Retrieval-augmented generation. Evaluating agent outputs reliably.</p>
           </HudCard>
         </article>
       </div>
@@ -56,6 +73,56 @@ import Chip from '../components/Chip.astro';
 </BaseLayout>
 
 <style>
+  /* Page Header Band */
+  .page-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding: var(--space-6) 0;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    margin-bottom: calc(var(--section-padding) - var(--space-6));
+  }
+
+  .page-header__breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: var(--space-2);
+  }
+
+  .page-header__breadcrumb span:not([aria-hidden]) {
+    color: var(--text-fade);
+  }
+
+  .page-header__number {
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--signal);
+    margin-bottom: var(--space-1);
+  }
+
+  .page-header__title {
+    font-family: var(--font-heading);
+    font-weight: 800;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    background: linear-gradient(90deg, var(--text), var(--text-fade));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
   .skills-grid {
     display: grid;
     gap: var(--card-gap);
@@ -77,6 +144,7 @@ import Chip from '../components/Chip.astro';
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-2);
+    margin-bottom: var(--space-4);
   }
 
   .chip__level {
@@ -84,5 +152,13 @@ import Chip from '../components/Chip.astro';
     font-family: var(--font-mono);
     font-size: 11px;
     margin-left: var(--space-1);
+  }
+
+  .skill-usage {
+    font-family: var(--font-body);
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text-fade);
+    margin: 0;
   }
 </style>

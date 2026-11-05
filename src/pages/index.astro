@@ -13,11 +13,42 @@ import { projects } from '../data/projects.js';
 
 <BaseLayout title="Rishi Sakhija | AI/ML Builder" description="AI/ML builder focused on agents, automation, and search systems. Self-taught, remote, open to work.">
 
+  <!-- SYSTEM BAR -->
+  <div class="system-bar" aria-hidden="true" role="status">
+    <div class="container">
+      <div class="system-bar__left">
+        <span class="system-bar__item">SYS ONLINE</span>
+        <span class="system-bar__sep" aria-hidden="true">·</span>
+        <span class="system-bar__item" id="system-time">LOCAL TIME --:--:--</span>
+      </div>
+      <div class="system-bar__right">
+        <span class="system-bar__item">REMOTE</span>
+        <span class="system-bar__sep" aria-hidden="true">·</span>
+        <span class="system-bar__item">BUILD <span id="build-date">2026-11-05</span></span>
+      </div>
+    </div>
+  </div>
+
   <!-- HERO -->
   <section class="hero" aria-labelledby="hero-title">
     <div class="container">
       <div class="hero__grid">
         <div class="hero__content">
+          <!-- Tick mark ruler on left -->
+          <div class="hero__ruler" aria-hidden="true">
+            <span class="hero__ruler-mark" style="--i:0"></span>
+            <span class="hero__ruler-mark" style="--i:1"></span>
+            <span class="hero__ruler-mark" style="--i:2"></span>
+            <span class="hero__ruler-mark" style="--i:3"></span>
+            <span class="hero__ruler-mark" style="--i:4"></span>
+            <span class="hero__ruler-mark" style="--i:5"></span>
+          </div>
+
+          <!-- Oversized RS watermark -->
+          <div class="hero__watermark" aria-hidden="true">
+            <RSLogo size={280} />
+          </div>
+
           <div class="hero__status" role="status" aria-live="polite">
             <StatusDot status="live" label="open to work · remote" />
           </div>
@@ -39,11 +70,25 @@ import { projects } from '../data/projects.js';
           </div>
 
           <div class="hero__stats" aria-label="Stats">
-            <span>2.5+ yrs building</span>
-            <span aria-hidden="true">|</span>
-            <span>3 projects</span>
-            <span aria-hidden="true">|</span>
-            <span>remote · open to work</span>
+            <div class="hero__stat">
+              <span class="hero__stat-value">2.5+</span>
+              <span class="hero__stat-label">years building</span>
+            </div>
+            <div class="hero__stat">
+              <span class="hero__stat-value">3</span>
+              <span class="hero__stat-label">projects</span>
+            </div>
+            <div class="hero__stat">
+              <span class="hero__stat-value">100%</span>
+              <span class="hero__stat-label">remote</span>
+            </div>
+          </div>
+
+          <div class="hero__scroll-cue" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+            <span>scroll</span>
           </div>
         </div>
 
@@ -74,6 +119,48 @@ import { projects } from '../data/projects.js';
                   <Chip variant="status" status={project.status === 'In progress' ? 'in-progress' : 'planned'}>{project.status}</Chip>
                 </div>
                 <p class="project-card__desc">{project.plainWords}</p>
+                <div class="project-card__diagram" aria-label={`${project.name} concept diagram`}>
+                  {project.slug === 'agentic-team' && (
+                    <svg viewBox="0 0 240 140" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="diag-title-1">
+                      <title id="diag-title-1">Agentic Team concept: CEO agent connected to Research, Analysis, and Content agents</title>
+                      <circle cx="120" cy="25" r="30" stroke="var(--border)" stroke-width="1.5" fill="var(--surface-2)"/>
+                      <text x="120" y="30" text-anchor="middle" font-family="var(--font-mono)" font-size="9" fill="var(--text)">CEO</text>
+                      <circle cx="40" cy="95" r="28" stroke="var(--border)" stroke-width="1.5" fill="var(--surface-2)"/>
+                      <text x="40" y="100" text-anchor="middle" font-family="var(--font-mono)" font-size="8" fill="var(--text)">Research</text>
+                      <circle cx="120" cy="100" r="28" stroke="var(--border)" stroke-width="1.5" fill="var(--surface-2)"/>
+                      <text x="120" y="105" text-anchor="middle" font-family="var(--font-mono)" font-size="8" fill="var(--text)">Analysis</text>
+                      <circle cx="200" cy="95" r="28" stroke="var(--border)" stroke-width="1.5" fill="var(--surface-2)"/>
+                      <text x="200" y="100" text-anchor="middle" font-family="var(--font-mono)" font-size="8" fill="var(--text)">Content</text>
+                      <line x1="120" y1="55" x2="68" y2="67" stroke="var(--muted)" stroke-width="1" stroke-dasharray="4 4"/>
+                      <line x1="120" y1="55" x2="120" y2="72" stroke="var(--muted)" stroke-width="1" stroke-dasharray="4 4"/>
+                      <line x1="120" y1="55" x2="172" y2="67" stroke="var(--muted)" stroke-width="1" stroke-dasharray="4 4"/>
+                    </svg>
+                  )}
+                  {project.slug === 'ai-search-engine' && (
+                    <svg viewBox="0 0 240 100" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="diag-title-2">
+                      <title id="diag-title-2">AI Search Engine concept: query flows to tech-and-AI index, then to results</title>
+                      <rect x="20" y="30" width="60" height="40" rx="6" stroke="var(--border)" stroke-width="1.5" fill="var(--surface-2)"/>
+                      <text x="50" y="55" text-anchor="middle" font-family="var(--font-mono)" font-size="9" fill="var(--text)">query</text>
+                      <path d="M80 50 L100 50 L100 30 L140 30 L140 70 L100 70 L100 50" stroke="var(--muted)" stroke-width="1.5" fill="none" stroke-dasharray="4 4"/>
+                      <rect x="160" y="20" width="60" height="60" rx="6" stroke="var(--border)" stroke-width="1.5" fill="var(--surface-2)"/>
+                      <text x="190" y="55" text-anchor="middle" font-family="var(--font-mono)" font-size="9" fill="var(--text)">results</text>
+                      <rect x="100" y="30" width="60" height="40" rx="6" stroke="var(--signal)" stroke-width="1.5" fill="var(--surface)"/>
+                      <text x="130" y="55" text-anchor="middle" font-family="var(--font-mono)" font-size="8" fill="var(--signal)">tech & AI index</text>
+                    </svg>
+                  )}
+                  {project.slug === 'virtual-shelf' && (
+                    <svg viewBox="0 0 240 100" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="diag-title-3">
+                      <title id="diag-title-3">Virtual Shelf concept: YouTube link converts to notes, saved on shelf</title>
+                      <rect x="20" y="30" width="60" height="40" rx="6" stroke="var(--border)" stroke-width="1.5" fill="var(--surface-2)"/>
+                      <text x="50" y="55" text-anchor="middle" font-family="var(--font-mono)" font-size="9" fill="var(--text)">YouTube</text>
+                      <path d="M80 50 L100 50 L100 30 L140 30 L140 70 L100 70 L100 50" stroke="var(--muted)" stroke-width="1.5" fill="none" stroke-dasharray="4 4"/>
+                      <rect x="160" y="20" width="60" height="60" rx="6" stroke="var(--border)" stroke-width="1.5" fill="var(--surface-2)"/>
+                      <text x="190" y="55" text-anchor="middle" font-family="var(--font-mono)" font-size="9" fill="var(--text)">shelf</text>
+                      <rect x="100" y="30" width="60" height="40" rx="6" stroke="var(--signal)" stroke-width="1.5" fill="var(--surface)"/>
+                      <text x="130" y="55" text-anchor="middle" font-family="var(--font-mono)" font-size="8" fill="var(--signal)">notes</text>
+                    </svg>
+                  )}
+                </div>
                 <div class="project-card__tags">
                   {project.tags.map(tag => (
                     <Chip variant="tag">{tag}</Chip>
@@ -126,50 +213,27 @@ import { projects } from '../data/projects.js';
     </div>
   </section>
 
-  <!-- 03 SKILLS OVERVIEW -->
-  <section class="section" aria-labelledby="skills-title">
+  <!-- 03 HOW I WORK -->
+  <section class="section" aria-labelledby="work-title">
     <div class="container">
-      <SectionHeader number="03" label="Capabilities" title="Skills Overview" id="skills-title" />
+      <SectionHeader number="03" label="Method" title="How I Work" id="work-title" />
 
-      <div class="skills-overview">
-        <div class="reveal-target">
-          <HudCard label="LANGUAGES & TOOLS">
-            <div class="chip-group">
-              <Chip>Python</Chip>
-              <Chip>Git</Chip>
-              <Chip>GitHub</Chip>
-            </div>
+      <div class="work-grid">
+        <article class="reveal-target">
+          <HudCard label="BUILD">
+            <p>I learn by building real projects. Every component here — the agent panel, the gate transition, the guide — started as a prototype I needed.</p>
           </HudCard>
-        </div>
-        <div class="reveal-target">
-          <HudCard label="AI & ML">
-            <div class="chip-group">
-              <Chip>Machine Learning</Chip>
-              <Chip>Prompt Engineering</Chip>
-              <Chip>AI Agents</Chip>
-            </div>
+        </article>
+        <article class="reveal-target">
+          <HudCard label="AUTOMATE">
+            <p>I turn repetitive work into agent-driven workflows. The agentic team, the search index, the note generator — each removes a manual step from my process.</p>
           </HudCard>
-        </div>
-        <div class="reveal-target">
-          <HudCard label="AUTOMATION">
-            <div class="chip-group">
-              <Chip>Workflow Automation <span style="color:var(--muted);font-family:var(--font-mono);font-size:11px;margin-left:4px;">(moderate)</span></Chip>
-            </div>
+        </article>
+        <article class="reveal-target">
+          <HudCard label="LEARN IN PUBLIC">
+            <p>Everything here is work in progress, shared as I go. The code, the designs, the failures — all visible. Feedback loops make it better.</p>
           </HudCard>
-        </div>
-        <div class="reveal-target">
-          <HudCard label="CURRENTLY LEARNING">
-            <div class="chip-group">
-              <Chip>The agentic era</Chip>
-              <Chip>New AI/ML tools</Chip>
-              <Chip>New techniques</Chip>
-            </div>
-          </HudCard>
-        </div>
-      </div>
-
-      <div class="skills-overview__cta">
-        <Button variant="secondary" href="/skills">View all skills</Button>
+        </article>
       </div>
     </div>
   </section>
@@ -190,6 +254,25 @@ import { projects } from '../data/projects.js';
               <polyline points="12 5 19 12 12 19"/>
             </svg>
           </a>
+        </HudCard>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 ROADMAP -->
+  <section class="section" aria-labelledby="roadmap-title">
+    <div class="container">
+      <SectionHeader number="05" label="Future" title="Roadmap" id="roadmap-title" />
+
+      <div class="roadmap reveal-target">
+        <HudCard>
+          <div class="roadmap__chips">
+            <Chip variant="tag">Lab (research & blog) <span class="chip__status">planned</span></Chip>
+            <Chip variant="tag">Real project links <span class="chip__status">planned</span></Chip>
+            <Chip variant="tag">Resume download <span class="chip__status">planned</span></Chip>
+            <Chip variant="tag">RS Guide powered by real AI <span class="chip__status">planned</span></Chip>
+          </div>
+          <p class="roadmap__note">All items are concepts. Nothing shipped until it's real.</p>
         </HudCard>
       </div>
     </div>
@@ -227,20 +310,150 @@ import { projects } from '../data/projects.js';
 
 </BaseLayout>
 
+<script>
+  // System bar clock
+  (() => {
+    const timeEl = document.getElementById('system-time');
+    if (!timeEl) return;
+    function update() {
+      const now = new Date();
+      const hh = String(now.getHours()).padStart(2, '0');
+      const mm = String(now.getMinutes()).padStart(2, '0');
+      const ss = String(now.getSeconds()).padStart(2, '0');
+      timeEl.textContent = `LOCAL TIME ${hh}:${mm}:${ss}`;
+    }
+    update();
+    setInterval(update, 1000);
+  })();
+
+  // Scroll cue fade on scroll
+  (() => {
+    const cue = document.querySelector('.hero__scroll-cue');
+    if (!cue) return;
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const scrollY = window.scrollY;
+          cue.style.opacity = Math.max(0, 1 - scrollY / 200);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }, { passive: true });
+  })();
+</script>
+
 <style>
+  /* System Bar */
+  .system-bar {
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    padding: var(--space-2) 0;
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .system-bar .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+  }
+
+  .system-bar__left,
+  .system-bar__right {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .system-bar__sep {
+    opacity: 0.4;
+  }
+
+  .system-bar__item {
+    white-space: nowrap;
+  }
+
+  #system-time {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Hero */
   .hero {
+    position: relative;
+    min-height: calc(100svh - 96px);
     padding-block: var(--space-9);
+    display: flex;
+    align-items: center;
   }
 
   .hero__grid {
     display: grid;
     gap: var(--space-8);
-    align-items: start;
+    align-items: center;
+    position: relative;
+    z-index: 1;
   }
 
   @media (min-width: 1024px) {
     .hero__grid {
-      grid-template-columns: 1fr 380px;
+      grid-template-columns: 1fr 420px;
+    }
+  }
+
+  .hero__ruler {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  @media (max-width: 1023px) {
+    .hero__ruler {
+      display: none;
+    }
+  }
+
+  .hero__ruler-mark {
+    width: 2px;
+    height: 12px;
+    background: var(--border);
+    opacity: 0.6;
+  }
+
+  .hero__ruler-mark:nth-child(odd) {
+    height: 20px;
+    background: var(--signal);
+    opacity: 0.3;
+  }
+
+  .hero__watermark {
+    position: absolute;
+    right: -60px;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.02;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  @media (max-width: 1023px) {
+    .hero__watermark {
+      display: none;
     }
   }
 
@@ -278,7 +491,7 @@ import { projects } from '../data/projects.js';
     font-weight: 500;
     letter-spacing: 0.04em;
     text-transform: uppercase;
-    color: var(--blue-soft);
+    color: var(--muted);
     margin-bottom: var(--space-5);
   }
 
@@ -300,15 +513,69 @@ import { projects } from '../data/projects.js';
   .hero__stats {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-3);
-    font-family: var(--font-mono);
-    font-size: 12.5px;
-    color: var(--muted);
-    align-items: center;
+    gap: var(--space-6);
+    margin-bottom: var(--space-8);
   }
 
-  .hero__stats span:not([aria-hidden]) {
-    color: var(--text-fade);
+  .hero__stat {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-1);
+    padding: var(--space-3) var(--space-4);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+    min-width: 100px;
+  }
+
+  .hero__stat-value {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: clamp(1.5rem, 4vw, 2.25rem);
+    line-height: 1.1;
+    color: var(--text);
+  }
+
+  .hero__stat-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .hero__scroll-cue {
+    position: absolute;
+    bottom: var(--space-6);
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    opacity: 0.6;
+    animation: scroll-bounce 2s ease-in-out infinite;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+
+  @keyframes scroll-bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(8px); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero__scroll-cue {
+      animation: none;
+    }
   }
 
   .hero__panel {
@@ -320,12 +587,19 @@ import { projects } from '../data/projects.js';
     padding-top: 0;
   }
 
+  /* Projects Grid */
   .projects-grid {
     display: grid;
     gap: var(--card-gap);
   }
 
   @media (min-width: 768px) {
+    .projects-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
     .projects-grid {
       grid-template-columns: repeat(3, 1fr);
     }
@@ -360,6 +634,17 @@ import { projects } from '../data/projects.js';
     flex: 1;
   }
 
+  .project-card__diagram {
+    margin-bottom: var(--space-4);
+    overflow: hidden;
+  }
+
+  .project-card__diagram svg {
+    width: 100%;
+    height: auto;
+    max-height: 140px;
+  }
+
   .project-card__tags {
     display: flex;
     flex-wrap: wrap;
@@ -376,18 +661,18 @@ import { projects } from '../data/projects.js';
     font-weight: 500;
     letter-spacing: 0.04em;
     text-transform: uppercase;
-    color: var(--blue-soft);
+    color: var(--muted);
     transition: color 0.15s ease, gap 0.15s ease;
     margin-top: auto;
   }
 
   .project-card__link:hover {
-    color: var(--red);
+    color: var(--signal);
     gap: var(--space-3);
   }
 
   .project-card__link:focus-visible {
-    outline: 2px solid var(--blue-soft);
+    outline: 2px solid var(--signal);
     outline-offset: 3px;
     border-radius: var(--radius-card);
   }
@@ -422,39 +707,24 @@ import { projects } from '../data/projects.js';
     content: '>';
     position: absolute;
     left: 0;
-    color: var(--blue-soft);
+    color: var(--muted);
     font-family: var(--font-mono);
     font-size: 13px;
   }
 
-  .skills-overview {
+  /* How I Work */
+  .work-grid {
     display: grid;
     gap: var(--card-gap);
-    margin-bottom: var(--space-6);
   }
 
   @media (min-width: 768px) {
-    .skills-overview {
-      grid-template-columns: repeat(2, 1fr);
+    .work-grid {
+      grid-template-columns: repeat(3, 1fr);
     }
   }
 
-  @media (min-width: 1024px) {
-    .skills-overview {
-      grid-template-columns: repeat(4, 1fr);
-    }
-  }
-
-  .chip-group {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-2);
-  }
-
-  .skills-overview__cta {
-    text-align: center;
-  }
-
+  /* About Teaser */
   .about-teaser {
     max-width: 800px;
   }
@@ -469,24 +739,47 @@ import { projects } from '../data/projects.js';
     font-weight: 500;
     letter-spacing: 0.04em;
     text-transform: uppercase;
-    color: var(--blue-soft);
+    color: var(--muted);
     transition: color 0.15s ease, gap 0.15s ease;
   }
 
   .about-teaser__link:hover {
-    color: var(--red);
+    color: var(--signal);
     gap: var(--space-3);
   }
 
   .about-teaser__link:focus-visible {
-    outline: 2px solid var(--blue-soft);
+    outline: 2px solid var(--signal);
     outline-offset: 3px;
     border-radius: var(--radius-card);
   }
 
+  /* Roadmap */
+  .roadmap__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-bottom: var(--space-4);
+  }
+
+  .chip__status {
+    margin-left: var(--space-2);
+    color: var(--signal);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 500;
+  }
+
+  .roadmap__note {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* CTA Section */
   .cta-section {
-    background: linear-gradient(180deg, transparent, var(--bg-blue));
     border-top: 1px solid var(--border);
+    padding-top: var(--space-8);
   }
 
   .cta__title {

@@ -31,7 +31,7 @@ import { agents } from '../data/agents.js';
   }
 
   .agent-panel__agent:hover {
-    border-color: var(--blue);
+    border-color: var(--signal);
     background: var(--surface);
   }
 
@@ -48,7 +48,7 @@ import { agents } from '../data/agents.js';
     transform: translateX(-50%);
     width: 1px;
     height: 12px;
-    background: linear-gradient(180deg, var(--blue-soft), transparent);
+    background: linear-gradient(180deg, var(--muted), transparent);
     opacity: 0.4;
   }
 
@@ -84,7 +84,7 @@ import { agents } from '../data/agents.js';
   .agent-panel__connector {
     width: 1px;
     height: 24px;
-    background: linear-gradient(180deg, var(--blue-soft), transparent);
+    background: linear-gradient(180deg, var(--muted), transparent);
     opacity: 0.3;
     position: relative;
   }
@@ -98,7 +98,7 @@ import { agents } from '../data/agents.js';
     width: 4px;
     height: 4px;
     border-radius: 50%;
-    background: var(--blue-soft);
+    background: var(--muted);
     opacity: 0;
     animation: connector-pulse 3s ease-in-out infinite;
   }
@@ -144,7 +144,7 @@ import { agents } from '../data/agents.js';
   }
 
   .agent-panel__log-prefix {
-    color: var(--blue-soft);
+    color: var(--muted);
     margin-right: var(--space-2);
   }
 
