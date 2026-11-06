@@ -329,13 +329,7 @@ import Button from './Button.astro';
 
     function navigateTo(href) {
       skipIntro();
-      if (typeof window.gateNavigate === 'function') {
-        window.gateNavigate(href);
-      } else {
-        const link = document.createElement('a');
-        link.href = href;
-        link.click();
-      }
+      window.location.assign(href);
     }
 
     function runSequence() {
