@@ -13,101 +13,50 @@ import { projects } from '../data/projects.js';
 
 <BaseLayout title="Rishi Sakhija | AI/ML Builder" description="AI/ML builder focused on agents, automation, and search systems. Self-taught, remote, open to work.">
 
-  <!-- SYSTEM BAR -->
-  <div class="system-bar" aria-hidden="true" role="status">
-    <div class="container">
-      <div class="system-bar__left">
-        <span class="system-bar__item">SYS ONLINE</span>
-        <span class="system-bar__sep" aria-hidden="true">·</span>
-        <span class="system-bar__item" id="system-time">LOCAL TIME --:--:--</span>
-      </div>
-      <div class="system-bar__right">
-        <span class="system-bar__item">REMOTE</span>
-        <span class="system-bar__sep" aria-hidden="true">·</span>
-        <span class="system-bar__item">BUILD <span id="build-date">2026-11-05</span></span>
-      </div>
-    </div>
-  </div>
-
   <!-- HERO -->
   <section class="hero" aria-labelledby="hero-title">
     <div class="container">
-      <div class="hero__grid">
-        <div class="hero__content">
-          <!-- Tick mark ruler on left -->
-          <div class="hero__ruler" aria-hidden="true">
-            <span class="hero__ruler-mark" style="--i:0"></span>
-            <span class="hero__ruler-mark" style="--i:1"></span>
-            <span class="hero__ruler-mark" style="--i:2"></span>
-            <span class="hero__ruler-mark" style="--i:3"></span>
-            <span class="hero__ruler-mark" style="--i:4"></span>
-            <span class="hero__ruler-mark" style="--i:5"></span>
-          </div>
-
-          <!-- Oversized RS watermark -->
-          <div class="hero__watermark" aria-hidden="true">
-            <RSLogo size={280} />
-          </div>
-
-          <div class="hero__status" role="status" aria-live="polite">
-            <StatusDot status="live" label="open to work · remote" />
-          </div>
-
-          <h1 id="hero-title" class="hero__name">
-            <span style="color: var(--text); -webkit-text-fill-color: var(--text); background: none;">Rishi</span>Sakhija
-            <span class="sr-only">Rishi Sakhija</span>
-          </h1>
-
-          <p class="hero__role" aria-hidden="true">AI/ML builder in the making · Agents & Automation</p>
-
-          <p class="hero__bio">
-            Self-taught for 2.5+ years, I design and build AI agents, search systems, and automation that turn complex work into simple workflows.
-          </p>
-
-          <div class="hero__actions">
-            <Button variant="primary" href="/projects">View Projects</Button>
-            <Button variant="secondary" href="/contact">Get in Touch</Button>
-          </div>
-
-          <div class="hero__stats" aria-label="Stats">
-            <div class="hero__stat">
-              <span class="hero__stat-value">2.5+</span>
-              <span class="hero__stat-label">years building</span>
-            </div>
-            <div class="hero__stat">
-              <span class="hero__stat-value">3</span>
-              <span class="hero__stat-label">projects in progress or planned</span>
-            </div>
-            <div class="hero__stat">
-              <span class="hero__stat-value">Remote</span>
-              <span class="hero__stat-label">open to work</span>
-            </div>
-          </div>
-
-          <div class="hero__scroll-cue" aria-hidden="true">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="6 9 12 15 18 9"/>
-            </svg>
-            <span>scroll</span>
-          </div>
+      <div class="hero__content">
+        <!-- Tick mark ruler on left -->
+        <div class="hero__ruler" aria-hidden="true">
+          <span class="hero__ruler-mark" style="--i:0"></span>
+          <span class="hero__ruler-mark" style="--i:1"></span>
+          <span class="hero__ruler-mark" style="--i:2"></span>
+          <span class="hero__ruler-mark" style="--i:3"></span>
+          <span class="hero__ruler-mark" style="--i:4"></span>
+          <span class="hero__ruler-mark" style="--i:5"></span>
         </div>
 
-        <div class="hero__panel" aria-hidden="true">
-          <!-- Stats as stacked bordered HUD readout cells -->
-          <div class="hero__panel-stats" role="region" aria-label="Key metrics">
-            <div class="hero__panel-stat">
-              <span class="hero__panel-stat-value">2.5+</span>
-              <span class="hero__panel-stat-label">years building</span>
-            </div>
-            <div class="hero__panel-stat">
-              <span class="hero__panel-stat-value">3</span>
-              <span class="hero__panel-stat-label">projects in progress or planned</span>
-            </div>
-            <div class="hero__panel-stat">
-              <span class="hero__panel-stat-value">Remote</span>
-              <span class="hero__panel-stat-label">open to work</span>
-            </div>
-          </div>
+        <!-- Oversized RS watermark -->
+        <div class="hero__watermark" aria-hidden="true">
+          <RSLogo size={280} />
+        </div>
+
+        <div class="hero__status" role="status" aria-live="polite">
+          <StatusDot status="live" label="open to work · remote" />
+        </div>
+
+        <h1 id="hero-title" class="hero__name">
+          <span style="color: var(--text); -webkit-text-fill-color: var(--text); background: none;">Rishi</span>Sakhija
+          <span class="sr-only">Rishi Sakhija</span>
+        </h1>
+
+        <p class="hero__role" aria-hidden="true">AI/ML builder in the making · Agents & Automation</p>
+
+        <p class="hero__bio">
+          Self-taught for 2.5+ years, I design and build AI agents, search systems, and automation that turn complex work into simple workflows.
+        </p>
+
+        <div class="hero__actions">
+          <Button variant="primary" href="/projects">View Projects</Button>
+          <Button variant="secondary" href="/contact">Get in Touch</Button>
+        </div>
+
+        <div class="hero__scroll-cue" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"/>
+          </svg>
+          <span>scroll</span>
         </div>
       </div>
     </div>
@@ -295,21 +244,6 @@ import { projects } from '../data/projects.js';
 </BaseLayout>
 
 <script>
-  // System bar clock
-  (() => {
-    const timeEl = document.getElementById('system-time');
-    if (!timeEl) return;
-    function update() {
-      const now = new Date();
-      const hh = String(now.getHours()).padStart(2, '0');
-      const mm = String(now.getMinutes()).padStart(2, '0');
-      const ss = String(now.getSeconds()).padStart(2, '0');
-      timeEl.textContent = `LOCAL TIME ${hh}:${mm}:${ss}`;
-    }
-    update();
-    setInterval(update, 1000);
-  })();
-
   // Scroll cue fade on scroll
   (() => {
     const cue = document.querySelector('.hero__scroll-cue');
@@ -329,69 +263,20 @@ import { projects } from '../data/projects.js';
 </script>
 
 <style>
-  /* System Bar */
-  .system-bar {
-    position: sticky;
-    top: 0;
-    z-index: 999;
-    border-bottom: 1px solid var(--border);
-    background: var(--surface);
-    padding: var(--space-2) 0;
-    font-family: var(--font-mono);
-    font-size: 11.5px;
-    font-weight: 500;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
-
-  .system-bar .container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--space-4);
-  }
-
-  .system-bar__left,
-  .system-bar__right {
-    display: flex;
-    align-items: center;
-    gap: var(--space-2);
-  }
-
-  .system-bar__sep {
-    opacity: 0.4;
-  }
-
-  .system-bar__item {
-    white-space: nowrap;
-  }
-
-  #system-time {
-    font-variant-numeric: tabular-nums;
-  }
-
   /* Hero */
   .hero {
     position: relative;
-    min-height: calc(100svh - 96px);
+    min-height: calc(85svh - 64px);
     padding-block: var(--space-9);
     display: flex;
     align-items: center;
+    justify-content: center;
   }
 
-  .hero__grid {
-    display: grid;
-    gap: var(--space-8);
-    align-items: center;
-    position: relative;
-    z-index: 1;
-  }
-
-  @media (min-width: 1024px) {
-    .hero__grid {
-      grid-template-columns: 1fr 340px;
-    }
+  .hero__content {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
   }
 
   .hero__ruler {
@@ -442,7 +327,7 @@ import { projects } from '../data/projects.js';
   }
 
   .hero__status {
-    margin-bottom: var(--space-4);
+    margin-bottom: var(--space-5);
   }
 
   .hero__name {
@@ -451,7 +336,7 @@ import { projects } from '../data/projects.js';
     font-size: clamp(3.4rem, 12vw, 12rem);
     line-height: 1.05;
     letter-spacing: -0.03em;
-    margin-bottom: var(--space-4);
+    margin-bottom: var(--space-5);
     white-space: nowrap;
     overflow: hidden;
   }
@@ -476,7 +361,7 @@ import { projects } from '../data/projects.js';
     letter-spacing: 0.04em;
     text-transform: uppercase;
     color: var(--muted);
-    margin-bottom: var(--space-5);
+    margin-bottom: var(--space-6);
   }
 
   .hero__bio {
@@ -484,50 +369,14 @@ import { projects } from '../data/projects.js';
     line-height: 1.7;
     color: var(--text-fade);
     max-width: 55ch;
-    margin-bottom: var(--space-6);
+    margin-bottom: var(--space-8);
   }
 
   .hero__actions {
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-4);
-    margin-bottom: var(--space-6);
-  }
-
-  .hero__stats {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-6);
-    margin-bottom: var(--space-8);
-  }
-
-  .hero__stat {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--space-1);
-    padding: var(--space-3) var(--space-4);
-    background: var(--surface-2);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-card);
-    min-width: 100px;
-  }
-
-  .hero__stat-value {
-    font-family: var(--font-heading);
-    font-weight: 700;
-    font-size: clamp(1.5rem, 4vw, 2.25rem);
-    line-height: 1.1;
-    color: var(--text);
-  }
-
-  .hero__stat-label {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--muted);
+    margin-bottom: var(--space-10);
   }
 
   .hero__scroll-cue {
@@ -559,58 +408,6 @@ import { projects } from '../data/projects.js';
   @media (prefers-reduced-motion: reduce) {
     .hero__scroll-cue {
       animation: none;
-    }
-  }
-
-  .hero__panel {
-    position: sticky;
-    top: 100px;
-  }
-
-  .hero__panel-stats {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-3);
-  }
-
-  .hero__panel-stat {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--space-1);
-    padding: var(--space-4) var(--space-5);
-    background: var(--surface-2);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-card);
-    min-width: 100%;
-  }
-
-  .hero__panel-stat-value {
-    font-family: var(--font-heading);
-    font-weight: 700;
-    font-size: clamp(1.75rem, 5vw, 2.5rem);
-    line-height: 1.1;
-    color: var(--text);
-  }
-
-  .hero__panel-stat-label {
-    font-family: var(--font-mono);
-    font-size: 11.5px;
-    font-weight: 500;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
-
-  @media (min-width: 768px) {
-    .hero__panel-stats {
-      flex-direction: row;
-      gap: var(--space-4);
-    }
-
-    .hero__panel-stat {
-      flex: 1;
-      min-width: 0;
     }
   }
 
