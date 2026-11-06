@@ -1,0 +1,160 @@
+---
+interface Props {
+  variant: 'flow' | 'hub';
+  labels?: string[];
+}
+
+const { variant, labels = [] } = Astro.props;
+
+// Default labels per variant
+const defaultFlowLabels = ['query', 'tech & AI\nindex', 'results'];
+const defaultHubLabels = ['CEO agent', 'Research', 'Analysis', 'Content'];
+
+const flowLabels = labels.length > 0 ? labels : (variant === 'flow' ? defaultFlowLabels : defaultHubLabels);
+const hubLabels = labels.length > 0 ? labels : defaultHubLabels;
+---
+
+<style>
+  .diagram-wrapper {
+    width: 100%;
+    height: 160px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  .diagram-wrapper svg {
+    width: 100%;
+    height: 100%;
+    max-width: 360px;
+  }
+
+  .diagram-caption {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-align: center;
+    margin-top: var(--space-3);
+  }
+
+  /* Flow variant nodes */
+  .diagram-node {
+    fill: var(--surface-2);
+    stroke: var(--border-strong);
+    stroke-width: 1;
+  }
+
+  .diagram-node--highlight {
+    stroke: var(--signal);
+  }
+
+  .diagram-text {
+    fill: var(--text);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-anchor: middle;
+    dominant-baseline: middle;
+  }
+
+  .diagram-connector {
+    fill: none;
+    stroke: var(--border-strong);
+    stroke-width: 1;
+  }
+
+  .diagram-arrowhead {
+    fill: var(--border-strong);
+  }
+
+  .diagram-caption {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-align: center;
+    margin-top: var(--space-3);
+  }
+</style>
+
+<div class="diagram-wrapper" role="img" aria-label={variant === 'flow' ? 'Flow diagram' : 'Hub diagram'}>
+  <svg viewBox="0 0 360 160" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="6" refY="3" orient="auto" markerUnits="strokeWidth">
+        <path d="M0,0 L6,3 L0,6 Z" class="diagram-arrowhead" />
+      </marker>
+    </defs>
+
+    {variant === 'flow' && (
+      <>
+        <!-- Node 1: query -->
+        <rect x="8" y="58" width="100" height="44" rx="8" class="diagram-node" />
+        <text x="58" y="80" class="diagram-text">
+          {flowLabels[0].split('\n').map((line, i) => (
+            <tspan x="58" dy={i === 0 ? '0' : '1.2em'}>{line}</tspan>
+          ))}
+        </text>
+
+        <!-- Connector 1 -->
+        <line x1="108" y1="80" x2="130" y2="80" class="diagram-connector" marker-end="url(#arrowhead)" />
+
+        <!-- Node 2: tech & AI index (highlighted) -->
+        <rect x="130" y="58" width="100" height="44" rx="8" class="diagram-node diagram-node--highlight" />
+        <text x="180" y="80" class="diagram-text">
+          {flowLabels[1].split('\n').map((line, i) => (
+            <tspan x="180" dy={i === 0 ? '0' : '1.2em'}>{line}</tspan>
+          ))}
+        </text>
+
+        <!-- Connector 2 -->
+        <line x1="230" y1="80" x2="252" y2="80" class="diagram-connector" marker-end="url(#arrowhead)" />
+
+        <!-- Node 3: results -->
+        <rect x="252" y="58" width="100" height="44" rx="8" class="diagram-node" />
+        <text x="302" y="80" class="diagram-text">
+          {flowLabels[2].split('\n').map((line, i) => (
+            <tspan x="302" dy={i === 0 ? '0' : '1.2em'}>{line}</tspan>
+          ))}
+        </text>
+      </>
+    )}
+
+    {variant === 'hub' && (
+      <>
+        <!-- CEO node (top center, highlighted) -->
+        <rect x="130" y="14" width="100" height="40" rx="8" class="diagram-node diagram-node--highlight" />
+        <text x="180" y="34" class="diagram-text" font-size="11">
+          {hubLabels[0]}
+        </text>
+
+        <!-- Vertical connector from CEO down to horizontal line -->
+        <line x1="180" y1="54" x2="180" y2="80" class="diagram-connector" />
+
+        <!-- Horizontal connector line -->
+        <line x1="60" y1="80" x2="300" y2="80" class="diagram-connector" />
+
+        <!-- Vertical connectors down to bottom nodes -->
+        <line x1="60" y1="80" x2="60" y2="106" class="diagram-connector" />
+        <line x1="180" y1="80" x2="180" y2="106" class="diagram-connector" />
+        <line x1="300" y1="80" x2="300" y2="106" class="diagram-connector" />
+
+        <!-- Bottom nodes -->
+        <rect x="12" y="106" width="96" height="40" rx="8" class="diagram-node" />
+        <text x="60" y="126" class="diagram-text" font-size="11">{hubLabels[1]}</text>
+
+        <rect x="132" y="106" width="96" height="40" rx="8" class="diagram-node" />
+        <text x="180" y="126" class="diagram-text" font-size="11">{hubLabels[2]}</text>
+
+        <rect x="252" y="106" width="96" height="40" rx="8" class="diagram-node" />
+        <text x="300" y="126" class="diagram-text" font-size="11">{hubLabels[3]}</text>
+      </>
+    )}
+  </svg>
+</div>
+
+<p class="diagram-caption">concept diagram</p>

@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import HudCard from '../../components/HudCard.astro';
 import SectionHeader from '../../components/SectionHeader.astro';
 import Chip from '../../components/Chip.astro';
+import ProjectDiagram from '../../components/ProjectDiagram.astro';
 import { projects } from '../../data/projects.js';
 ---
 
@@ -37,46 +38,16 @@ import { projects } from '../../data/projects.js';
                 <p class="project-card__desc">{project.description}</p>
                 <p class="project-card__plain">{project.plainWords}</p>
                 <div class="project-card__diagram" aria-label={`${project.name} concept diagram`}>
-                  {project.slug === 'agentic-team' && (
-                    <svg viewBox="0 0 240 140" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="diag-title-1">
-                      <title id="diag-title-1">Agentic Team concept: CEO agent connected to Research, Analysis, and Content agents</title>
-                      <circle cx="120" cy="25" r="30" stroke="var(--border)" stroke-width="1.5" fill="var(--surface-2)"/>
-                      <text x="120" y="30" text-anchor="middle" font-family="var(--font-mono)" font-size="9" fill="var(--text)">CEO</text>
-                      <circle cx="40" cy="95" r="28" stroke="var(--border)" stroke-width="1.5" fill="var(--surface-2)"/>
-                      <text x="40" y="100" text-anchor="middle" font-family="var(--font-mono)" font-size="8" fill="var(--text)">Research</text>
-                      <circle cx="120" cy="100" r="28" stroke="var(--border)" stroke-width="1.5" fill="var(--surface-2)"/>
-                      <text x="120" y="105" text-anchor="middle" font-family="var(--font-mono)" font-size="8" fill="var(--text)">Analysis</text>
-                      <circle cx="200" cy="95" r="28" stroke="var(--border)" stroke-width="1.5" fill="var(--surface-2)"/>
-                      <text x="200" y="100" text-anchor="middle" font-family="var(--font-mono)" font-size="8" fill="var(--text)">Content</text>
-                      <line x1="120" y1="55" x2="68" y2="67" stroke="var(--muted)" stroke-width="1" stroke-dasharray="4 4"/>
-                      <line x1="120" y1="55" x2="120" y2="72" stroke="var(--muted)" stroke-width="1" stroke-dasharray="4 4"/>
-                      <line x1="120" y1="55" x2="172" y2="67" stroke="var(--muted)" stroke-width="1" stroke-dasharray="4 4"/>
-                    </svg>
-                  )}
-                  {project.slug === 'ai-search-engine' && (
-                    <svg viewBox="0 0 240 100" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="diag-title-2">
-                      <title id="diag-title-2">AI Search Engine concept: query flows to tech-and-AI index, then to results</title>
-                      <rect x="20" y="30" width="60" height="40" rx="6" stroke="var(--border)" stroke-width="1.5" fill="var(--surface-2)"/>
-                      <text x="50" y="55" text-anchor="middle" font-family="var(--font-mono)" font-size="9" fill="var(--text)">query</text>
-                      <path d="M80 50 L100 50 L100 30 L140 30 L140 70 L100 70 L100 50" stroke="var(--muted)" stroke-width="1.5" fill="none" stroke-dasharray="4 4"/>
-                      <rect x="160" y="20" width="60" height="60" rx="6" stroke="var(--border)" stroke-width="1.5" fill="var(--surface-2)"/>
-                      <text x="190" y="55" text-anchor="middle" font-family="var(--font-mono)" font-size="9" fill="var(--text)">results</text>
-                      <rect x="100" y="30" width="60" height="40" rx="6" stroke="var(--signal)" stroke-width="1.5" fill="var(--surface)"/>
-                      <text x="130" y="55" text-anchor="middle" font-family="var(--font-mono)" font-size="8" fill="var(--signal)">tech & AI index</text>
-                    </svg>
-                  )}
-                  {project.slug === 'virtual-shelf' && (
-                    <svg viewBox="0 0 240 100" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="diag-title-3">
-                      <title id="diag-title-3">Virtual Shelf concept: YouTube link converts to notes, saved on shelf</title>
-                      <rect x="20" y="30" width="60" height="40" rx="6" stroke="var(--border)" stroke-width="1.5" fill="var(--surface-2)"/>
-                      <text x="50" y="55" text-anchor="middle" font-family="var(--font-mono)" font-size="9" fill="var(--text)">YouTube</text>
-                      <path d="M80 50 L100 50 L100 30 L140 30 L140 70 L100 70 L100 50" stroke="var(--muted)" stroke-width="1.5" fill="none" stroke-dasharray="4 4"/>
-                      <rect x="160" y="20" width="60" height="60" rx="6" stroke="var(--border)" stroke-width="1.5" fill="var(--surface-2)"/>
-                      <text x="190" y="55" text-anchor="middle" font-family="var(--font-mono)" font-size="9" fill="var(--text)">shelf</text>
-                      <rect x="100" y="30" width="60" height="40" rx="6" stroke="var(--signal)" stroke-width="1.5" fill="var(--surface)"/>
-                      <text x="130" y="55" text-anchor="middle" font-family="var(--font-mono)" font-size="8" fill="var(--signal)">notes</text>
-                    </svg>
-                  )}
+                  <ProjectDiagram
+                    variant={project.slug === 'agentic-team' ? 'hub' : 'flow'}
+                    labels={
+                      project.slug === 'agentic-team'
+                        ? ['CEO agent', 'Research', 'Analysis', 'Content']
+                        : project.slug === 'ai-search-engine'
+                          ? ['query', 'tech & AI\nindex', 'results']
+                          : ['YouTube\nlink', 'notes', 'shelf']
+                    }
+                  />
                 </div>
                 <div class="project-card__tags">
                   {project.tags.map(tag => (
@@ -154,6 +125,7 @@ import { projects } from '../../data/projects.js';
   .projects-grid {
     display: grid;
     gap: var(--card-gap);
+    align-items: stretch;
   }
 
   @media (min-width: 768px) {
@@ -187,12 +159,14 @@ import { projects } from '../../data/projects.js';
     font-weight: 600;
     font-size: 1.125rem;
     line-height: 1.3;
+    color: var(--text);
   }
 
   .project-card__desc {
     font-size: 15px;
     line-height: 1.6;
-    color: var(--text-fade);
+    color: var(--text);
+    opacity: 0.85;
     margin-bottom: var(--space-3);
   }
 
@@ -213,7 +187,7 @@ import { projects } from '../../data/projects.js';
   .project-card__diagram svg {
     width: 100%;
     height: auto;
-    max-height: 140px;
+    max-height: 160px;
   }
 
   .project-card__tags {
@@ -232,7 +206,7 @@ import { projects } from '../../data/projects.js';
     font-weight: 500;
     letter-spacing: 0.04em;
     text-transform: uppercase;
-    color: var(--muted);
+    color: var(--text);
     transition: color 0.15s ease, gap 0.15s ease;
     margin-top: auto;
   }

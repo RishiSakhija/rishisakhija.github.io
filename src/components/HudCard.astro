@@ -13,24 +13,24 @@ const slot = Astro.slots.has('default') ? Astro.slots.render('default') : '';
   .hud-card {
     position: relative;
     background: var(--surface);
-    border: var(--card-border);
+    border: 1px solid var(--border-strong);
     border-radius: var(--radius-card);
     padding: var(--card-padding);
-    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    transition: transform 0.2s ease, border-color 0.2s ease;
     display: flex;
     flex-direction: column;
   }
 
   .hud-card--elevated:hover {
     transform: translateY(-2px);
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+    border-color: var(--signal);
   }
 
   .hud-card__corner {
     position: absolute;
     width: 14px;
     height: 14px;
-    border: 1px solid color-mix(in srgb, var(--muted) 60%, transparent);
+    border: 1px solid var(--border-strong);
     transition: width 0.2s ease, height 0.2s ease, border-color 0.2s ease;
     pointer-events: none;
     z-index: 1;
@@ -82,7 +82,7 @@ const slot = Astro.slots.has('default') ? Astro.slots.render('default') : '';
     font-family: var(--font-mono);
     font-size: 11px;
     font-weight: 500;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--muted);
     margin-bottom: var(--space-4);
