@@ -16,11 +16,10 @@ const items = [
   .ticker {
     width: 100%;
     overflow: hidden;
-    background: linear-gradient(90deg, transparent, var(--surface), transparent);
+    background: transparent;
     border-top: 1px solid var(--border);
     border-bottom: 1px solid var(--border);
     padding: var(--space-4) 0;
-    mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
   }
 
   .ticker__track {
@@ -38,9 +37,11 @@ const items = [
     display: inline-flex;
     align-items: center;
     gap: var(--space-2);
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     font-size: 13px;
     font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
     color: var(--text-fade);
     white-space: nowrap;
     flex-shrink: 0;
@@ -73,9 +74,6 @@ const items = [
   @media (prefers-reduced-motion: reduce) {
     .ticker__track {
       animation: none;
-    }
-    .ticker {
-      mask-image: none;
     }
   }
 </style>

@@ -13,7 +13,7 @@ const slot = Astro.slots.has('default') ? Astro.slots.render('default') : '';
   .hud-card {
     position: relative;
     background: var(--surface);
-    border: 1px solid var(--border-strong);
+    border: 1px solid var(--border);
     border-radius: var(--radius-card);
     padding: var(--card-padding);
     transition: transform 0.2s ease, border-color 0.2s ease;
@@ -23,95 +23,51 @@ const slot = Astro.slots.has('default') ? Astro.slots.render('default') : '';
 
   .hud-card--elevated:hover {
     transform: translateY(-2px);
-    border-color: var(--signal);
+    border-color: var(--border-strong);
   }
 
-  .hud-card__corner {
-    position: absolute;
-    width: 14px;
-    height: 14px;
-    border: 1px solid var(--border-strong);
-    transition: width 0.2s ease, height 0.2s ease, border-color 0.2s ease;
-    pointer-events: none;
-    z-index: 1;
+  .hud-card:hover .hud-card__title::after,
+  .hud-card:focus-within .hud-card__title::after {
+    width: 100%;
   }
 
-  .hud-card__corner--tl {
-    top: 0;
-    left: 0;
-    border-right: none;
-    border-bottom: none;
-    border-radius: var(--radius-card) 0 0 0;
-  }
-
-  .hud-card__corner--tr {
-    top: 0;
-    right: 0;
-    border-left: none;
-    border-bottom: none;
-    border-radius: 0 var(--radius-card) 0 0;
-  }
-
-  .hud-card__corner--bl {
-    bottom: 0;
-    left: 0;
-    border-right: none;
-    border-top: none;
-    border-radius: 0 0 0 var(--radius-card);
-  }
-
-  .hud-card__corner--br {
-    bottom: 0;
-    right: 0;
-    border-left: none;
-    border-top: none;
-    border-radius: 0 0 var(--radius-card) 0;
-  }
-
-  .hud-card:hover .hud-card__corner,
-  .hud-card:focus-within .hud-card__corner {
-    width: 18px;
-    height: 18px;
-    border-color: var(--signal);
-  }
-
-  .hud-card__label {
+  .hud-card__title {
+    position: relative;
     display: inline-flex;
     align-items: center;
     gap: var(--space-2);
-    font-family: var(--font-mono);
-    font-size: 11px;
+    font-family: var(--font-body);
+    font-size: 11.5px;
     font-weight: 500;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--muted);
     margin-bottom: var(--space-4);
     padding-left: 2px;
   }
 
-  .hud-card__label::before {
+  .hud-card__title::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: var(--signal);
+    transition: width 0.2s ease;
+  }
+
+  .hud-card__title::before {
     content: '';
     width: 12px;
     height: 1px;
     background: currentColor;
     opacity: 0.5;
   }
-
-  @media (prefers-reduced-motion: reduce) {
-    .hud-card,
-    .hud-card__corner {
-      transition: none;
-    }
-  }
 </style>
 
 <article class="hud-card {elevated ? 'hud-card--elevated' : ''} {className}">
-  <div class="hud-card__corner hud-card__corner--tl" aria-hidden="true"></div>
-  <div class="hud-card__corner hud-card__corner--tr" aria-hidden="true"></div>
-  <div class="hud-card__corner hud-card__corner--bl" aria-hidden="true"></div>
-  <div class="hud-card__corner hud-card__corner--br" aria-hidden="true"></div>
-
-  {label && <div class="hud-card__label" aria-hidden="true">{label}</div>}
+  {label && <div class="hud-card__title" aria-hidden="true">{label}</div>}
   <div class="hud-card__content">
     <slot />
   </div>

@@ -217,148 +217,152 @@ if (!project) {
     display: flex;
     align-items: center;
     gap: var(--space-2);
-    font-family: var(--font-mono);
-    font-size: 11.5px;
-    font-weight: 500;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: var(--space-2);
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 500.
+    color: var(--muted).
+    margin-bottom: var(--space-2).
   }
 
   .page-header__breadcrumb span:not([aria-hidden]) {
-    color: var(--text-fade);
+    color: var(--text-fade).
   }
 
   .page-header__number {
-    font-family: var(--font-mono);
-    font-size: 12.5px;
-    font-weight: 500;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--signal);
-    margin-bottom: var(--space-1);
+    font-family: var(--font-body).
+    font-size: 11.5px.
+    font-weight: 500.
+    letter-spacing: 0.14em.
+    text-transform: uppercase.
+    color: var(--signal).
+    margin-bottom: var(--space-1).
   }
 
   .page-header__title {
-    font-family: var(--font-heading);
-    font-weight: 800;
-    font-size: clamp(2.5rem, 6vw, 4.5rem);
-    line-height: 1.1;
-    letter-spacing: -0.03em;
-    background: linear-gradient(90deg, var(--text), var(--text-fade));
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+    font-family: var(--font-heading).
+    font-weight: 400.
+    font-size: clamp(2.75rem, 6.5vw, 5rem).
+    line-height: 1.1.
+    letter-spacing: -0.01em.
+    background: linear-gradient(90deg, var(--text), var(--text-fade)).
+    -webkit-background-clip: text.
+    background-clip: text.
+    -webkit-text-fill-color: transparent.
   }
 
   .project-header {
-    margin-bottom: var(--space-8);
+    margin-bottom: var(--space-8).
   }
 
   .project-header__meta {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: var(--space-3);
-    margin-bottom: var(--space-4);
+    display: flex.
+    flex-wrap: wrap.
+    align-items: center.
+    gap: var(--space-3).
+    margin-bottom: var(--space-4).
   }
 
   .project-header__tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-2);
+    display: flex.
+    flex-wrap: wrap.
+    gap: var(--space-2).
   }
 
   .project-header__name {
-    font-size: clamp(2rem, 5vw, 3.5rem);
-    margin-bottom: var(--space-4);
+    font-size: clamp(2rem, 5vw, 3.5rem).
+    margin-bottom: var(--space-4).
   }
 
   .project-header__plain {
-    font-family: var(--font-mono);
-    font-size: 13px;
-    color: var(--muted);
-    max-width: 60ch;
+    font-family: var(--font-body).
+    font-size: 13px.
+    font-weight: 500.
+    letter-spacing: 0.14em.
+    text-transform: uppercase.
+    color: var(--muted).
+    max-width: 60ch.
   }
 
   .project-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-4);
-    margin-bottom: var(--space-4);
+    display: flex.
+    flex-wrap: wrap.
+    gap: var(--space-4).
+    margin-bottom: var(--space-4).
   }
 
   .project-links__note {
-    font-family: var(--font-mono);
-    font-size: 12.5px;
-    color: var(--muted);
+    font-family: var(--font-body).
+    font-size: 12px.
+    font-weight: 500.
+    letter-spacing: 0.14em.
+    text-transform: uppercase.
+    color: var(--muted).
   }
 
   .project-nav {
-    border-top: 1px solid var(--border);
-    padding-top: var(--space-6);
+    border-top: 1px solid var(--border).
+    padding-top: var(--space-6).
   }
 
   .project-nav__grid {
-    display: grid;
-    gap: var(--space-4);
+    display: grid.
+    gap: var(--space-4).
   }
 
   @media (min-width: 768px) {
     .project-nav__grid {
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr 1fr.
     }
   }
 
   .project-nav__link {
-    display: flex;
-    align-items: center;
-    gap: var(--space-4);
-    padding: var(--space-4);
-    background: var(--surface);
-    border: var(--card-border);
-    border-radius: var(--radius-card);
-    transition: border-color 0.15s ease, background 0.15s ease;
+    display: flex.
+    align-items: center.
+    gap: var(--space-4).
+    padding: var(--space-4).
+    background: var(--surface).
+    border: 1px solid var(--border).
+    border-radius: var(--radius-card).
+    transition: border-color 0.15s ease, background 0.15s ease.
   }
 
   .project-nav__link:hover {
-    border-color: var(--signal);
-    background: var(--surface-2);
+    border-color: var(--signal).
+    background: var(--surface-2).
   }
 
   .project-nav__link:focus-visible {
-    outline: 2px solid var(--signal);
-    outline-offset: 3px;
+    outline: 2px solid var(--signal).
+    outline-offset: 3px.
   }
 
   .project-nav__link--prev {
-    flex-direction: row;
+    flex-direction: row.
   }
 
   .project-nav__link--next {
-    flex-direction: row-reverse;
-    justify-content: flex-end;
+    flex-direction: row-reverse.
+    justify-content: flex-end.
   }
 
   .project-nav__label {
-    font-family: var(--font-mono);
-    font-size: 11.5px;
-    font-weight: 500;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--muted);
-    white-space: nowrap;
+    font-family: var(--font-body).
+    font-size: 11.5px.
+    font-weight: 500.
+    letter-spacing: 0.14em.
+    text-transform: uppercase.
+    color: var(--muted).
+    white-space: nowrap.
   }
 
   .project-nav__name {
-    font-family: var(--font-body);
-    font-size: 15px;
-    color: var(--text-fade);
-    transition: color 0.15s ease;
+    font-family: var(--font-body).
+    font-size: 15px.
+    color: var(--text-fade).
+    transition: color 0.15s ease.
   }
 
   .project-nav__link:hover .project-nav__name {
-    color: var(--text);
+    color: var(--text).
   }
 </style>

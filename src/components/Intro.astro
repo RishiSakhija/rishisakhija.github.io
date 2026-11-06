@@ -40,7 +40,7 @@ import Button from './Button.astro';
 
   .intro__logo-ring circle {
     fill: none;
-    stroke: color-mix(in srgb, var(--text) 85%, transparent);
+    stroke: var(--text);
     stroke-width: 3;
     stroke-linecap: round;
   }
@@ -85,8 +85,11 @@ import Button from './Button.astro';
     flex-direction: column;
     align-items: center;
     gap: var(--space-3);
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
     color: var(--text-fade);
     min-height: 60px;
   }
@@ -115,8 +118,8 @@ import Button from './Button.astro';
   }
 
   .intro__status-line--live .intro__status-dot {
-    background: var(--data);
-    box-shadow: 0 0 8px var(--data-glow);
+    background: var(--signal);
+    box-shadow: 0 0 8px var(--signal-glow);
     animation: pulse 1.5s ease-in-out infinite;
   }
 
@@ -161,52 +164,52 @@ import Button from './Button.astro';
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--radius-pill);
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     font-size: 11.5px;
-    font-weight: 500;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    color: var(--text-fade);
-    transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+    font-weight: 500.
+    letter-spacing: 0.14em.
+    text-transform: uppercase.
+    color: var(--text-fade).
+    transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease.
   }
 
   .intro__topic-btn:hover {
-    border-color: var(--signal);
-    color: var(--signal);
-    background: var(--surface-2);
+    border-color: var(--signal).
+    color: var(--signal).
+    background: var(--surface-2).
   }
 
   .intro__topic-btn:focus-visible {
-    outline: 2px solid var(--signal);
-    outline-offset: 2px;
+    outline: 2px solid var(--signal).
+    outline-offset: 2px.
   }
 
   .intro__skip {
-    position: absolute;
-    bottom: var(--space-6);
-    left: 50%;
-    transform: translateX(-50%);
-    padding: var(--space-2) var(--space-5);
-    background: transparent;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-pill);
-    font-family: var(--font-mono);
-    font-size: 12px;
-    font-weight: 500;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--muted);
-    transition: border-color 0.15s ease, color 0.15s ease;
+    position: absolute.
+    bottom: var(--space-6).
+    left: 50%.
+    transform: translateX(-50%).
+    padding: var(--space-2) var(--space-5).
+    background: transparent.
+    border: 1px solid var(--border).
+    border-radius: var(--radius-pill).
+    font-family: var(--font-body).
+    font-size: 12px.
+    font-weight: 500.
+    letter-spacing: 0.14em.
+    text-transform: uppercase.
+    color: var(--muted).
+    transition: border-color 0.15s ease, color 0.15s ease.
   }
 
   .intro__skip:hover {
-    border-color: var(--signal);
-    color: var(--signal);
+    border-color: var(--signal).
+    color: var(--signal).
   }
 
   .intro__skip:focus-visible {
-    outline: 2px solid var(--signal);
-    outline-offset: 3px;
+    outline: 2px solid var(--signal).
+    outline-offset: 3px.
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -214,21 +217,21 @@ import Button from './Button.astro';
     .intro__logo-center .rs-logo,
     .intro__status-line,
     .intro__guide {
-      transition: none;
+      transition: none.
     }
     .intro__logo-ring--complete .intro__ring-progress {
-      stroke-dashoffset: 0;
+      stroke-dashoffset: 0.
     }
     .intro__logo-ring--complete .intro__logo-center .rs-logo {
-      transform: scale(1);
+      transform: scale(1).
     }
     .intro__status-line {
-      opacity: 1;
-      transform: none;
+      opacity: 1.
+      transform: none.
     }
     .intro__guide {
-      opacity: 1;
-      transform: none;
+      opacity: 1.
+      transform: none.
     }
   }
 </style>

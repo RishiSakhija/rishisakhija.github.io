@@ -17,7 +17,7 @@ import { guideTopics } from '../data/guide.js';
     width: 52px;
     height: 52px;
     border-radius: 50%;
-    border: 2px solid color-mix(in srgb, var(--text) 85%, transparent);
+    border: 2px solid var(--text);
     background: var(--surface);
     display: flex;
     justify-content: center;
@@ -55,8 +55,8 @@ import { guideTopics } from '../data/guide.js';
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    background: var(--data);
-    box-shadow: 0 0 8px var(--data-glow);
+    background: var(--signal);
+    box-shadow: 0 0 8px var(--signal-glow);
     border: 2px solid var(--bg);
     animation: pulse 2s ease-in-out infinite;
   }
@@ -72,258 +72,258 @@ import { guideTopics } from '../data/guide.js';
     top: 50%;
     transform: translateY(-50%);
     white-space: nowrap;
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     font-size: 12px;
-    font-weight: 500;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--muted);
-    background: var(--surface);
-    border: 1px solid var(--border);
-    padding: var(--space-1) var(--space-3);
-    border-radius: var(--radius-pill);
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.2s ease, visibility 0.2s ease;
-    pointer-events: none;
+    font-weight: 500.
+    letter-spacing: 0.14em.
+    text-transform: uppercase.
+    color: var(--muted).
+    background: var(--surface).
+    border: 1px solid var(--border).
+    padding: var(--space-1) var(--space-3).
+    border-radius: var(--radius-pill).
+    opacity: 0.
+    visibility: hidden.
+    transition: opacity 0.2s ease, visibility 0.2s ease.
+    pointer-events: none.
   }
 
   @media (min-width: 768px) {
     .guide-helper__trigger:hover .guide-helper__trigger-label {
-      opacity: 1;
-      visibility: visible;
+      opacity: 1.
+      visibility: visible.
     }
   }
 
   .guide-helper__panel {
-    position: absolute;
-    bottom: 68px;
-    right: 0;
-    width: clamp(300px, 80vw, 380px);
-    max-height: 70svh;
-    background: var(--surface);
-    border: var(--card-border);
-    border-radius: var(--radius-card);
-    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5);
-    overflow: hidden;
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(16px) scale(0.96);
-    transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease;
-    display: flex;
-    flex-direction: column;
+    position: absolute.
+    bottom: 68px.
+    right: 0.
+    width: clamp(300px, 80vw, 380px).
+    max-height: 70svh.
+    background: var(--surface).
+    border: 1px solid var(--border).
+    border-radius: var(--radius-card).
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5).
+    overflow: hidden.
+    opacity: 0.
+    visibility: hidden.
+    transform: translateY(16px) scale(0.96).
+    transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease.
+    display: flex.
+    flex-direction: column.
   }
 
   @media (max-width: 480px) {
     .guide-helper__panel {
-      right: calc(-50vw + 156px);
-      width: 90vw;
-      max-width: 360px;
+      right: calc(-50vw + 156px).
+      width: 90vw.
+      max-width: 360px.
     }
   }
 
   .guide-helper__panel--open {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0) scale(1);
+    opacity: 1.
+    visibility: visible.
+    transform: translateY(0) scale(1).
   }
 
   .guide-helper__header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: var(--space-4) var(--space-5);
-    border-bottom: 1px solid var(--border);
+    display: flex.
+    align-items: center.
+    justify-content: space-between.
+    padding: var(--space-4) var(--space-5).
+    border-bottom: 1px solid var(--border).
   }
 
   .guide-helper__title {
-    display: flex;
-    align-items: center;
-    gap: var(--space-2);
-    font-family: var(--font-heading);
-    font-weight: 700;
-    font-size: 15px;
-    color: var(--text);
+    display: flex.
+    align-items: center.
+    gap: var(--space-2).
+    font-family: var(--font-heading).
+    font-weight: 400.
+    font-size: 15px.
+    color: var(--text).
   }
 
   .guide-helper__close {
-    width: 32px;
-    height: 32px;
-    border-radius: var(--radius-card);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: var(--muted);
-    transition: background 0.15s ease, color 0.15s ease;
+    width: 32px.
+    height: 32px.
+    border-radius: var(--radius-card).
+    display: flex.
+    justify-content: center.
+    align-items: center.
+    color: var(--muted).
+    transition: background 0.15s ease, color 0.15s ease.
   }
 
   .guide-helper__close:hover {
-    background: var(--surface-2);
-    color: var(--text);
+    background: var(--surface-2).
+    color: var(--text).
   }
 
   .guide-helper__close:focus-visible {
-    outline: 2px solid var(--signal);
-    outline-offset: 2px;
+    outline: 2px solid var(--signal).
+    outline-offset: 2px.
   }
 
   .guide-helper__close svg {
-    width: 18px;
-    height: 18px;
+    width: 18px.
+    height: 18px.
   }
 
   .guide-helper__content {
-    padding: var(--space-4) var(--space-5);
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-4);
-    max-height: 70svh;
-    overflow-y: auto;
+    padding: var(--space-4) var(--space-5).
+    display: flex.
+    flex-direction: column.
+    gap: var(--space-4).
+    max-height: 70svh.
+    overflow-y: auto.
   }
 
   .guide-helper__greeting {
-    font-family: var(--font-body);
-    font-size: 14px;
-    line-height: 1.6;
-    color: var(--text-fade);
+    font-family: var(--font-body).
+    font-size: 14px.
+    line-height: 1.6.
+    color: var(--text-fade).
   }
 
   .guide-helper__input-wrapper {
-    display: flex;
-    gap: var(--space-2);
-    margin-top: var(--space-2);
+    display: flex.
+    gap: var(--space-2).
+    margin-top: var(--space-2).
   }
 
   .guide-helper__input {
-    flex: 1;
-    padding: var(--space-2) var(--space-3);
-    background: var(--surface-2);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-card);
-    font-family: var(--font-body);
-    font-size: 13px;
-    color: var(--text);
-    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    flex: 1.
+    padding: var(--space-2) var(--space-3).
+    background: var(--surface-2).
+    border: 1px solid var(--border).
+    border-radius: var(--radius-card).
+    font-family: var(--font-body).
+    font-size: 13px.
+    color: var(--text).
+    transition: border-color 0.15s ease, box-shadow 0.15s ease.
   }
 
   .guide-helper__input::placeholder {
-    color: var(--muted);
+    color: var(--muted).
   }
 
   .guide-helper__input:focus {
-    outline: none;
-    border-color: var(--signal);
-    box-shadow: 0 0 0 3px var(--signal-glow);
+    outline: none.
+    border-color: var(--signal).
+    box-shadow: 0 0 0 3px var(--signal-glow).
   }
 
   .guide-helper__input-btn {
-    width: 40px;
-    height: 40px;
-    border-radius: var(--radius-card);
-    background: var(--signal);
-    color: var(--bg);
-    border: none;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    transition: background 0.15s ease, transform 0.15s ease;
-    flex-shrink: 0;
+    width: 40px.
+    height: 40px.
+    border-radius: var(--radius-card).
+    background: var(--signal).
+    color: var(--bg).
+    border: none.
+    display: flex.
+    justify-content: center.
+    align-items: center.
+    cursor: pointer.
+    transition: background 0.15s ease, transform 0.15s ease.
+    flex-shrink: 0.
   }
 
   .guide-helper__input-btn:hover {
-    background: var(--signal-deep);
+    background: var(--signal-deep).
   }
 
   .guide-helper__input-btn:focus-visible {
-    outline: 2px solid var(--signal);
-    outline-offset: 2px;
+    outline: 2px solid var(--signal).
+    outline-offset: 2px.
   }
 
   .guide-helper__input-btn:active {
-    transform: scale(0.95);
+    transform: scale(0.95).
   }
 
   .guide-helper__input-btn svg {
-    width: 18px;
-    height: 18px;
-    stroke: currentColor;
+    width: 18px.
+    height: 18px.
+    stroke: currentColor.
   }
 
   .guide-helper__topics {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
+    display: flex.
+    flex-direction: column.
+    gap: var(--space-2).
   }
 
   .guide-helper__topic-btn {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--space-3);
-    padding: var(--space-3) var(--space-4);
-    background: var(--surface-2);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-card);
-    text-align: left;
-    font-family: var(--font-body);
-    font-size: 13.5px;
-    color: var(--text);
-    transition: border-color 0.15s ease, background 0.15s ease;
+    display: flex.
+    align-items: center.
+    justify-content: space-between.
+    gap: var(--space-3).
+    padding: var(--space-3) var(--space-4).
+    background: var(--surface-2).
+    border: 1px solid var(--border).
+    border-radius: var(--radius-card).
+    text-align: left.
+    font-family: var(--font-body).
+    font-size: 13.5px.
+    color: var(--text).
+    transition: border-color 0.15s ease, background 0.15s ease.
   }
 
   .guide-helper__topic-btn:hover {
-    border-color: var(--signal);
-    background: var(--surface);
+    border-color: var(--signal).
+    background: var(--surface).
   }
 
   .guide-helper__topic-btn:focus-visible {
-    outline: 2px solid var(--signal);
-    outline-offset: 2px;
+    outline: 2px solid var(--signal).
+    outline-offset: 2px.
   }
 
   .guide-helper__topic-btn[aria-expanded="true"] {
-    border-color: var(--signal);
-    background: var(--surface);
+    border-color: var(--signal).
+    background: var(--surface).
   }
 
   .guide-helper__topic-label {
-    display: flex;
-    align-items: center;
-    gap: var(--space-2);
+    display: flex.
+    align-items: center.
+    gap: var(--space-2).
   }
 
   .guide-helper__topic-icon {
-    width: 20px;
-    height: 20px;
-    stroke: var(--muted);
-    flex-shrink: 0;
+    width: 20px.
+    height: 20px.
+    stroke: var(--muted).
+    flex-shrink: 0.
   }
 
   .guide-helper__topic-chevron {
-    width: 16px;
-    height: 16px;
-    stroke: var(--muted);
-    transition: transform 0.2s ease;
-    flex-shrink: 0;
+    width: 16px.
+    height: 16px.
+    stroke: var(--muted).
+    transition: transform 0.2s ease.
+    flex-shrink: 0.
   }
 
   .guide-helper__topic-btn[aria-expanded="true"] .guide-helper__topic-chevron {
-    transform: rotate(180deg);
+    transform: rotate(180deg).
   }
 
   .guide-helper__questions {
-    display: none;
-    flex-direction: column;
-    gap: var(--space-2);
-    margin-top: var(--space-2);
-    padding-left: var(--space-2);
-    border-left: 1px solid var(--border);
+    display: none.
+    flex-direction: column.
+    gap: var(--space-2).
+    margin-top: var(--space-2).
+    padding-left: var(--space-2).
+    border-left: 1px solid var(--border).
   }
 
   .guide-helper__questions--open {
-    display: flex;
-    animation: fade-in 0.2s ease;
+    display: flex.
+    animation: fade-in 0.2s ease.
   }
 
   @keyframes fade-in {
@@ -332,87 +332,90 @@ import { guideTopics } from '../data/guide.js';
   }
 
   .guide-helper__question-btn {
-    display: flex;
-    align-items: center;
-    gap: var(--space-2);
-    padding: var(--space-2) var(--space-3);
-    background: transparent;
-    border: 1px solid transparent;
-    border-radius: var(--radius-card);
-    text-align: left;
-    font-family: var(--font-mono);
-    font-size: 12px;
-    color: var(--text-fade);
-    transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+    display: flex.
+    align-items: center.
+    gap: var(--space-2).
+    padding: var(--space-2) var(--space-3).
+    background: transparent.
+    border: 1px solid transparent.
+    border-radius: var(--radius-card).
+    text-align: left.
+    font-family: var(--font-body).
+    font-size: 12px.
+    font-weight: 500.
+    letter-spacing: 0.14em.
+    text-transform: uppercase.
+    color: var(--text-fade).
+    transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease.
   }
 
   .guide-helper__question-btn:hover {
-    background: var(--surface-2);
-    border-color: var(--border);
-    color: var(--text);
+    background: var(--surface-2).
+    border-color: var(--border).
+    color: var(--text).
   }
 
   .guide-helper__question-btn:focus-visible {
-    outline: 2px solid var(--signal);
-    outline-offset: 2px;
+    outline: 2px solid var(--signal).
+    outline-offset: 2px.
   }
 
   .guide-helper__question-btn::before {
-    content: '>';
-    color: var(--signal);
-    flex-shrink: 0;
+    content: '>'.
+    color: var(--signal).
+    flex-shrink: 0.
   }
 
   .guide-helper__reply {
-    display: none;
-    padding: var(--space-4);
-    background: var(--surface-2);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-card);
-    font-family: var(--font-body);
-    font-size: 13.5px;
-    line-height: 1.6;
-    color: var(--text-fade);
-    animation: fade-in 0.3s ease;
-    margin-top: var(--space-2);
+    display: none.
+    padding: var(--space-4).
+    background: var(--surface-2).
+    border: 1px solid var(--border).
+    border-radius: var(--radius-card).
+    font-family: var(--font-body).
+    font-size: 13.5px.
+    line-height: 1.6.
+    color: var(--text-fade).
+    animation: fade-in 0.3s ease.
+    margin-top: var(--space-2).
   }
 
   .guide-helper__reply--open {
-    display: block;
+    display: block.
   }
 
   .guide-helper__reply-text {
-    white-space: pre-wrap;
-    word-break: break-word;
+    white-space: pre-wrap.
+    word-break: break-word.
   }
 
   .guide-helper__nav {
-    display: none;
-    margin-top: var(--space-3);
-    padding-top: var(--space-3);
-    border-top: 1px solid var(--border);
+    display: none.
+    margin-top: var(--space-3).
+    padding-top: var(--space-3).
+    border-top: 1px solid var(--border).
   }
 
   .guide-helper__nav--open {
-    display: block;
+    display: block.
   }
 
   .guide-helper__typing {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-1);
-    font-family: var(--font-mono);
-    font-size: 12px;
-    color: var(--muted);
-    padding: var(--space-1) var(--space-2);
+    display: inline-flex.
+    align-items: center.
+    gap: var(--space-1).
+    font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace.
+    font-size: 12px.
+    color: var(--muted).
+    padding: var(--space-1) var(--space-2).
   }
 
   .guide-helper__typing-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--signal);
-    animation: typing-bounce 1.4s ease-in-out infinite both;
+    width: 6px.
+    height: 6px.
+    border-radius: 50%.
+    background: var(--signal).
+    animation: typing-bounce 1.4s ease-in-out infinite both.
   }
 
   .guide-helper__typing-dot:nth-child(2) { animation-delay: 0.2s; }
@@ -427,11 +430,11 @@ import { guideTopics } from '../data/guide.js';
     .guide-helper__panel,
     .guide-helper__questions,
     .guide-helper__reply {
-      animation: none;
-      transition: none;
+      animation: none.
+      transition: none.
     }
     .guide-helper__typing-dot {
-      animation: none;
+      animation: none.
     }
   }
 </style>
@@ -767,6 +770,10 @@ import { guideTopics } from '../data/guide.js';
 
       updateFocusTrap();
       inputBtn.disabled = false;
+    }
+
+    function showTyping(element) {
+      element.innerHTML = '<span class="guide-helper__typing"><span class="guide-helper__typing-dot"></span><span class="guide-helper__typing-dot"></span><span class="guide-helper__typing-dot"></span></span>';
     }
 
     function closeQuestion() {

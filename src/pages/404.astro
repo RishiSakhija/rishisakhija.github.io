@@ -56,11 +56,9 @@ import Button from '../components/Button.astro';
     display: flex;
     align-items: center;
     gap: var(--space-2);
-    font-family: var(--font-mono);
-    font-size: 11.5px;
+    font-family: var(--font-body);
+    font-size: 14px;
     font-weight: 500;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
     color: var(--muted);
     margin-bottom: var(--space-2);
   }
@@ -70,10 +68,10 @@ import Button from '../components/Button.astro';
   }
 
   .page-header__number {
-    font-family: var(--font-mono);
-    font-size: 12.5px;
+    font-family: var(--font-body);
+    font-size: 11.5px;
     font-weight: 500;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--signal);
     margin-bottom: var(--space-1);
@@ -81,10 +79,10 @@ import Button from '../components/Button.astro';
 
   .page-header__title {
     font-family: var(--font-heading);
-    font-weight: 800;
-    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 400;
+    font-size: clamp(2.75rem, 6.5vw, 5rem);
     line-height: 1.1;
-    letter-spacing: -0.03em;
+    letter-spacing: -0.01em;
     background: linear-gradient(90deg, var(--text), var(--text-fade));
     -webkit-background-clip: text;
     background-clip: text;
@@ -104,9 +102,9 @@ import Button from '../components/Button.astro';
   }
 
   .error__code {
-    font-family: var(--font-mono);
+    font-family: var(--font-heading);
+    font-weight: 400;
     font-size: clamp(6rem, 20vw, 12rem);
-    font-weight: 700;
     line-height: 1;
     color: var(--signal);
     opacity: 0.3;
@@ -121,13 +119,16 @@ import Button from '../components/Button.astro';
   .error__desc {
     font-size: 17px;
     line-height: 1.7;
-    color: var(--text-fade);
+    color: var(--muted);
     margin-bottom: var(--space-8);
   }
 
   .error__hint {
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
     color: var(--muted);
     display: block;
     margin-top: var(--space-3);

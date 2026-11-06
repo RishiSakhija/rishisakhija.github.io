@@ -6,7 +6,6 @@ interface Props {
 
 const { variant, labels = [] } = Astro.props;
 
-// Default labels per variant
 const defaultFlowLabels = ['query', 'tech & AI\nindex', 'results'];
 const defaultHubLabels = ['CEO agent', 'Research', 'Analysis', 'Content'];
 
@@ -31,17 +30,16 @@ const hubLabels = labels.length > 0 ? labels : defaultHubLabels;
   }
 
   .diagram-caption {
-    font-family: var(--font-mono);
-    font-size: 11px;
+    font-family: var(--font-body);
+    font-size: 11.5px;
     font-weight: 500;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--muted);
     text-align: center;
     margin-top: var(--space-3);
   }
 
-  /* Flow variant nodes */
   .diagram-node {
     fill: var(--surface-2);
     stroke: var(--border-strong);
@@ -54,8 +52,11 @@ const hubLabels = labels.length > 0 ? labels : defaultHubLabels;
 
   .diagram-text {
     fill: var(--text);
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
     text-anchor: middle;
     dominant-baseline: middle;
   }
@@ -68,17 +69,6 @@ const hubLabels = labels.length > 0 ? labels : defaultHubLabels;
 
   .diagram-arrowhead {
     fill: var(--border-strong);
-  }
-
-  .diagram-caption {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--muted);
-    text-align: center;
-    margin-top: var(--space-3);
   }
 </style>
 
@@ -128,9 +118,7 @@ const hubLabels = labels.length > 0 ? labels : defaultHubLabels;
       <>
         <!-- CEO node (top center, highlighted) -->
         <rect x="130" y="14" width="100" height="40" rx="8" class="diagram-node diagram-node--highlight" />
-        <text x="180" y="34" class="diagram-text" font-size="11">
-          {hubLabels[0]}
-        </text>
+        <text x="180" y="34" class="diagram-text" font-size="11">{hubLabels[0]}</text>
 
         <!-- Vertical connector from CEO down to horizontal line -->
         <line x1="180" y1="54" x2="180" y2="80" class="diagram-connector" />

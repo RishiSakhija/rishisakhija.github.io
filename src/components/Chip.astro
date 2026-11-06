@@ -12,10 +12,10 @@ const { variant = 'default', status, class: className = '' } = Astro.props;
   .chip {
     display: inline-flex;
     align-items: center;
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     font-size: 11.5px;
     font-weight: 500;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
     border-radius: var(--radius-pill);
     white-space: nowrap;
@@ -54,8 +54,16 @@ const { variant = 'default', status, class: className = '' } = Astro.props;
   }
 
   .chip--status--live {
-    border-color: var(--data);
-    color: var(--data);
+    border-color: var(--signal);
+    color: var(--signal);
+  }
+
+  .chip__status {
+    margin-left: var(--space-2);
+    color: var(--muted);
+    font-family: var(--font-body);
+    font-size: 10px;
+    font-weight: 500;
   }
 </style>
 
