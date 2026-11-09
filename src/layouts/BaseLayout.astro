@@ -49,15 +49,24 @@ const ogImage = new URL('/og.png', Astro.site);
     </script>
   </head>
   <body>
+    <div class="bg-glow" aria-hidden="true">
+      <span class="bg-blob a"></span>
+      <span class="bg-blob b"></span>
+      <span class="bg-blob c"></span>
+      <span class="bg-blob d"></span>
+    </div>
+
     <a href="#main" class="skip-link">Skip to content</a>
 
-    <Nav />
+    <div class="page-wrapper">
+      <Nav />
 
-    <main id="main" role="main">
-      <slot />
-    </main>
+      <main id="main" role="main">
+        <slot />
+      </main>
 
-    <Footer />
+      <Footer />
+    </div>
 
     <script is:inline>
       (() => {
@@ -76,9 +85,3 @@ const ogImage = new URL('/og.png', Astro.site);
     </script>
   </body>
 </html>
-
-<style>
-  .html-root {
-    background: var(--bg-grad-top);
-  }
-</style>

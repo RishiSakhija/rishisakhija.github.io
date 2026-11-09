@@ -10,6 +10,7 @@ html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #04050A;
 }
 
 html:not(.js) .js-only {
@@ -73,32 +74,8 @@ body {
   line-height: 1.7;
   font-weight: 500;
   color: var(--text-body);
-  background: var(--bg-grad-top);
-  background-color: var(--bg-grad-top);
   min-height: 100vh;
   position: relative;
-}
-
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background:
-    radial-gradient(900px 600px at 12% -5%, var(--bg-glow-a), transparent 70%),
-    radial-gradient(1000px 700px at 100% 35%, var(--bg-glow-b), transparent 70%),
-    radial-gradient(900px 600px at 20% 105%, var(--bg-glow-c), transparent 70%),
-    linear-gradient(180deg, var(--bg-grad-top) 0%, var(--bg-grad-mid) 45%, var(--bg-grad-deep) 100%);
-}
-
-.hero::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background: transparent;
 }
 
 @media (min-width: 1280px) {
@@ -107,8 +84,131 @@ body::before {
   }
 }
 
-p {
-  max-width: 65ch;
+/* ============================================================
+   PAGE BACKGROUND — glowing gradient, never covered
+   ============================================================ */
+
+html {
+  background-color: #04050A;
+}
+
+body {
+  background-color: transparent;
+}
+
+/* Fixed background layer as first child of body (added in BaseLayout) */
+.bg-glow {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  background: linear-gradient(180deg, #04050A 0%, #070D26 40%, #0A1642 100%);
+}
+
+.bg-blob {
+  position: absolute;
+  border-radius: 50%;
+  will-change: transform;
+}
+
+.bg-blob.a {
+  width: 1100px;
+  height: 800px;
+  left: -250px;
+  top: -250px;
+  background: radial-gradient(closest-side, rgba(77, 124, 255, 0.42), transparent);
+  animation: drift-a 28s ease-in-out infinite alternate;
+}
+
+.bg-blob.b {
+  width: 1200px;
+  height: 900px;
+  right: -350px;
+  top: 18%;
+  background: radial-gradient(closest-side, rgba(37, 71, 201, 0.50), transparent);
+  animation: drift-b 34s ease-in-out infinite alternate;
+}
+
+.bg-blob.c {
+  width: 1000px;
+  height: 800px;
+  left: 5%;
+  bottom: -300px;
+  background: radial-gradient(closest-side, rgba(90, 110, 255, 0.30), transparent);
+  animation: drift-c 40s ease-in-out infinite alternate;
+}
+
+.bg-blob.d {
+  width: 800px;
+  height: 600px;
+  left: 50%;
+  top: 40%;
+  margin-left: -400px;
+  background: radial-gradient(closest-side, rgba(77, 124, 255, 0.18), transparent);
+  animation: drift-d 46s ease-in-out infinite alternate;
+}
+
+@keyframes drift-a {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(40px, 30px, 0); }
+}
+@keyframes drift-b {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-30px, 25px, 0); }
+}
+@keyframes drift-c {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(25px, -20px, 0); }
+}
+@keyframes drift-d {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-20px, -30px, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bg-blob {
+    animation: none !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .bg-blob.a { width: 770px; height: 560px; left: -175px; top: -175px; }
+  .bg-blob.b { width: 840px; height: 630px; right: -245px; top: 18%; }
+  .bg-blob.c { width: 700px; height: 560px; left: 5%; bottom: -210px; }
+  .bg-blob.d { width: 560px; height: 420px; left: 50%; top: 40%; margin-left: -280px; }
+}
+
+/* Hero section glow — behind hero content */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(900px 500px at center 30%, rgba(77, 124, 255, 0.28), transparent 70%);
+}
+
+/* Ensure all page wrappers are transparent so bg shows through */
+.section,
+.page-header,
+.container,
+main,
+footer,
+.footer {
+  background: transparent !important;
+}
+
+.footer {
+  background: rgba(5, 6, 10, 0.55) !important;
+  border-top: 1px solid var(--border);
+}
+
+/* Page wrapper sits above bg-glow */
+.page-wrapper {
+  position: relative;
+  z-index: 1;
 }
 
 a {
@@ -429,13 +529,10 @@ h2.heading-gradient {
 .footer__status,
 .footer__back-to-top,
 .footer__copyright,
-.hero__bio,
-.hero__role,
 .nav__link,
 .nav__dropdown-link,
 .ticker__item,
 .chip,
-.btn,
 .status-dot,
 .section-header__label,
 .section-header__number,
@@ -457,8 +554,7 @@ h2.heading-gradient {
 .about__bio h3,
 .skills-grid h3,
 .contact-grid h3,
-.page-header__title,
-.hero__name {
+.page-header__title {
   font-family: var(--font-body) !important;
   font-weight: 700 !important;
   font-size: clamp(1.2rem, 2.5vw, 1.5rem) !important;
@@ -494,9 +590,7 @@ h2.heading-gradient {
 .status-dot,
 .ticker__item,
 .roadmap__note,
-.about-teaser__link,
-.hero__role,
-.hero__scroll-cue span {
+.about-teaser__link {
   font-family: var(--font-body) !important;
   font-weight: 600 !important;
   font-size: 13px !important;
@@ -517,7 +611,6 @@ h2.heading-gradient {
 .about__bio p,
 .about-teaser p,
 .roadmap__note,
-.hero__bio,
 .project-links__note {
   font-weight: 500 !important;
   font-size: 16px !important;
@@ -537,7 +630,6 @@ h2.heading-gradient {
   .about__bio p,
   .about-teaser p,
   .roadmap__note,
-  .hero__bio,
   .project-links__note {
     font-size: 17px !important;
   }
@@ -558,7 +650,6 @@ h2.heading-gradient {
 .project-card__link,
 .footer__link,
 .footer__contact-item,
-.btn,
 .about-teaser__link,
 .ticker__item {
   font-weight: 600 !important;
@@ -587,16 +678,6 @@ h2.heading-gradient {
 .about-teaser__link,
 .ticker__item {
   color: var(--muted-strong) !important;
-}
-
-/* Site-wide readability outside cards */
-p {
-  font-weight: 500 !important;
-  color: var(--text-body) !important;
-}
-
-.hero__bio {
-  opacity: 1 !important;
 }
 
 /* Keep big serif headings (h1, h2, name) their style — only override inside cards above */

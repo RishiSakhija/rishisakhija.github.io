@@ -1,0 +1,54 @@
+# Global OpenCode Settings
+opencode:
+  version: "1.0"
+  
+  # Default model for agents (can be overridden per-agent)
+  default_model: "anthropic/claude-3.5-sonnet"
+  
+  # Session settings
+  session:
+    max_context_tokens: 200000
+    auto_summarize: true
+    persist: true
+  
+  # Human-in-the-loop defaults
+  hitl:
+    enabled: true
+    default_mode: "review"  # review | approve | auto
+    show_diff: true
+    show_risk_score: true
+    timeout_seconds: 300  # 5 min before auto-reject
+  
+  # Git integration
+  git:
+    auto_stage: true
+    auto_commit: false
+    commit_message_template: "{{agent}}: {{summary}}"
+    sign_commits: false
+  
+  # Telemetry
+  telemetry:
+    enabled: true
+    level: "standard"  # minimal | standard | verbose
+    export_console: true
+    export_file: true
+
+# Editor/Tool Preferences
+editor:
+  primary: "vscode"  # vscode | cursor | zed | neovim | web
+  fallback: "cli"
+  diff_format: "unified"  # unified | side-by-side | semantic
+  
+# Agent Routing
+routing:
+  by_file_type:
+    ".ts,.tsx,.js,.jsx": "code-edit"
+    ".py": "code-edit"
+    ".go,.rs,.java": "code-edit"
+    ".md,.mdx,.txt": "content-edit"
+    ".yaml,.yml,.json,.toml": "config-edit"
+  by_task_keyword:
+    "refactor|migrate|rewrite": "refactor"
+    "document|readme|docs": "doc-write"
+    "test|spec": "code-edit"
+    "fix|bug|error": "code-edit"
