@@ -73,7 +73,8 @@ body {
   line-height: 1.7;
   font-weight: 500;
   color: var(--text-body);
-  background: var(--bg);
+  background: var(--bg-grad-top);
+  background-color: var(--bg-grad-top);
   min-height: 100vh;
   position: relative;
 }
@@ -85,8 +86,10 @@ body::before {
   z-index: -1;
   pointer-events: none;
   background:
-    radial-gradient(ellipse 80% 40% at 50% 0%, rgba(77, 124, 255, 0.08) 0%, transparent 70%),
-    var(--bg);
+    radial-gradient(900px 600px at 12% -5%, var(--bg-glow-a), transparent 70%),
+    radial-gradient(1000px 700px at 100% 35%, var(--bg-glow-b), transparent 70%),
+    radial-gradient(900px 600px at 20% 105%, var(--bg-glow-c), transparent 70%),
+    linear-gradient(180deg, var(--bg-grad-top) 0%, var(--bg-grad-mid) 45%, var(--bg-grad-deep) 100%);
 }
 
 .hero::before {
@@ -95,10 +98,7 @@ body::before {
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  background:
-    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(77, 124, 255, 0.20) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 40% at 0% 100%, rgba(37, 71, 201, 0.10) 0%, transparent 70%),
-    var(--bg);
+  background: transparent;
 }
 
 @media (min-width: 1280px) {

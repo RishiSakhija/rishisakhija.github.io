@@ -1,6 +1,12 @@
 :root {
   --bg: #050507;
   --bg-warm: #0A0B10;
+  --bg-grad-top: #04050A;
+  --bg-grad-mid: #070C20;
+  --bg-grad-deep: #0A1642;
+  --bg-glow-a: rgba(77, 124, 255, 0.22);
+  --bg-glow-b: rgba(37, 71, 201, 0.30);
+  --bg-glow-c: rgba(90, 110, 255, 0.14);
   --surface: #0B0C11;
   --surface-2: #11131A;
   --border: #1B1E29;
