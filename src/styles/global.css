@@ -154,7 +154,7 @@ button {
   font-weight: 500;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--muted-strong);
 }
 
 .section-number {
