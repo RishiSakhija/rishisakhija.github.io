@@ -21,16 +21,12 @@ import RSLogo from './RSLogo.astro';
     font-weight: 400;
     font-size: clamp(3rem, 8vw, 6rem);
     letter-spacing: -0.01em;
-    color: transparent;
-    -webkit-text-stroke: 1px var(--border);
-    paint-order: stroke fill;
+    background: linear-gradient(90deg, var(--text), var(--text-fade));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    opacity: 0.12;
     line-height: 1.1;
-  }
-
-  @media (max-width: 767px) {
-    .footer__wordmark-text {
-      -webkit-text-stroke: 0.5px var(--border);
-    }
   }
 
   .footer__grid {
@@ -175,6 +171,7 @@ import RSLogo from './RSLogo.astro';
     height: 6px;
     border-radius: 50%;
     background: var(--signal);
+    box-shadow: 0 0 6px var(--signal-glow);
   }
 
   .footer__back-to-top {
@@ -239,7 +236,7 @@ import RSLogo from './RSLogo.astro';
         <h3 class="footer__section-title">Pages</h3>
         <ul class="footer__links">
           <li><a class="footer__link" href="/">Home</a></li>
-          <li><a class="footer__link" href="/projects">Projects</a></li
+          <li><a class="footer__link" href="/projects">Projects</a></li>
           <li><a class="footer__link" href="/skills">Skills</a></li>
           <li><a class="footer__link" href="/about">About</a></li>
           <li><a class="footer__link" href="/contact">Contact</a></li>

@@ -84,7 +84,19 @@ body::before {
   z-index: -1;
   pointer-events: none;
   background:
-    radial-gradient(ellipse 80% 40% at 50% 0%, var(--bg-warm) 0%, transparent 70%),
+    radial-gradient(ellipse 80% 40% at 50% 0%, rgba(77, 124, 255, 0.08) 0%, transparent 70%),
+    var(--bg);
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(77, 124, 255, 0.20) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 0% 100%, rgba(37, 71, 201, 0.10) 0%, transparent 70%),
     var(--bg);
 }
 
@@ -145,6 +157,10 @@ button {
   color: var(--muted);
 }
 
+.section-number {
+  color: var(--signal-soft);
+}
+
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
   font-weight: 400;
@@ -163,14 +179,26 @@ h2 {
 
 h3 {
   font-size: 1.4rem;
+  color: var(--text);
 }
 
-.text-gradient {
+.heading-gradient,
+h1.heading-gradient,
+h2.heading-gradient {
   background: linear-gradient(90deg, var(--text), var(--text-fade));
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   color: transparent;
+}
+
+.name-gradient {
+  background: linear-gradient(95deg, #FFFFFF 0%, var(--ice) 45%, var(--signal) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  filter: drop-shadow(0 0 28px rgba(77, 124, 255, 0.35));
 }
 
 .status-dot {
@@ -195,7 +223,7 @@ h3 {
 
 .status-dot--live::before {
   background: var(--signal);
-  box-shadow: 0 0 8px var(--signal-glow);
+  box-shadow: 0 0 10px var(--signal-glow);
   animation: pulse 2s ease-in-out infinite;
 }
 
@@ -211,6 +239,12 @@ h3 {
 @keyframes pulse {
   0%, 100% { opacity: 1; transform: scale(1); }
   50% { opacity: 0.6; transform: scale(0.9); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .status-dot--live::before {
+    animation: none;
+  }
 }
 
 @keyframes fade-up {
@@ -251,6 +285,8 @@ h3 {
   text-decoration: none;
   white-space: nowrap;
   transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
 }
 
 .btn:focus-visible {
@@ -263,15 +299,27 @@ h3 {
 }
 
 .btn--primary {
-  background: var(--text);
-  color: var(--bg);
-  border: 1px solid var(--text);
+  background: linear-gradient(180deg, #FFFFFF, var(--ice));
+  color: #050507;
+  border: none;
+}
+
+.btn--primary::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.3) 0%, transparent 50%);
+  transform: translateX(-100%);
+  transition: transform 0.4s ease;
+  pointer-events: none;
+}
+
+.btn--primary:hover:not(:disabled)::after {
+  transform: translateX(100%);
 }
 
 .btn--primary:hover:not(:disabled) {
-  background: transparent;
-  color: var(--text);
-  border-color: var(--text);
+  box-shadow: 0 0 28px var(--signal-glow);
 }
 
 .btn--secondary {
@@ -282,7 +330,7 @@ h3 {
 
 .btn--secondary:hover:not(:disabled) {
   border-color: var(--signal);
-  color: var(--signal);
+  box-shadow: 0 0 24px var(--signal-glow);
 }
 
 .btn--disabled {
@@ -296,4 +344,61 @@ h3 {
   background: inherit;
   border-color: inherit;
   color: inherit;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn--primary::after {
+    transition: none;
+  }
+}
+
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(77, 124, 255, 0.45), transparent);
+  margin-block: var(--space-8);
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.reveal {
+  opacity: 0;
+  animation: fade-up 400ms ease-out forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    animation: none;
+    opacity: 1;
+  }
+}
+
+::selection {
+  background: rgba(77, 124, 255, 0.35);
+  color: var(--text);
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--signal);
 }

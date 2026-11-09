@@ -6,7 +6,7 @@ interface Props {
 }
 
 const { size = 44, class: className = '', ariaLabel = 'Rishi Sakhija' } = Astro.props;
-const fontSize = Math.round(size * 0.4);
+const fontSize = Math.round(size * 0.36);
 const dotSize = Math.round(size * 0.125);
 const dotOffset = Math.round(size * 0.3);
 ---
@@ -42,6 +42,7 @@ const dotOffset = Math.round(size * 0.3);
     height: {dotSize}px;
     border-radius: 50%;
     background: var(--signal);
+    box-shadow: 0 0 12px var(--signal-glow);
     z-index: 2;
   }
 

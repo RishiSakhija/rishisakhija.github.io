@@ -1,18 +1,20 @@
 :root {
-  --bg: #0E0F11;
-  --bg-warm: #131315;
-  --surface: #141517;
-  --surface-2: #1A1B1E;
-  --border: #26282B;
-  --border-strong: #34363A;
-  --text: #F0EDE6;
-  --muted: #9A9A94;
-  --text-fade: #CFC6B0;
-  --signal: #C8B07A;
-  --signal-deep: #8E7A4A;
-  --signal-glow: rgba(200, 176, 122, 0.18);
-  --data: #C8B07A;
-  --data-glow: rgba(200, 176, 122, 0.18);
+  --bg: #050507;
+  --bg-warm: #0A0B10;
+  --surface: #0B0C11;
+  --surface-2: #11131A;
+  --border: #1B1E29;
+  --border-strong: #2A2F40;
+  --text: #F4F6FB;
+  --muted: #9BA3B7;
+  --text-fade: #AFC6FF;
+  --signal: #4D7CFF;
+  --signal-deep: #2547C9;
+  --signal-glow: rgba(77, 124, 255, 0.35);
+  --signal-soft: #8FB0FF;
+  --ice: #CFE0FF;
+  --data: #7FA6FF;
+  --data-glow: rgba(127, 166, 255, 0.30);
 
   --space-1: 4px;
   --space-2: 8px;
@@ -25,7 +27,7 @@
   --space-9: 96px;
   --space-10: 128px;
 
-  --radius-card: 10px;
+  --radius-card: 12px;
   --radius-pill: 999px;
 
   --font-heading: 'Instrument Serif', Georgia, serif;

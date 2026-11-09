@@ -37,7 +37,7 @@ import { projects } from '../data/projects.js';
         </div>
 
         <h1 id="hero-title" class="hero__name">
-          <span style="color: var(--text); -webkit-text-fill-color: var(--text); background: none;">Rishi</span><span class="text-gradient">Sakhija</span>
+          <span style="color: var(--text); -webkit-text-fill-color: var(--text); background: none;">Rishi</span><span class="name-gradient">Sakhija</span>
           <span class="sr-only">Rishi Sakhija</span>
         </h1>
 
@@ -203,7 +203,7 @@ import { projects } from '../data/projects.js';
             <Chip variant="tag">Lab (research & blog) <span class="chip__status">planned</span></Chip>
             <Chip variant="tag">Real project links <span class="chip__status">planned</span></Chip>
             <Chip variant="tag">Resume download <span class="chip__status">planned</span></Chip>
-            <Chip variant="tag">RS Guide powered by real AI <span class="chip__status">planned</span></Chip>
+            <Chip variant="tag">AI assistant <span class="chip__status">planned</span></Chip>
           </div>
           <p class="roadmap__note">All items are concepts. Nothing shipped until it's real.</p>
         </HudCard>
@@ -215,7 +215,7 @@ import { projects } from '../data/projects.js';
   <section class="section cta-section" aria-labelledby="cta-title">
     <div class="container">
       <div class="cta-content reveal-target">
-        <h2 id="cta-title" class="cta__title">Open to opportunities, collaborations, and conversations about AI.</h2>
+        <h2 id="cta-title" class="cta__title heading-gradient">Open to opportunities, collaborations, and conversations about AI.</h2>
         <div class="cta__actions">
           <Button variant="primary" href="mailto:rishisakhija7@gmail.com">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -259,6 +259,31 @@ import { projects } from '../data/projects.js';
         ticking = true;
       }
     }, { passive: true });
+  })();
+
+  // Spotlight effect on cards
+  (() => {
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReduced) return;
+    if ('ontouchstart' in window || navigator.maxTouchPoints > 0) return;
+
+    const cards = document.querySelectorAll('.hud-card--elevated');
+    if (!cards.length) return;
+
+    cards.forEach(card => {
+      let mx = 0, my = 0;
+      card.addEventListener('pointermove', (e) => {
+        const rect = card.getBoundingClientRect();
+        mx = ((e.clientX - rect.left) / rect.width) * 100;
+        my = ((e.clientY - rect.top) / rect.height) * 100;
+        card.style.setProperty('--mx', `${mx}%`);
+        card.style.setProperty('--my', `${my}%`);
+      });
+      card.addEventListener('pointerleave', () => {
+        card.style.removeProperty('--mx');
+        card.style.removeProperty('--my');
+      });
+    });
   })();
 </script>
 
@@ -342,11 +367,8 @@ import { projects } from '../data/projects.js';
     overflow: visible;
   }
 
-  .hero__name .text-gradient {
-    background: linear-gradient(90deg, var(--text), var(--text-fade));
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+  .hero__name .name-gradient {
+    filter: drop-shadow(0 0 28px rgba(77, 124, 255, 0.35));
   }
 
   @media (max-width: 360px) {
@@ -618,10 +640,6 @@ import { projects } from '../data/projects.js';
     font-size: clamp(1.75rem, 3.5vw, 2.75rem);
     text-align: center;
     margin-bottom: var(--space-6);
-    background: linear-gradient(90deg, var(--text), var(--text-fade));
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
   }
 
   .cta__actions {

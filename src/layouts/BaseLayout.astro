@@ -3,8 +3,6 @@ import '../styles/tokens.css';
 import '../styles/global.css';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
-import GuideHelper from '../components/GuideHelper.astro';
-import Intro from '../components/Intro.astro';
 
 interface Props {
   title?: string;
@@ -24,7 +22,7 @@ const ogImage = new URL('/og.png', Astro.site);
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#0E0F11" />
+    <meta name="theme-color" content="#050507" />
     <link rel="canonical" href={canonicalURL} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -60,10 +58,6 @@ const ogImage = new URL('/og.png', Astro.site);
     </main>
 
     <Footer />
-
-    <GuideHelper />
-
-    <Intro />
 
     <script is:inline>
       (() => {

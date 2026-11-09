@@ -9,7 +9,9 @@ import RSLogo from './RSLogo.astro';
     z-index: 1000;
     margin: 0 auto var(--space-6);
     width: min(1100px, 100% - 32px);
-    background: var(--surface);
+    background: rgba(11, 12, 17, 0.72);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
     border: 1px solid var(--border);
     border-radius: var(--radius-pill);
     padding: var(--space-2) var(--space-5);
@@ -18,6 +20,9 @@ import RSLogo from './RSLogo.astro';
     justify-content: space-between;
     gap: var(--space-4);
     height: 64px;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.06),
+      0 0 0 1px var(--border);
   }
 
   .nav__brand {
@@ -74,6 +79,7 @@ import RSLogo from './RSLogo.astro';
     height: 6px;
     border-radius: 50%;
     background: var(--signal);
+    box-shadow: 0 0 10px var(--signal-glow);
   }
 
   .nav__menu-btn {
