@@ -164,7 +164,7 @@ body {
   z-index: 0;
   pointer-events: none;
   overflow: hidden;
-  background: linear-gradient(180deg, #04050A 0%, #070D26 40%, #0A1642 100%);
+  background: linear-gradient(180deg, #04050A 0%, #050818 50%, #070F32 100%);
 }
 
 .bg-blob {
@@ -174,29 +174,29 @@ body {
 }
 
 .bg-blob.a {
-  width: 1100px;
-  height: 800px;
+  width: 900px;
+  height: 650px;
   left: -250px;
   top: -250px;
-  background: radial-gradient(closest-side, rgba(77, 124, 255, 0.42), transparent);
+  background: radial-gradient(closest-side, rgba(77, 124, 255, 0.30), transparent);
   animation: drift-a 28s ease-in-out infinite alternate;
 }
 
 .bg-blob.b {
-  width: 1200px;
-  height: 900px;
+  width: 1000px;
+  height: 700px;
   right: -350px;
   top: 18%;
-  background: radial-gradient(closest-side, rgba(37, 71, 201, 0.50), transparent);
+  background: radial-gradient(closest-side, rgba(37, 71, 201, 0.28), transparent);
   animation: drift-b 34s ease-in-out infinite alternate;
 }
 
 .bg-blob.c {
-  width: 1000px;
-  height: 800px;
+  width: 800px;
+  height: 600px;
   left: 5%;
   bottom: -300px;
-  background: radial-gradient(closest-side, rgba(90, 110, 255, 0.30), transparent);
+  background: radial-gradient(closest-side, rgba(90, 110, 255, 0.14), transparent);
   animation: drift-c 40s ease-in-out infinite alternate;
 }
 
@@ -206,7 +206,7 @@ body {
   left: 50%;
   top: 40%;
   margin-left: -400px;
-  background: radial-gradient(closest-side, rgba(77, 124, 255, 0.18), transparent);
+  background: radial-gradient(closest-side, rgba(77, 124, 255, 0.08), transparent);
   animation: drift-d 46s ease-in-out infinite alternate;
 }
 
@@ -248,7 +248,7 @@ body {
   z-index: -1;
   pointer-events: none;
   background:
-    radial-gradient(900px 500px at center 30%, rgba(77, 124, 255, 0.28), transparent 70%);
+    radial-gradient(800px 420px at center 30%, rgba(77, 124, 255, 0.22), transparent 70%);
 }
 
 /* Ensure all page wrappers are transparent so bg shows through */
