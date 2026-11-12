@@ -50,6 +50,8 @@ import Button from '../components/Button.astro';
     border-bottom: 1px solid var(--border);
     background: var(--surface);
     margin-bottom: calc(var(--section-padding) - var(--space-6));
+    width: min(var(--container-w), 100% - 2 * var(--gutter));
+    margin-inline: auto;
   }
 
   .page-header__breadcrumb {
@@ -93,6 +95,8 @@ import Button from '../components/Button.astro';
     min-height: 60vh;
     display: flex;
     align-items: center;
+    width: min(var(--container-w), 100% - 2 * var(--gutter));
+    margin-inline: auto;
   }
 
   .error-content {

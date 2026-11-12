@@ -6,7 +6,7 @@ interface Props {
 }
 
 const { size = 44, class: className = '', ariaLabel = 'Rishi Sakhija' } = Astro.props;
-const fontSize = Math.round(size * 0.36);
+const fontSize = size === 44 ? 17 : Math.round(size * 0.36);
 const dotSize = Math.round(size * 0.125);
 const dotOffset = Math.round(size * 0.3);
 ---
@@ -25,12 +25,12 @@ const dotOffset = Math.round(size * 0.3);
   }
 
   .rs-logo__text {
-    font-family: var(--font-heading);
-    font-weight: 400;
+    font-family: var(--font-body);
+    font-weight: 700;
     font-size: {fontSize}px;
     line-height: 1;
     color: var(--text);
-    letter-spacing: -0.01em;
+    letter-spacing: 0.02em;
     z-index: 1;
   }
 

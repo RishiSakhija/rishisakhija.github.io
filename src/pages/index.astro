@@ -299,10 +299,9 @@ import { projects } from '../data/projects.js';
   }
 
   .hero__content {
-    width: 100%;
-    max-width: 800px;
-    margin: 0 auto;
-    padding-inline: var(--container-padding);
+    width: min(var(--container-w), 100% - 2 * var(--gutter));
+    margin-inline: auto;
+    padding: 0;
   }
 
   .hero__ruler {

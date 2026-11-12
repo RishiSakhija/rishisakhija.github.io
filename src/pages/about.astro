@@ -134,6 +134,8 @@ import StatusDot from '../components/StatusDot.astro';
     border-bottom: 1px solid var(--border);
     background: var(--surface);
     margin-bottom: calc(var(--section-padding) - var(--space-6));
+    width: min(var(--container-w), 100% - 2 * var(--gutter));
+    margin-inline: auto;
   }
 
   .page-header__breadcrumb {
@@ -174,13 +176,16 @@ import StatusDot from '../components/StatusDot.astro';
   }
 
   .about__bio {
-    max-width: 800px;
+    width: min(var(--container-w), 100% - 2 * var(--gutter));
+    margin-inline: auto;
   }
 
   .timeline {
     display: flex;
     flex-direction: column;
     gap: var(--card-gap);
+    width: min(var(--container-w), 100% - 2 * var(--gutter));
+    margin-inline: auto;
   }
 
   .timeline__item {
@@ -249,6 +254,8 @@ import StatusDot from '../components/StatusDot.astro';
   .facts-grid {
     display: grid;
     gap: var(--card-gap);
+    width: min(var(--container-w), 100% - 2 * var(--gutter));
+    margin-inline: auto;
   }
 
   @media (min-width: 768px) {

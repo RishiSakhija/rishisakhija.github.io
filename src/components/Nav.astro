@@ -8,7 +8,7 @@ import RSLogo from './RSLogo.astro';
     top: 16px;
     z-index: 1000;
     margin: 0 auto var(--space-6);
-    width: min(1100px, 100% - 32px);
+    width: min(var(--container-w), 100% - 2 * var(--gutter));
     background: rgba(11, 12, 17, 0.72);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);

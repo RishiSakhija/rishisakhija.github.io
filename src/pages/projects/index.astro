@@ -81,6 +81,8 @@ import { projects } from '../../data/projects.js';
     border-bottom: 1px solid var(--border);
     background: var(--surface);
     margin-bottom: calc(var(--section-padding) - var(--space-6));
+    width: min(var(--container-w), 100% - 2 * var(--gutter));
+    margin-inline: auto;
   }
 
   .page-header__breadcrumb {
@@ -124,6 +126,8 @@ import { projects } from '../../data/projects.js';
     display: grid;
     gap: var(--card-gap);
     align-items: stretch;
+    width: min(var(--container-w), 100% - 2 * var(--gutter));
+    margin-inline: auto;
   }
 
   @media (min-width: 768px) {

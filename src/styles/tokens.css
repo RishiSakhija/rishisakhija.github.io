@@ -43,6 +43,8 @@
   --font-mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
 
   --container-max: 1200px;
+  --container-w: 1200px;
+  --gutter: clamp(20px, 5vw, 48px);
   --container-padding: clamp(20px, 5vw, 48px);
   --section-padding: clamp(72px, 10vw, 140px);
   --heading-gap: 24px;

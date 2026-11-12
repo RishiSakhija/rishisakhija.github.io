@@ -6,7 +6,12 @@ import RSLogo from './RSLogo.astro';
   .footer {
     padding: var(--space-8) 0 var(--space-6);
     border-top: 1px solid var(--border);
-    background: var(--surface);
+    background: rgba(5, 6, 10, 0.55);
+  }
+
+  .footer__inner {
+    width: min(var(--container-w), 100% - 2 * var(--gutter));
+    margin-inline: auto;
   }
 
   .footer__wordmark {
@@ -51,6 +56,8 @@ import RSLogo from './RSLogo.astro';
 
   .footer__logo {
     display: inline-flex;
+    min-width: 44px;
+    min-height: 44px;
   }
 
   .footer__name {
@@ -216,7 +223,7 @@ import RSLogo from './RSLogo.astro';
 </style>
 
 <footer class="footer" role="contentinfo">
-  <div class="container">
+  <div class="footer__inner">
     <div class="footer__wordmark" aria-hidden="true">
       <span class="footer__wordmark-text">RishiSakhija</span>
     </div>

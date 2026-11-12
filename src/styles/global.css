@@ -85,6 +85,67 @@ body {
 }
 
 /* ============================================================
+   BUTTONS — single source of truth for all Button usages
+   ============================================================ */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 0 28px;
+  border-radius: 999px;
+  font: 600 14px/1 var(--font-body);
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+  border: 1px solid transparent;
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 3px;
+}
+
+.btn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.btn--primary {
+  background: linear-gradient(180deg, #FFFFFF, var(--ice));
+  color: #050507;
+}
+
+.btn--primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 0 28px var(--signal-glow);
+}
+
+.btn--secondary {
+  background: rgba(255,255,255,0.04);
+  color: var(--text);
+  border-color: var(--border-strong);
+}
+
+.btn--secondary:hover:not(:disabled) {
+  border-color: var(--signal);
+  box-shadow: 0 0 24px var(--signal-glow);
+  transform: translateY(-2px);
+}
+
+.btn--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.btn--disabled:hover {
+  transform: none;
+}
+
+/* ============================================================
    PAGE BACKGROUND — glowing gradient, never covered
    ============================================================ */
 
