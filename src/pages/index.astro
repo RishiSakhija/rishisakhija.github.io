@@ -67,57 +67,133 @@ import { projects } from '../data/projects.js';
     <Ticker />
   </section>
 
-  <!-- 01 FEATURED PROJECTS -->
-  <section class="section" aria-labelledby="featured-title">
+  <!-- 01 WHAT I DO -->
+  <section class="section" aria-labelledby="whatido-title">
     <div class="container">
-      <SectionHeader number="01" label="Featured" title="Projects" id="featured-title" />
+      <SectionHeader number="01" label="Focus" title="What I Do" id="whatido-title" />
 
-      <div class="projects-grid">
+      <div class="whatido-rows">
+        <article class="whatido-row reveal-target">
+          <span class="whatido-row__number" aria-hidden="true">01</span>
+          <div class="whatido-row__content">
+            <h3 class="whatido-row__title">Build AI agents</h3>
+            <p class="whatido-row__desc">Specialized agents that work alone or together, coordinated by a supervising agent.</p>
+          </div>
+          <div class="whatido-row__tags">
+            <Chip variant="tag">AI Agents</Chip>
+            <Chip variant="tag">Python</Chip>
+          </div>
+        </article>
+
+        <article class="whatido-row reveal-target">
+          <span class="whatido-row__number" aria-hidden="true">02</span>
+          <div class="whatido-row__content">
+            <h3 class="whatido-row__title">Automate workflows</h3>
+            <p class="whatido-row__desc">Turning repetitive work into simple, reliable automations.</p>
+          </div>
+          <div class="whatido-row__tags">
+            <Chip variant="tag">Automation</Chip>
+            <Chip variant="tag">Python</Chip>
+          </div>
+        </article>
+
+        <article class="whatido-row reveal-target">
+          <span class="whatido-row__number" aria-hidden="true">03</span>
+          <div class="whatido-row__content">
+            <h3 class="whatido-row__title">Search and prompting</h3>
+            <p class="whatido-row__desc">Compact search systems for tech and AI, and prompt engineering that gets dependable results.</p </div>
+          <div class="whatido-row__tags">
+            <Chip variant="tag">Search</Chip>
+            <Chip variant="tag">Prompt Engineering</Chip>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 SELECTED WORK -->
+  <section class="section" aria-labelledby="work-title">
+    <div class="container">
+      <SectionHeader number="02" label="Portfolio" title="Selected Work" id="work-title" />
+
+      <div class="work-rows">
         {projects.map(project => (
-          <article class="reveal-target">
-            <HudCard elevated>
-              <div class="project-card">
-                <div class="project-card__header">
-                  <h3 class="project-card__name">{project.name}</h3>
+          <article class="work-row reveal-target">
+            <a class="work-row__link" href={`/projects/${project.slug}`} aria-label={`View ${project.name} project`}>
+              <div class="work-row__content">
+                <div class="work-row__header">
+                  <h3 class="work-row__name">{project.name}</h3>
                   <Chip variant="status" status={project.status === 'In progress' ? 'in-progress' : 'planned'}>{project.status}</Chip>
                 </div>
-                <p class="project-card__desc">{project.plainWords}</p>
-                <div class="project-card__diagram" aria-label={`${project.name} concept diagram`}>
-                  <ProjectDiagram
-                    variant={project.slug === 'agentic-team' ? 'hub' : 'flow'}
-                    labels={
-                      project.slug === 'agentic-team'
-                        ? ['CEO agent', 'Research', 'Analysis', 'Content']
-                        : project.slug === 'ai-search-engine'
-                          ? ['query', 'tech & AI\nindex', 'results']
-                          : ['YouTube\nlink', 'notes', 'shelf']
-                    }
-                  />
-                </div>
-                <div class="project-card__tags">
+                <p class="work-row__desc">{project.plainWords}</p>
+                <div class="work-row__tags">
                   {project.tags.map(tag => (
                     <Chip variant="tag">{tag}</Chip>
                   ))}
                 </div>
-                <a class="project-card__link" href={`/projects/${project.slug}`} aria-label={`View ${project.name} project`}>
-                  View project
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <line x1="5" y1="12" x2="19" y2="12"/>
-                    <polyline points="12 5 19 12 12 19"/>
-                  </svg>
-                </a>
               </div>
-            </HudCard>
+              <div class="work-row__diagram" aria-label={`${project.name} concept diagram`}>
+                <ProjectDiagram
+                  variant={project.slug === 'agentic-team' ? 'hub' : 'flow'}
+                  labels={
+                    project.slug === 'agentic-team'
+                      ? ['CEO agent', 'Research', 'Analysis', 'Content']
+                      : project.slug === 'ai-search-engine'
+                        ? ['query', 'tech & AI\nindex', 'results']
+                        : ['YouTube\nlink', 'notes', 'shelf']
+                  }
+                />
+              </div>
+              <span class="work-row__arrow" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12"/>
+                  <polyline points="12 5 19 12 12 19"/>
+                </svg>
+              </span>
+            </a>
           </article>
         ))}
       </div>
     </div>
   </section>
 
-  <!-- 02 NOW -->
+  <!-- 03 JOURNEY -->
+  <section class="section" aria-labelledby="journey-title">
+    <div class="container">
+      <SectionHeader number="03" label="History" title="Journey" id="journey-title" />
+
+      <div class="journey">
+        <article class="journey-item reveal-target">
+          <div class="journey-item__dot" aria-hidden="true"></div>
+          <div class="journey-item__content">
+            <h3 class="journey-item__title">Self-taught start</h3>
+            <p class="journey-item__desc">Began learning AI and machine learning on my own, about 2.5 years ago.</p>
+          </div>
+        </article>
+
+        <article class="journey-item reveal-target">
+          <div class="journey-item__dot" aria-hidden="true"></div>
+          <div class="journey-item__content">
+            <h3 class="journey-item__title">Building</h3>
+            <p class="journey-item__desc">Designing agents, automation and search systems through hands-on projects.</p>
+          </div>
+        </article>
+
+        <article class="journey-item reveal-target">
+          <div class="journey-item__dot" aria-hidden="true"></div>
+          <div class="journey-item__content">
+            <h3 class="journey-item__title">Computer Engineering diploma</h3>
+            <p class="journey-item__desc">Currently in the 5th semester, studying alongside building.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 NOW -->
   <section class="section" aria-labelledby="now-title">
     <div class="container">
-      <SectionHeader number="02" label="System" title="Now" id="now-title" />
+      <SectionHeader number="04" label="System" title="Now" id="now-title" />
 
       <div class="now-grid">
         <article class="reveal-target">
@@ -146,10 +222,10 @@ import { projects } from '../data/projects.js';
     </div>
   </section>
 
-  <!-- 03 HOW I WORK -->
-  <section class="section" aria-labelledby="work-title">
+  <!-- 05 HOW I WORK -->
+  <section class="section" aria-labelledby="how-title">
     <div class="container">
-      <SectionHeader number="03" label="Method" title="How I Work" id="work-title" />
+      <SectionHeader number="05" label="Method" title="How I Work" id="how-title" />
 
       <div class="work-grid">
         <article class="reveal-target">
@@ -171,59 +247,32 @@ import { projects } from '../data/projects.js';
     </div>
   </section>
 
-  <!-- 04 ABOUT TEASER -->
-  <section class="section" aria-labelledby="about-teaser-title">
-    <div class="container">
-      <SectionHeader number="04" label="Profile" title="About" id="about-teaser-title" />
-
-      <div class="about-teaser reveal-target">
-        <HudCard>
-          <p>I'm Rishi Sakhija, a Computer Engineering diploma student and self-taught builder with over 2.5 years of hands-on work in AI and machine learning.</p>
-          <p>My focus is the agentic era: systems that reason, coordinate, and act. I learn by building, and everything here is real work in progress.</p>
-          <a href="/about" class="about-teaser__link">
-            Read more
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <line x1="5" y1="12" x2="19" y2="12"/>
-              <polyline points="12 5 19 12 12 19"/>
-            </svg>
-          </a>
-        </HudCard>
-      </div>
-    </div>
-  </section>
-
-  <!-- 05 ROADMAP -->
-  <section class="section" aria-labelledby="roadmap-title">
-    <div class="container">
-      <SectionHeader number="05" label="Future" title="Roadmap" id="roadmap-title" />
-
-      <div class="roadmap reveal-target">
-        <HudCard>
-          <div class="roadmap__chips">
-            <Chip variant="tag">Lab (research & blog) <span class="chip__status">planned</span></Chip>
-            <Chip variant="tag">Real project links <span class="chip__status">planned</span></Chip>
-            <Chip variant="tag">Resume download <span class="chip__status">planned</span></Chip>
-            <Chip variant="tag">AI assistant <span class="chip__status">planned</span></Chip>
-          </div>
-          <p class="roadmap__note">All items are concepts. Nothing shipped until it's real.</p>
-        </HudCard>
-      </div>
-    </div>
-  </section>
-
   <!-- CLOSING CTA -->
   <section class="section cta-section" aria-labelledby="cta-title">
     <div class="container">
       <div class="cta-content reveal-target">
-        <h2 id="cta-title" class="cta__title heading-gradient">Open to opportunities, collaborations, and conversations about AI.</h2>
+        <h2 id="cta-title" class="cta__title heading-gradient">Let's build something together.</h2>
+        <p class="cta__subtitle">Open to opportunities, collaborations, and conversations about AI.</p>
         <div class="cta__actions">
-          <Button variant="primary" href="mailto:rishisakhija7@gmail.com">
+          <Button
+            variant="primary"
+            id="copy-email-btn"
+            class="js-only"
+            type="button"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="2" y="4" width="20" height="16" rx="2"/>
+              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+            </svg>
+            Copy email
+          </Button>
+          <a class="btn btn--secondary" href="mailto:rishisakhija7@gmail.com" aria-label="Email Rishi Sakhija">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <rect x="2" y="4" width="20" height="16" rx="2"/>
               <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
             </svg>
             Email
-          </Button>
+          </a>
           <Button variant="secondary" href="https://github.com/RishiSakhija" target="_blank" rel="noopener noreferrer">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
               <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
@@ -237,6 +286,7 @@ import { projects } from '../data/projects.js';
             LinkedIn
           </Button>
         </div>
+        <p class="cta__email">rishisakhija7@gmail.com</p>
       </div>
     </div>
   </section>
@@ -284,6 +334,45 @@ import { projects } from '../data/projects.js';
         card.style.removeProperty('--my');
       });
     });
+  })();
+
+  // Copy email button
+  (() => {
+    const btn = document.getElementById('copy-email-btn');
+    if (!btn) return;
+
+    async function copyEmail() {
+      const email = 'rishisakhija7@gmail.com';
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(email);
+        } else {
+          // Fallback for non-secure contexts
+          const textarea = document.createElement('textarea');
+          textarea.value = email;
+          textarea.style.position = 'fixed';
+          textarea.style.opacity = '0';
+          document.body.appendChild(textarea);
+          textarea.select();
+          document.execCommand('copy');
+          document.body.removeChild(textarea);
+        }
+        const originalText = btn.innerHTML;
+        btn.innerHTML = `
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+          Copied
+        `;
+        setTimeout(() => {
+          btn.innerHTML = originalText;
+        }, 2000);
+      } catch (e) {
+        // If everything fails, the mailto link in the fallback anchor will handle it
+      }
+    }
+
+    btn.addEventListener('click', copyEmail);
   })();
 </script>
 
@@ -446,96 +535,283 @@ import { projects } from '../data/projects.js';
     padding-top: 0;
   }
 
-  /* Projects Grid */
-  .projects-grid {
-    display: grid;
-    gap: var(--card-gap);
-    align-items: stretch;
-  }
+  /* ============================================================
+     01 WHAT I DO
+     ============================================================ */
 
-  @media (min-width: 768px) {
-    .projects-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .projects-grid {
-      grid-template-columns: repeat(3, 1fr);
-    }
-  }
-
-  .project-card {
+  .whatido-rows {
     display: flex;
     flex-direction: column;
-    height: 100%;
+    gap: 0;
   }
 
-  .project-card__header {
+  .whatido-row {
+    display: grid;
+    grid-template-columns: 60px 1fr auto;
+    align-items: start;
+    gap: var(--space-6);
+    padding-block: var(--space-7);
+    border-bottom: 1px solid var(--border);
+    transition: border-color 0.2s ease;
+  }
+
+  .whatido-row:first-child {
+    border-top: 1px solid var(--border);
+  }
+
+  .whatido-row:hover {
+    border-color: var(--signal);
+  }
+
+  .whatido-row__number {
+    font-family: var(--font-body);
+    font-size: 12.5px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--signal-soft);
+    margin-top: 4px;
+  }
+
+  .whatido-row__content {
     display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: var(--space-3);
-    margin-bottom: var(--space-3);
+    flex-direction: column;
+    gap: var(--space-2);
   }
 
-  .project-card__name {
-    font-family: var(--font-heading);
-    font-weight: 400;
-    font-size: 1.125rem;
-    line-height: 1.3;
+  .whatido-row__title {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+    line-height: 1.2;
     color: var(--text);
+    transition: transform 0.2s ease;
   }
 
-  .project-card__desc {
-    font-size: 15px;
+  .whatido-row:hover .whatido-row__title {
+    transform: translateX(6px);
+  }
+
+  .whatido-row__desc {
+    font-size: 16px;
     line-height: 1.65;
     color: var(--text-body);
-    margin-bottom: var(--space-4);
-    flex: 1;
+    max-width: 65ch;
   }
 
-  .project-card__diagram {
-    margin-bottom: var(--space-4);
-    overflow: hidden;
-  }
-
-  .project-card__diagram svg {
-    width: 100%;
-    height: auto;
-    max-height: 160px;
-  }
-
-  .project-card__tags {
+  .whatido-row__tags {
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-2);
-    margin-bottom: var(--space-5);
+    align-self: start;
+    margin-top: var(--space-1);
   }
 
-  .project-card__link {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-2);
-    font-family: var(--font-body);
-    font-size: 13px;
-    font-weight: 500;
-    letter-spacing: 0.06em;
+  @media (max-width: 767px) {
+    .whatido-row {
+      grid-template-columns: 50px 1fr;
+      grid-template-rows: auto auto auto;
+      gap: var(--space-4);
+    }
+    .whatido-row__number {
+      grid-row: 1;
+      grid-column: 1;
+    }
+    .whatido-row__content {
+      grid-row: 1;
+      grid-column: 2;
+    }
+    .whatido-row__tags {
+      grid-row: 2;
+      grid-column: 2;
+    }
+  }
+
+  /* ============================================================
+     02 SELECTED WORK
+     ============================================================ */
+
+  .work-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .work-row {
+    position: relative;
+    border-bottom: 1px solid var(--border);
+    transition: border-color 0.2s ease;
+  }
+
+  .work-row:first-child {
+    border-top: 1px solid var(--border);
+  }
+
+  .work-row:hover {
+    border-color: var(--signal);
+  }
+
+  .work-row__link {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: var(--space-8);
+    align-items: start;
+    padding-block: var(--space-7);
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .work-row:hover .work-row__arrow {
+    transform: translateX(4px);
+  }
+
+  .work-row__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .work-row__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+  }
+
+  .work-row__name {
+    font-family: var(--font-heading);
+    font-weight: 400;
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+    line-height: 1.2;
     color: var(--text);
-    transition: color 0.15s ease, gap 0.15s ease;
-    margin-top: auto;
   }
 
-  .project-card__link:hover {
+  .work-row__desc {
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--text-body);
+    max-width: 65ch;
+  }
+
+  .work-row__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .work-row__diagram {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 280px;
+  }
+
+  .work-row__diagram .diagram-wrapper {
+    width: 100%;
+    max-width: 320px;
+  }
+
+  .work-row__arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
     color: var(--signal);
-    gap: var(--space-3);
+    transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
   }
 
-  .project-card__link:focus-visible {
-    outline: 2px solid var(--signal);
-    outline-offset: 3px;
-    border-radius: var(--radius-card);
+  .work-row:hover .work-row__arrow {
+    background: var(--surface);
+    border-color: var(--signal);
   }
+
+  @media (max-width: 1023px) {
+    .work-row__link {
+      grid-template-columns: 1fr;
+      gap: var(--space-6);
+    }
+    .work-row__diagram {
+      order: -1;
+    }
+    .work-row__arrow {
+      display: none;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .work-row__diagram {
+      max-width: 100%;
+    }
+  }
+
+  /* ============================================================
+     03 JOURNEY
+     ============================================================ */
+
+  .journey {
+    position: relative;
+    padding-left: 24px;
+  }
+
+  .journey::before {
+    content: '';
+    position: absolute;
+    left: 11px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(180deg, transparent, var(--signal), transparent);
+  }
+
+  .journey-item {
+    position: relative;
+    padding-bottom: var(--space-10);
+  }
+
+  .journey-item:last-child {
+    padding-bottom: 0;
+  }
+
+  .journey-item__dot {
+    position: absolute;
+    left: -24px;
+    top: 4px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--signal);
+    box-shadow: 0 0 12px var(--signal-glow);
+    flex-shrink: 0;
+  }
+
+  .journey-item__content {
+    padding-left: var(--space-5);
+  }
+
+  .journey-item__title {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--signal-soft);
+    margin-bottom: var(--space-1);
+  }
+
+  .journey-item__desc {
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--text-body);
+  }
+
+  /* ============================================================
+     04 NOW & 05 HOW I WORK (keep existing grid styles)
+     ============================================================ */
 
   .now-grid {
     display: grid;
@@ -587,67 +863,31 @@ import { projects } from '../data/projects.js';
     }
   }
 
-  /* About Teaser */
-  .about-teaser {
-    max-width: 800px;
-  }
+  /* ============================================================
+     CLOSING CTA
+     ============================================================ */
 
-  .about-teaser__link {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-2);
-    margin-top: var(--space-4);
-    font-family: var(--font-body);
-    font-size: 12px;
-    font-weight: 500;
-    letter-spacing: 0.06em;
-    color: var(--muted-strong);
-    transition: color 0.15s ease, gap 0.15s ease;
-  }
-
-  .about-teaser__link:hover {
-    color: var(--signal);
-    gap: var(--space-3);
-  }
-
-  .about-teaser__link:focus-visible {
-    outline: 2px solid var(--signal);
-    outline-offset: 3px;
-    border-radius: var(--radius-card);
-  }
-
-  /* Roadmap */
-  .roadmap__chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-2);
-    margin-bottom: var(--space-4);
-  }
-
-  .chip__status {
-    margin-left: var(--space-2);
-    color: var(--signal-soft);
-    font-family: var(--font-body);
-    font-size: 10px;
-    font-weight: 500;
-  }
-
-  .roadmap__note {
-    font-family: var(--font-body);
-    font-size: 12px;
-    color: var(--muted-strong);
-  }
-
-  /* CTA Section */
   .cta-section {
     border-top: 1px solid var(--border);
     padding-top: var(--space-8);
   }
 
+  .cta-content {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
   .cta__title {
     font-size: clamp(1.75rem, 3.5vw, 2.75rem);
-    text-align: center;
-    margin-bottom: var(--space-6);
+    margin-bottom: var(--space-4);
+  }
+
+  .cta__subtitle {
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--text-body);
+    margin-bottom: var(--space-8);
   }
 
   .cta__actions {
@@ -655,5 +895,40 @@ import { projects } from '../data/projects.js';
     flex-wrap: wrap;
     justify-content: center;
     gap: var(--space-4);
+    margin-bottom: var(--space-6);
+  }
+
+  .cta__email {
+    font-family: var(--font-body);
+    font-size: 15px;
+    color: var(--text-fade);
+  }
+
+  /* ============================================================
+     REVEAL ANIMATION (gentle fade-up, never hides without JS)
+     ============================================================ */
+
+  .reveal-target {
+    opacity: 1;
+    transform: none;
+  }
+
+  .html.js .reveal-target {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  }
+
+  .html.js .reveal-target.revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .html.js .reveal-target {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
   }
 </style>
