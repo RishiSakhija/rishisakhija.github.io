@@ -173,6 +173,21 @@ import { projects } from '../data/projects.js';
                     <Chip variant="tag">{tag}</Chip>
                   ))}
                 </div>
+                <details class="work-row__more">
+                  <summary>
+                    <span>Read more</span>
+                    <svg class="work-row__chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <polyline points="6 9 12 15 18 9"/>
+                    </svg>
+                  </summary>
+                  <div class="work-row__more-content">
+                    {project.summary.map(p => <p>{p}</p>)}
+                    <div class="work-row__goal">
+                      <span class="label">GOAL</span>
+                      <span>{project.goal}</span>
+                    </div>
+                  </div>
+                </details>
               </div>
               <div class="work-row__diagram" aria-label={`${project.name} concept diagram`}>
                 <ProjectDiagram
@@ -819,6 +834,86 @@ import { projects } from '../data/projects.js';
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-2);
+  }
+
+  /* Read more expander */
+  .work-row__more {
+    margin-top: var(--space-3);
+  }
+
+  .work-row__more summary {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--signal-soft);
+    cursor: pointer;
+    list-style: none;
+    transition: color 0.15s ease;
+  }
+
+  .work-row__more summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .work-row__more summary:hover {
+    color: var(--signal);
+  }
+
+  .work-row__more summary:focus-visible {
+    outline: 2px solid var(--signal);
+    outline-offset: 3px;
+    border-radius: var(--radius-card);
+  }
+
+  .work-row__chevron {
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
+  }
+
+  .work-row__more[open] .work-row__chevron {
+    transform: rotate(180deg);
+  }
+
+  .work-row__more-content {
+    padding-top: var(--space-4);
+    animation: fade-in 200ms ease;
+  }
+
+  @keyframes fade-in {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .work-row__more-content p {
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--text-body);
+    max-width: 60ch;
+    margin-bottom: var(--space-3);
+  }
+
+  .work-row__goal {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    margin-top: var(--space-3);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--border);
+  }
+
+  .work-row__goal .label {
+    font-size: 11.5px;
+  }
+
+  .work-row__goal span:last-child {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--text-body);
   }
 
   .work-row__diagram {

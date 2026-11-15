@@ -78,7 +78,19 @@ if (!project) {
 
       <div class="reveal-target">
         <HudCard>
-          <p>{project.description}</p>
+          {project.summary.map(p => <p>{p}</p>)}
+        </HudCard>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="goal-title">
+    <div class="container">
+      <SectionHeader number="03" label="Project" title="Goal" id="goal-title" />
+
+      <div class="reveal-target">
+        <HudCard>
+          <p>{project.goal}</p>
         </HudCard>
       </div>
     </div>
@@ -86,7 +98,7 @@ if (!project) {
 
   <section class="section" aria-labelledby="plain-title">
     <div class="container">
-      <SectionHeader number="03" label="Summary" title="In Plain Words" id="plain-title" />
+      <SectionHeader number="04" label="Summary" title="In Plain Words" id="plain-title" />
 
       <div class="reveal-target">
         <HudCard>
@@ -98,7 +110,7 @@ if (!project) {
 
   <section class="section" aria-labelledby="problem-title">
     <div class="container">
-      <SectionHeader number="04" label="Context" title="Problem" id="problem-title" />
+      <SectionHeader number="05" label="Context" title="Problem" id="problem-title" />
 
       <div class="reveal-target">
         <HudCard>
@@ -110,7 +122,7 @@ if (!project) {
 
   <section class="section" aria-labelledby="how-title">
     <div class="container">
-      <SectionHeader number="05" label="Method" title="How It Works" id="how-title" />
+      <SectionHeader number="06" label="Method" title="How It Works" id="how-title" />
 
       <div class="reveal-target">
         <HudCard>
@@ -122,7 +134,7 @@ if (!project) {
 
   <section class="section" aria-labelledby="tech-title">
     <div class="container">
-      <SectionHeader number="06" label="Stack" title="Tech" id="tech-title" />
+      <SectionHeader number="07" label="Stack" title="Tech" id="tech-title" />
 
       <div class="reveal-target">
         <HudCard>
@@ -134,7 +146,7 @@ if (!project) {
 
   <section class="section" aria-labelledby="status-title">
     <div class="container">
-      <SectionHeader number="07" label="State" title="Status" id="status-title" />
+      <SectionHeader number="08" label="State" title="Status" id="status-title" />
 
       <div class="reveal-target">
         <HudCard>
@@ -146,7 +158,7 @@ if (!project) {
 
   <section class="section" aria-labelledby="links-title">
     <div class="container">
-      <SectionHeader number="08" label="Access" title="Links" id="links-title" />
+      <SectionHeader number="09" label="Access" title="Links" id="links-title" />
 
       <div class="reveal-target">
         <HudCard>

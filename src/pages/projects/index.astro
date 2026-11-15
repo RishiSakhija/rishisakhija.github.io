@@ -37,6 +37,7 @@ import { projects } from '../../data/projects.js';
                 </div>
                 <p class="project-card__desc">{project.description}</p>
                 <p class="project-card__plain">{project.plainWords}</p>
+                <p class="project-card__summary">{project.summary[0]}</p>
                 <div class="project-card__diagram" aria-label={`${project.name} concept diagram`}>
                   <ProjectDiagram
                     variant={project.slug === 'agentic-team' ? 'hub' : 'flow'}
@@ -178,9 +179,16 @@ import { projects } from '../../data/projects.js';
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--muted-strong);
-    margin-bottom: var(--space-4);
+    margin-bottom: var(--space-3);
     padding-left: var(--space-3);
     border-left: 1px solid var(--border);
+  }
+
+  .project-card__summary {
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--text-body);
+    margin-bottom: var(--space-4);
   }
 
   .project-card__diagram {
