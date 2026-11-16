@@ -9,6 +9,7 @@ import SectionHeader from '../components/SectionHeader.astro';
 import Chip from '../components/Chip.astro';
 import ProjectDiagram from '../components/ProjectDiagram.astro';
 import { projects } from '../data/projects.js';
+import { sinceText } from '../data/profile.js';
 ---
 
 <BaseLayout title="Rishi Sakhija | AI/ML Builder" description="AI/ML builder focused on agents, automation, and search systems. Self-taught, remote, open to work.">
@@ -44,7 +45,7 @@ import { projects } from '../data/projects.js';
         <p class="hero__role" aria-hidden="true">AI/ML builder in the making · Agents & Automation</p>
 
         <p class="hero__bio">
-          Self-taught for 2.5+ years, I design and build AI agents, search systems, and automation that turn complex work into simple workflows.
+          Self-taught since 2024, I design and build AI agents, search systems, and automation that turn complex work into simple workflows.
         </p>
 
         <div class="hero__actions">
@@ -74,7 +75,7 @@ import { projects } from '../data/projects.js';
 
       <div class="who-grid">
         <div class="who-text reveal-target">
-          <p>I'm Rishi Sakhija, a Computer Engineering diploma student and a self-taught builder. For the past 2.5+ years I've been learning AI and machine learning the hands-on way: picking a problem, building something, breaking it, and learning from what went wrong.</p>
+          <p>I'm Rishi Sakhija, a Computer Engineering diploma student and a self-taught builder. Since 2024 I've been learning AI and machine learning the hands-on way: picking a problem, building something, breaking it, and learning from what went wrong.</p>
           <p>My focus is the agentic era, where AI does more than answer questions: it plans, coordinates, and takes action. I design AI agents that work together, automations that remove repetitive work, and search tools that cut through the noise. This site is my working notebook in public, and everything on it is real work in progress.</p>
         </div>
         <aside class="who-facts reveal-target">
@@ -90,11 +91,11 @@ import { projects } from '../data/projects.js';
               </div>
               <div class="who-facts__row">
                 <span class="who-facts__label">Studying</span>
-                <span class="who-facts__value">Computer Engineering diploma, 5th semester</span>
+                <span class="who-facts__value">Computer Engineering diploma</span>
               </div>
               <div class="who-facts__row">
                 <span class="who-facts__label">Experience</span>
-                <span class="who-facts__value">2.5+ years, self-taught</span>
+                <span class="who-facts__value">Self-taught since 2024</span>
               </div>
             </div>
           </HudCard>
@@ -224,7 +225,7 @@ import { projects } from '../data/projects.js';
           <div class="journey-item__dot" aria-hidden="true"></div>
           <div class="journey-item__content">
             <h3 class="journey-item__title">Self-taught start</h3>
-            <p class="journey-item__desc">Began learning AI and machine learning on my own, about 2.5 years ago.</p>
+            <p class="journey-item__desc">Began teaching myself AI and machine learning in 2024.</p>
           </div>
         </article>
 
@@ -240,7 +241,7 @@ import { projects } from '../data/projects.js';
           <div class="journey-item__dot" aria-hidden="true"></div>
           <div class="journey-item__content">
             <h3 class="journey-item__title">Computer Engineering diploma</h3>
-            <p class="journey-item__desc">Currently in the 5th semester, studying alongside building.</p>
+            <p class="journey-item__desc">Studying Computer Engineering (diploma) alongside building.</p>
           </div>
         </article>
       </div>
@@ -836,7 +837,36 @@ import { projects } from '../data/projects.js';
     gap: var(--space-2);
   }
 
-  /* Read more expander */
+  .work-row__diagram {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 280px;
+  }
+
+  .work-row__diagram .diagram-wrapper {
+    width: 100%;
+    max-width: 320px;
+  }
+
+  .work-row__arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    color: var(--signal);
+    transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+  }
+
+  .work-row:hover .work-row__arrow {
+    background: var(--surface);
+    border-color: var(--signal);
+  }
+
   .work-row__more {
     margin-top: var(--space-3);
   }

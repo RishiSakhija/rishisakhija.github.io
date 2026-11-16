@@ -308,6 +308,29 @@ button {
 
 .section {
   padding-block: var(--section-padding);
+  position: relative;
+}
+
+.section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: var(--container-padding);
+  right: var(--container-padding);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(77, 124, 255, 0.45), transparent);
+}
+
+.section:first-of-type::before {
+  display: none;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  scroll-margin-top: 110px;
+}
+
+.section {
+  scroll-margin-top: 110px;
 }
 
 .label {
@@ -514,11 +537,7 @@ h2.heading-gradient {
   }
 }
 
-.divider {
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(77, 124, 255, 0.45), transparent);
-  margin-block: var(--space-8);
-}
+
 
 @keyframes fade-up {
   from {

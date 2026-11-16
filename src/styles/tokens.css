@@ -46,7 +46,7 @@
   --container-w: 1200px;
   --gutter: clamp(20px, 5vw, 48px);
   --container-padding: clamp(20px, 5vw, 48px);
-  --section-padding: clamp(72px, 10vw, 140px);
+  --section-padding: clamp(72px, 9vw, 112px);
   --heading-gap: 24px;
   --card-padding: 32px;
   --card-gap: 24px;

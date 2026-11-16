@@ -27,7 +27,7 @@ import { aboutData } from '../data/about.js';
   <!-- 01 MY STORY -->
   <section class="section" aria-labelledby="story-title">
     <div class="container">
-      <SectionHeader number="01" label="Profile" title="My Story" id="story-title" />
+      <SectionHeader number="01" label="Profile" title="My Story" id="story-title" tag="MY STORY" />
 
       <div class="story-grid">
         <!-- LEFT: Portrait Card -->
@@ -429,6 +429,12 @@ import { aboutData } from '../data/about.js';
 
   .portrait-fact__divider {
     /* divider handled by border on .portrait-fact */
+  }
+
+  @media (max-width: 1023px) {
+    .story-portrait {
+      position: static;
+    }
   }
 
   /* Story Chapters */

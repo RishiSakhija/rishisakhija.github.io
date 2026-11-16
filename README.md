@@ -8,7 +8,7 @@ Personal portfolio website showcasing my projects, skills, and experience.
 
 ## About
 
-I'm Rishi Sakhija, a self-taught AI/ML builder with 2.5+ years of hands-on experience, currently studying for a Computer Engineering diploma. My focus is the agentic era: AI agents, automation, and search systems. This site replaces a traditional CV, so everything on it is real work in progress.
+I'm Rishi Sakhija, a self-taught AI/ML builder with hands-on experience since 2024, currently studying for a Computer Engineering diploma. My focus is the agentic era: AI agents, automation, and search systems. This site replaces a traditional CV, so everything on it is real work in progress.
 
 ## Pages
 

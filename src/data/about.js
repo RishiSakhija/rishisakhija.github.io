@@ -1,11 +1,13 @@
+import { sinceText } from './profile.js';
+
 export const aboutData = {
-  intro: "I'm Rishi Sakhija, a Computer Engineering diploma student and a self-taught builder with over 2.5 years of hands-on work in AI and machine learning. My focus is the agentic era: systems that reason, coordinate, and act. I learn by building, and everything on this site is real work in progress.",
+  intro: `I'm Rishi Sakhija, a Computer Engineering diploma student and a self-taught builder who has been working hands-on in AI and machine learning ${sinceText}. My focus is the agentic era: systems that reason, coordinate, and act. I learn by building, and everything on this site is real work in progress.`,
 
   facts: [
     { label: "Based", value: "Remote" },
     { label: "Status", value: "Open to work", dot: true },
-    { label: "Studying", value: "Computer Engineering diploma, 5th semester" },
-    { label: "Experience", value: "2.5+ years, self-taught" },
+    { label: "Studying", value: "Computer Engineering diploma" },
+    { label: "Experience", value: `Self-taught ${sinceText}` },
     { label: "Focus", value: "AI agents, automation, search systems" }
   ],
 
@@ -14,7 +16,7 @@ export const aboutData = {
       number: "01",
       title: "How it started",
       paragraphs: [
-        "About 2.5 years ago I began teaching myself AI and machine learning. There was no fixed path, so I learned the way that works best for me: pick a real problem, build something, break it, fix it, and keep what I learn."
+        `In 2024 I began teaching myself AI and machine learning. There was no fixed path, so I learned the way that works best for me: pick a real problem, build something, break it, fix it, and keep what I learn.`
       ]
     },
     {
@@ -28,7 +30,7 @@ export const aboutData = {
       number: "03",
       title: "Where I am now",
       paragraphs: [
-        "I'm in the fifth semester of my Computer Engineering diploma, building alongside my studies. Right now I'm working on a personal team of AI agents and a compact search engine for tech and AI, and I'm shaping all of it into a professional personal brand."
+        "I'm studying for my Computer Engineering diploma while building on the side. Right now I'm working on a personal team of AI agents and a compact search engine for tech and AI, and I'm shaping all of it into a professional personal brand."
       ]
     }
   ],
@@ -43,14 +45,14 @@ export const aboutData = {
   timeline: [
     {
       title: "Independent Builder",
-      period: "~2.5 YEARS",
+      period: "SINCE 2024",
       subtitle: "SELF-DIRECTED",
       description: "AI, ML, agents and automation: building, breaking, and learning in public."
     },
     {
       title: "Diploma in Computer Engineering",
       period: "PRESENT",
-      subtitle: "CURRENTLY 5TH SEMESTER",
+      subtitle: "IN PROGRESS",
       description: "Formal education alongside hands-on AI/ML work."
     },
     {
