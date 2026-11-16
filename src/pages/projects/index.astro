@@ -75,15 +75,12 @@ import { projects } from '../../data/projects.js';
 <style>
   /* Page Header Band */
   .page-header {
-    position: sticky;
-    top: 0;
-    z-index: 100;
     padding: var(--space-6) 0;
     border-bottom: 1px solid var(--border);
     background: var(--surface);
-    margin-bottom: calc(var(--section-padding) - var(--space-6));
     width: min(var(--container-w), 100% - 2 * var(--gutter));
     margin-inline: auto;
+    padding-top: clamp(120px, 14vw, 160px);
   }
 
   .page-header__breadcrumb {

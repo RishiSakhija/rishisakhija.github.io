@@ -277,13 +277,10 @@ import { aboutData } from '../data/about.js';
 <style>
   /* HEADER BAND */
   .page-header {
-    position: sticky;
-    top: 0;
-    z-index: 100;
     padding: var(--space-6) 0;
     border-bottom: 1px solid var(--border);
     background: var(--surface);
-    margin-bottom: calc(var(--section-padding) - var(--space-6));
+    padding-top: clamp(120px, 14vw, 160px);
   }
 
   .page-header__breadcrumb {

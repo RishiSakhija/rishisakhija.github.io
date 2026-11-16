@@ -749,10 +749,13 @@ h2.heading-gradient {
 
 .btn--secondary {
   color: #FFFFFF !important;
+  background: rgba(255,255,255,0.04) !important;
+  border-color: var(--border-strong) !important;
 }
 
 .btn--primary {
   color: #050507 !important;
+  background: linear-gradient(180deg, #FFFFFF, var(--ice)) !important;
 }
 
 .about-teaser__link,
