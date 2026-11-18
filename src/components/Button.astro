@@ -11,16 +11,15 @@ interface Props {
 const { variant = 'primary', href, disabled = false, class: className = '', type = 'button', ariaLabel } = Astro.props;
 const slot = Astro.slots.has('default') ? Astro.slots.render('default') : '';
 const isLink = !!href && !disabled;
-const Tag = isLink ? 'a' : 'button';
+const classes = `btn btn--${variant} ${disabled ? 'btn--disabled' : ''} ${className}`;
 ---
 
-<Tag
-  class="btn btn--{variant} {disabled ? 'btn--disabled' : ''} {className}"
-  href={isLink ? href : undefined}
-  disabled={disabled ? true : undefined}
-  aria-label={ariaLabel}
-  type={!isLink ? type : undefined}
-  aria-disabled={disabled ? 'true' : undefined}
->
-  <slot />
-</Tag>
+{isLink ? (
+  <a class={classes} href={href} aria-label={ariaLabel}>
+    <slot />
+  </a>
+) : (
+  <button class={classes} disabled={disabled ? true : undefined} aria-label={ariaLabel} type={type} aria-disabled={disabled ? 'true' : undefined}>
+    <slot />
+  </button>
+)}

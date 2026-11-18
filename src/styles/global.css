@@ -130,15 +130,21 @@ body {
 }
 
 .btn--secondary {
-  background: rgba(255,255,255,0.04);
-  color: var(--text);
-  border-color: var(--border-strong);
+  background-color: rgba(255,255,255,0.04);
+  border: 1px solid #2A2F40;
+  color: #F4F6FB;
+  min-width: 150px;
 }
 
 .btn--secondary:hover:not(:disabled) {
-  border-color: var(--signal);
-  box-shadow: 0 0 24px var(--signal-glow);
+  border-color: #4D7CFF;
+  box-shadow: 0 0 24px rgba(77,124,255,0.35);
   transform: translateY(-2px);
+}
+
+.btn--secondary svg {
+  color: #F4F6FB;
+  fill: currentColor;
 }
 
 .btn--disabled {
@@ -755,9 +761,14 @@ h2.heading-gradient {
 }
 
 .btn--secondary {
-  color: #FFFFFF !important;
-  background: rgba(255,255,255,0.04) !important;
-  border-color: var(--border-strong) !important;
+  color: #F4F6FB !important;
+  background-color: rgba(255,255,255,0.04) !important;
+  border: 1px solid #2A2F40 !important;
+}
+
+.btn--secondary svg {
+  color: #F4F6FB !important;
+  fill: currentColor !important;
 }
 
 .btn--primary {
