@@ -108,7 +108,7 @@ Thanks,
     },
     {
       question: "What kind of work are you looking for?",
-      answer: "Roles, internships and projects around AI and machine learning, agents, automation and search systems."
+      answer: "Roles, internships and projects around AI and machine learning, agents and automation."
     },
     {
       question: "Can I see your code?",

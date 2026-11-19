@@ -8,7 +8,7 @@ export const aboutData = {
     { label: "Status", value: "Open to work", dot: true },
     { label: "Studying", value: "Computer Engineering diploma" },
     { label: "Experience", value: `Self-taught ${sinceText}` },
-    { label: "Focus", value: "AI agents, automation, search systems" }
+    { label: "Focus", value: "AI agents and automation" }
   ],
 
   chapters: [
@@ -23,7 +23,7 @@ export const aboutData = {
       number: "02",
       title: "What I focus on",
       paragraphs: [
-        "Today I concentrate on the agentic era, where AI does more than answer questions: it plans, coordinates and takes action. I design AI agents that work together, automations that take repetitive work off my plate, and search tools that cut through the noise."
+        "Today I concentrate on the agentic era, where AI does more than answer questions: it plans, coordinates and takes action. I design AI agents that work together and automations that take repetitive work off my plate, and I'm starting to explore search."
       ]
     },
     {

@@ -8,7 +8,7 @@ export const journeyData = [
   {
     label: "SINCE THEN",
     title: "Learning by building",
-    text: "Through hands-on projects I've been exploring AI agents, automation and search systems. Along the way I've been getting better at prompt engineering and at keeping systems simple enough to explain.",
+    text: "Through hands-on projects I've been exploring AI agents and automation. Along the way I've been getting better at prompt engineering and at keeping systems simple enough to explain.",
     chips: ["AI agents", "Automation", "Prompt engineering"]
   },
   {
