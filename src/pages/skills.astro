@@ -3,11 +3,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import HudCard from '../components/HudCard.astro';
 import SectionHeader from '../components/SectionHeader.astro';
 import Chip from '../components/Chip.astro';
+import StatusDot from '../components/StatusDot.astro';
+import { skillsData } from '../data/skills.js';
 ---
 
-<BaseLayout title="Skills | Rishi Sakhija" description="AI/ML builder focused on agents, automation, and search systems. Self-taught, remote, open to work.">
+<BaseLayout title="Skills | Rishi Sakhija" description="Skills and tools of Rishi Sakhija: Python, Git, machine learning, prompt engineering, AI agents and workflow automation.">
 
-  <!-- Page Header Band -->
+  <!-- HEADER BAND -->
   <header class="page-header" aria-hidden="true">
     <div class="container">
       <nav class="page-header__breadcrumb" aria-label="Breadcrumb">
@@ -15,57 +17,122 @@ import Chip from '../components/Chip.astro';
         <span aria-hidden="true">/</span>
         <span>SKILLS</span>
       </nav>
-      <div class="page-header__number">01</div>
-      <h1 class="page-header__title">Skills</h1>
+      <h1 class="page-header__title heading-gradient">What I work with.</h1>
+      <p class="page-header__intro">
+        I choose tools by what a project needs, and I learn them by building with them. This page lists what I use today and what I'm exploring next. It stays honest: if it's here, I've actually worked with it.
+      </p>
     </div>
   </header>
 
-  <section class="section" aria-labelledby="skills-title">
+  <!-- 01 TOOLKIT -->
+  <section class="section" aria-labelledby="toolkit-title">
     <div class="container">
-      <SectionHeader number="01" label="Capabilities" title="Skills" id="skills-title" />
+      <SectionHeader number="01" label="Skills" title="Toolkit" id="toolkit-title" />
 
-      <div class="skills-grid">
-        <article class="reveal-target">
-          <HudCard label="LANGUAGES & TOOLS">
-            <div class="chip-group">
-              <Chip>Python</Chip>
-              <Chip>Git</Chip>
-              <Chip>GitHub</Chip>
-            </div>
-            <p class="skill-usage">Daily driver for all projects. Python for ML pipelines and agents. Git/GitHub for version control and collaboration.</p>
-          </HudCard>
-        </article>
+      <div class="toolkit-grid">
+        {skillsData.groups.map((group) => (
+          <article class="toolkit-card reveal-target">
+            <HudCard>
+              <h2 class="toolkit-card__label">{group.label}</h2>
+              <ul class="toolkit-skills">
+                {group.skills.map((skill) => (
+                  <li class="toolkit-skill">
+                    <div class="toolkit-skill__main">
+                      <h3 class="toolkit-skill__name">{skill.name}</h3>
+                      <p class="toolkit-skill__desc">{skill.description}</p>
+                    </div>
+                    {skill.level !== null && (
+                      <div class="toolkit-skill__level" role="img" aria-label={`Level: ${['Learning', 'Basic', 'Working', 'Strong', 'Advanced'][skill.level - 1]} (${skill.level} of 5)`}>
+                        {Array.from({ length: 5 }).map((_, i) => (
+                          <span class={`level-segment ${i < skill.level ? 'filled' : ''}`}></span>
+                        ))}
+                      </div>
+                    )}
+                    {skill.usedIn.length > 0 && (
+                      <div class="toolkit-skill__used">
+                        {skill.usedIn.map((slug) => (
+                          <a class="toolkit-skill__used-link" href={`/projects/${slug}`}>
+                            Used in: {slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}
+                          </a>
+                        ))}
+                      </div>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </HudCard>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
 
-        <article class="reveal-target">
-          <HudCard label="AI & ML">
-            <div class="chip-group">
-              <Chip>Machine Learning</Chip>
-              <Chip>Prompt Engineering</Chip>
-              <Chip>AI Agents</Chip>
-            </div>
-            <p class="skill-usage">Building and orchestrating agents. Fine-tuning prompts for consistent outputs. Classical ML for classification and search ranking.</p>
-          </HudCard>
-        </article>
+  <!-- 02 EXPLORING NEXT -->
+  <section class="section" aria-labelledby="exploring-title">
+    <div class="container">
+      <SectionHeader number="02" label="Future" title="Exploring Next" id="exploring-title" />
 
-        <article class="reveal-target">
-          <HudCard label="AUTOMATION">
-            <div class="chip-group">
-              <Chip>Workflow Automation <span class="chip__level">moderate</span></Chip>
-            </div>
-            <p class="skill-usage">Scripting repetitive tasks into agent workflows. Connecting APIs, scheduling, and data pipelines to reduce manual steps.</p>
-          </HudCard>
-        </article>
+      <div class="exploring-card reveal-target">
+        <HudCard>
+          <div class="exploring-header">
+            <StatusDot status="planned" label="PLANNED" />
+          </div>
+          <p class="exploring-intro">Things I haven't worked with yet but plan to learn, mostly to grow my search engine project.</p>
+          <div class="exploring-grid">
+            {skillsData.exploring.map((skill) => (
+              <article class="exploring-skill">
+                <h3 class="exploring-skill__name">{skill.name}</h3>
+                <p class="exploring-skill__desc">{skill.description}</p>
+              </article>
+            ))}
+          </div>
+        </HudCard>
+      </div>
+    </div>
+  </section>
 
-        <article class="reveal-target">
-          <HudCard label="CURRENTLY LEARNING">
-            <div class="chip-group">
-              <Chip>The agentic era</Chip>
-              <Chip>New AI/ML tools</Chip>
-              <Chip>New techniques</Chip>
-            </div>
-            <p class="skill-usage">Multi-agent coordination patterns. Retrieval-augmented generation. Evaluating agent outputs reliably.</p>
-          </HudCard>
-        </article>
+  <!-- 03 HOW I LEARN -->
+  <section class="section" aria-labelledby="learn-title">
+    <div class="container">
+      <SectionHeader number="03" label="Process" title="How I Learn" id="learn-title" />
+
+      <div class="learn-grid">
+        {skillsData.learnSteps.map((step) => (
+          <article class="learn-card reveal-target">
+            <HudCard>
+              <span class="learn-card__number">{step.number}</span>
+              <h3 class="learn-card__title">{step.title}</h3>
+              <p class="learn-card__desc">{step.description}</p>
+            </HudCard>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 CLOSING BLOCK -->
+  <section class="section cta-section" aria-labelledby="cta-title">
+    <div class="container">
+      <div class="cta-content reveal-target">
+        <h2 id="cta-title" class="cta__title heading-gradient">See these skills in action.</h2>
+        <p class="cta__subtitle">The projects page shows where these tools come together.</p>
+        <div class="cta__actions">
+          <a class="btn btn--secondary" href="/projects">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6"/>
+              <polyline points="21 3 21 9 15 9"/>
+              <path d="M21 3l-9 9"/>
+            </svg>
+            View projects
+          </a>
+          <a class="btn btn--secondary" href="/contact">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="2" y="4" width="20" height="16" rx="2"/>
+              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+            </svg>
+            Get in touch
+          </a>
+        </div>
       </div>
     </div>
   </section>
@@ -73,13 +140,11 @@ import Chip from '../components/Chip.astro';
 </BaseLayout>
 
 <style>
-  /* Page Header Band */
+  /* HEADER BAND */
   .page-header {
     padding: var(--space-6) 0;
     border-bottom: 1px solid var(--border);
     background: var(--surface);
-    width: min(var(--container-w), 100% - 2 * var(--gutter));
-    margin-inline: auto;
     padding-top: clamp(120px, 14vw, 160px);
   }
 
@@ -98,67 +163,307 @@ import Chip from '../components/Chip.astro';
     color: var(--text-fade);
   }
 
-  .page-header__number {
-    font-family: var(--font-body);
-    font-size: 11.5px;
-    font-weight: 500;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--signal);
-    margin-bottom: var(--space-1);
-  }
-
   .page-header__title {
     font-family: var(--font-heading);
     font-weight: 400;
     font-size: clamp(2.75rem, 6.5vw, 5rem);
     line-height: 1.1;
     letter-spacing: -0.01em;
-    background: linear-gradient(90deg, var(--text), var(--text-fade));
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
   }
 
-  .skills-grid {
+  .page-header__intro {
+    font-size: 18px;
+    line-height: 1.75;
+    font-weight: 500;
+    color: var(--text-body);
+    max-width: 64ch;
+    margin-top: var(--space-4);
+  }
+
+  /* ============================================================
+     01 TOOLKIT
+     ============================================================ */
+
+  .toolkit-grid {
     display: grid;
+    grid-template-columns: 1fr;
     gap: var(--card-gap);
-    width: min(var(--container-w), 100% - 2 * var(--gutter));
-    margin-inline: auto;
   }
 
   @media (min-width: 768px) {
-    .skills-grid {
+    .toolkit-grid {
       grid-template-columns: repeat(2, 1fr);
     }
   }
 
-  @media (min-width: 1024px) {
-    .skills-grid {
-      grid-template-columns: repeat(4, 1fr);
-    }
+  .toolkit-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
   }
 
-  .chip-group {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-2);
+  .toolkit-card__label {
+    font-family: var(--font-body);
+    font-size: 12.5px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--signal-soft);
     margin-bottom: var(--space-4);
   }
 
-  .chip__level {
-    margin-left: var(--space-2);
-    color: var(--signal-soft);
-    font-family: var(--font-body);
-    font-size: 10px;
-    font-weight: 500;
+  .toolkit-skills {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
   }
 
-  .skill-usage {
+  .toolkit-skill {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-4) 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .toolkit-skill:first-child {
+    border-top: none;
+    padding-top: 0;
+  }
+
+  .toolkit-skill__main {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    flex: 1;
+  }
+
+  .toolkit-skill__name {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 17px;
+    line-height: 1.3;
+    color: var(--text);
+  }
+
+  .toolkit-skill__desc {
+    font-size: 16.5px;
+    line-height: 1.65;
+    font-weight: 500;
+    color: var(--text-body);
+  }
+
+  .toolkit-skill__level {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: var(--space-2);
+  }
+
+  .level-segment {
+    width: 20px;
+    height: 6px;
+    border-radius: 3px;
+    background: var(--border-strong);
+    flex-shrink: 0;
+    transition: background 0.2s ease;
+  }
+
+  .level-segment.filled {
+    background: var(--signal);
+  }
+
+  .toolkit-skill__used {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-top: var(--space-2);
+  }
+
+  .toolkit-skill__used-link {
+    display: inline-flex;
+    align-items: center;
     font-family: var(--font-body);
     font-size: 14px;
+    font-weight: 600;
+    color: var(--signal-soft);
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+
+  .toolkit-skill__used-link:hover {
+    color: var(--signal);
+  }
+
+  .toolkit-skill__used-link:focus-visible {
+    outline: 2px solid var(--signal);
+    outline-offset: 3px;
+    border-radius: var(--radius-card);
+  }
+
+  /* ============================================================
+     02 EXPLORING NEXT
+     ============================================================ */
+
+  .exploring-card {
+    max-width: 100%;
+  }
+
+  .exploring-header {
+    margin-bottom: var(--space-4);
+  }
+
+  .exploring-intro {
+    font-size: 16px;
     line-height: 1.65;
     color: var(--text-body);
-    margin: 0;
+    margin-bottom: var(--space-6);
+    max-width: 60ch;
+  }
+
+  .exploring-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--card-gap);
+  }
+
+  @media (min-width: 768px) {
+    .exploring-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .exploring-skill {
+    padding: var(--space-5);
+    border: 1px dashed var(--border-strong);
+    border-radius: var(--radius-card);
+    background: var(--surface);
+  }
+
+  .exploring-skill__name {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 17px;
+    line-height: 1.3;
+    color: var(--text);
+    margin-bottom: var(--space-2);
+  }
+
+  .exploring-skill__desc {
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--text-body);
+  }
+
+  /* ============================================================
+     03 HOW I LEARN
+     ============================================================ */
+
+  .learn-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--card-gap);
+  }
+
+  @media (min-width: 768px) {
+    .learn-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .learn-card {
+    height: 100%;
+  }
+
+  .learn-card__number {
+    font-family: var(--font-body);
+    font-size: 12.5px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--signal-soft);
+    margin-bottom: var(--space-3);
+    display: block;
+  }
+
+  .learn-card__title {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: clamp(1.125rem, 2vw, 1.375rem);
+    line-height: 1.3;
+    color: var(--text);
+    margin-bottom: var(--space-3);
+  }
+
+  .learn-card__desc {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--text-body);
+  }
+
+  /* ============================================================
+     04 CLOSING BLOCK
+     ============================================================ */
+
+  .cta-section {
+    border-top: 1px solid var(--border);
+    padding-top: var(--space-8);
+    padding-bottom: var(--space-8);
+  }
+
+  .cta-content {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .cta__title {
+    font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+    margin-bottom: var(--space-4);
+  }
+
+  .cta__subtitle {
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--text-body);
+    margin-bottom: var(--space-8);
+  }
+
+  .cta__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-4);
+  }
+
+  /* ============================================================
+     REVEAL ANIMATION (gentle fade-up, never hides without JS)
+     ============================================================ */
+
+  .reveal-target {
+    opacity: 1;
+    transform: none;
+  }
+
+  .html.js .reveal-target {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  }
+
+  .html.js .reveal-target.revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .html.js .reveal-target {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
   }
 </style>
