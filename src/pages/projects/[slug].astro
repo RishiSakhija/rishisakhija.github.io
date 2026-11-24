@@ -6,7 +6,6 @@ import Chip from '../../components/Chip.astro';
 import StatusDot from '../../components/StatusDot.astro';
 import ProjectDiagram from '../../components/ProjectDiagram.astro';
 import ProjectMedia from '../../components/ProjectMedia.astro';
-import Button from '../../components/Button.astro';
 import { projects, getPrevNext, getProject } from '../../data/projects.js';
 
 export function getStaticPaths() {
@@ -21,32 +20,92 @@ if (!project) {
   throw new Error(`Project not found: ${slug}`);
 }
 
+// Helper to check if section should render
 const hasScreenshots = project.screenshots && project.screenshots.length > 0;
-const hasHowItWorks = project.howItWorksSteps && project.howItWorksSteps.length > 0;
-const hasTech = project.techStack && project.techStack.length > 0;
-const hasLearned = project.learned && project.learned.trim().length > 0;
+const hasSteps = project.steps && project.steps.length > 0;
+const hasArchitecture = project.architecture && project.architecture.length > 0;
+const hasAgents = project.agents && project.agents.length > 0;
+const hasPrinciples = project.principles && project.principles.length > 0;
+const hasLedger = project.ledger && project.ledger.length > 0;
+const hasTech = project.tech && project.tech.length > 0;
+const hasRoadmap = project.roadmap && project.roadmap.length > 0;
 const hasNextSteps = project.nextSteps && project.nextSteps.length > 0;
+const hasLearned = project.learned && project.learned.trim().length > 0;
+const hasProblem = project.problem && (project.problem.intro || (project.problem.points && project.problem.points.length > 0));
+const hasBoundaries = project.boundaries && (project.boundaries.title || (project.boundaries.items && project.boundaries.items.length > 0));
+const hasPlainWords = project.plainWords && project.plainWords.trim().length > 0;
+const hasSummary = project.summary && project.summary.length > 0;
+const hasGoal = project.goal && project.goal.trim().length > 0;
+const hasTagline = project.tagline && project.tagline.trim().length > 0;
+const hasFacts = project.facts && project.facts.length > 0;
+const hasSubtitle = project.subtitle && project.subtitle.trim().length > 0;
+const hasStatusNote = project.statusNote && project.statusNote.trim().length > 0;
 
-// Build dynamic section numbers
+// Dynamic section numbering
 let sectionCounter = 0;
 function nextSection() { return `0${++sectionCounter}`.slice(-2); }
+
+// Build ordered list of sections that will actually render
+const sectionOrder = [
+  'overview',
+  'problem',
+  'how-it-works',
+  'agents',
+  'principles',
+  'ledger',
+  'tech',
+  'roadmap',
+  'screenshots',
+  'learned'
+].filter(name => {
+  switch (name) {
+    case 'overview': return hasSummary || hasPlainWords || hasGoal;
+    case 'problem': return hasProblem || hasBoundaries;
+    case 'how-it-works': return hasSteps || hasArchitecture;
+    case 'agents': return hasAgents;
+    case 'principles': return hasPrinciples;
+    case 'ledger': return hasLedger;
+    case 'tech': return hasTech;
+    case 'roadmap': return hasRoadmap || hasNextSteps;
+    case 'screenshots': return hasScreenshots;
+    case 'learned': return hasLearned;
+    default: return false;
+  }
+});
+
 function getSectionNumber(name: string) {
-  const sections = [
-    'overview',
-    'how-it-works',
-    ...(hasScreenshots ? ['screenshots'] : []),
-    'tech',
-    'learned',
-    'status'
-  ];
-  const idx = sections.indexOf(name);
+  const idx = sectionOrder.indexOf(name);
   return idx >= 0 ? `0${idx + 1}`.slice(-2) : '??';
+}
+
+// Find CEO agent
+const ceoAgent = project.agents?.find(a => a.name.toLowerCase().includes('ceo'));
+const otherAgents = project.agents?.filter(a => !a.name.toLowerCase().includes('ceo')) || [];
+
+// Check if all tech items are planned
+const allTechPlanned = hasTech && project.tech.every(t => t.state === 'planned');
+
+// State badge inline renderer
+function renderStateBadge(state?: string) {
+  if (!state) return '';
+  if (state === 'planned') return '<span class="state-badge state-badge--planned">PLANNED</span>';
+  if (state === 'done') return '<span class="state-badge state-badge--done">DONE</span>';
+  if (state === 'current' || state === 'next') return `<span class="state-badge state-badge--current">${state === 'current' ? 'CURRENT' : 'NEXT'}</span>`;
+  return '';
+}
+
+// Timeline dot inline renderer
+function renderTimelineDot(state?: string) {
+  if (!state) return '<span class="timeline-dot timeline-dot--planned"></span>';
+  if (state === 'done') return '<span class="timeline-dot timeline-dot--done"></span>';
+  if (state === 'current' || state === 'next') return '<span class="timeline-dot timeline-dot--current"></span>';
+  return '<span class="timeline-dot timeline-dot--planned"></span>';
 }
 ---
 
 <BaseLayout 
   title={`${project.name} | Projects | Rishi Sakhija`} 
-  description={project.summary[0] || project.plainWords}
+  description={project.tagline || project.summary?.[0] || project.plainWords}
 >
 
   <!-- HEADER BAND -->
@@ -60,6 +119,9 @@ function getSectionNumber(name: string) {
         <span>{project.name.toUpperCase()}</span>
       </nav>
       <h1 class="page-header__title heading-gradient">{project.name}</h1>
+      {hasSubtitle && (
+        <p class="page-header__subtitle">{project.subtitle}</p>
+      )}
     </div>
   </header>
 
@@ -76,9 +138,14 @@ function getSectionNumber(name: string) {
             variant="status" 
             status={project.status === 'In progress' ? 'in-progress' : 'planned'}
           >{project.status}</Chip>
+          {hasStatusNote && (
+            <p class="project-header__status-note">{project.statusNote}</p>
+          )}
         </div>
         <h1 id="project-header-title" class="project-header__name">{project.name}</h1>
-        <p class="project-header__plain">{project.plainWords}</p>
+        {hasTagline && (
+          <p class="project-header__tagline">{project.tagline}</p>
+        )}
         <div class="project-header__tags">
           {project.tags.map(tag => <Chip variant="tag">{tag}</Chip>)}
         </div>
@@ -135,66 +202,372 @@ function getSectionNumber(name: string) {
     </div>
   </section>
 
-  <!-- 01 OVERVIEW -->
-  <section class="section" aria-labelledby="overview-title">
-    <div class="container">
-      <SectionHeader number={getSectionNumber('overview')} label="Project" title="Overview" id="overview-title" />
-
-      <div class="reveal-target">
-        <HudCard>
-          <div class="overview-content">
-            {project.summary.map((p, i) => (
-              <p key={i}>{p}</p>
-            ))}
-            <div class="overview-goal">
-              <span class="overview-goal__label">GOAL</span>
-              <span>{project.goal}</span>
+  <!-- AT A GLANCE -->
+  {hasFacts && (
+    <section class="section facts-section" aria-labelledby="facts-title" style="padding-top: 0;">
+      <div class="container">
+        <div class="facts-grid reveal-target">
+          {project.facts.map((fact, i) => (
+            <div key={i} class="fact-card">
+              <span class="fact-card__label">{fact.label}</span>
+              <span class="fact-card__value">{fact.value}</span>
             </div>
-          </div>
-        </HudCard>
+          ))}
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
+  )}
 
-  <!-- 02 HOW IT WORKS -->
-  <section class="section" aria-labelledby="how-title">
-    <div class="container">
-      <SectionHeader number={getSectionNumber('how-it-works')} label="Project" title="How It Works" id="how-title" />
+  <!-- OVERVIEW -->
+  {(hasSummary || hasPlainWords || hasGoal) && (
+    <section class="section" aria-labelledby="overview-title">
+      <div class="container">
+        <SectionHeader number={getSectionNumber('overview')} label="Project" title="Overview" id="overview-title" />
 
-      <div class="reveal-target">
-        <HudCard>
-          <div class="how-it-works-content">
-            <div class="how-it-works__diagram" aria-label={`${project.name} concept diagram`}>
-              <ProjectDiagram
-                variant={project.slug === 'rishi-os' ? 'hub' : 'flow'}
-                labels={
-                  project.slug === 'rishi-os'
-                    ? ['CEO agent', 'Research', 'Analysis', 'Content']
-                    : project.slug === 'tech-intelligence-engine'
-                      ? ['query', 'tech & AI\nindex', 'results']
-                      : ['YouTube\nlink', 'notes', 'shelf']
-                }
-              />
+        <div class="reveal-target">
+          <HudCard>
+            <div class="overview-content">
+              {hasSummary && (
+                <>
+                  {project.summary.map((p, i) => (
+                    <p key={i}>{p}</p>
+                  ))}
+                </>
+              )}
+              {hasPlainWords && (
+                <div class="overview-plainwords">
+                  <span class="overview-plainwords__label">IN PLAIN WORDS</span>
+                  <p>{project.plainWords}</p>
+                </div>
+              )}
+              {hasGoal && (
+                <div class="overview-goal">
+                  <span class="overview-goal__label">GOAL</span>
+                  <span>{project.goal}</span>
+                </div>
+              )}
             </div>
-            {hasHowItWorks ? (
-              <ol class="how-it-works__steps">
-                {project.howItWorksSteps.map((step, i) => (
-                  <li key={i} class="how-step">
-                    <span class="how-step__number" aria-hidden="true">{i + 1}</span>
-                    <p class="how-step__text">{step}</p>
-                  </li>
+          </HudCard>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- THE PROBLEM -->
+  {(hasProblem || hasBoundaries) && (
+    <section class="section" aria-labelledby="problem-title">
+      <div class="container">
+        <SectionHeader number={getSectionNumber('problem')} label="Project" title="The Problem" id="problem-title" />
+
+        <div class="reveal-target">
+          <HudCard>
+            <div class="problem-content">
+              {hasProblem && (
+                <div class="problem-main">
+                  {project.problem?.intro && (
+                    <p class="problem-intro">{project.problem.intro}</p>
+                  )}
+                  {project.problem?.points && project.problem.points.length > 0 && (
+                    <ul class="problem-points">
+                      {project.problem.points.map((point, i) => (
+                        <li key={i} class="problem-point">
+                          <span class="problem-point__dot" aria-hidden="true"></span>
+                          <span>{point}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              )}
+              {hasBoundaries && (
+                <div class="problem-boundaries">
+                  <h4 class="problem-boundaries__title">{project.boundaries?.title}</h4>
+                  {project.boundaries?.items && project.boundaries.items.length > 0 && (
+                    <ul class="problem-boundaries__items">
+                      {project.boundaries.items.map((item, i) => (
+                        <li key={i} class="problem-boundaries__item">
+                          <span class="problem-boundaries__marker" aria-hidden="true">
+                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                              <circle cx="7" cy="7" r="6.5" stroke="currentColor" stroke-width="1.5"/>
+                              <circle cx="7" cy="7" r="2.5" fill="currentColor"/>
+                            </svg>
+                          </span>
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              )}
+            </div>
+          </HudCard>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- HOW IT WORKS -->
+  {(hasSteps || hasArchitecture) && (
+    <section class="section" aria-labelledby="how-title">
+      <div class="container">
+        <SectionHeader number={getSectionNumber('how-it-works')} label="Project" title="How It Works" id="how-title" />
+
+        <div class="reveal-target">
+          <HudCard>
+            <div class="how-it-works-content">
+              {hasSteps && (
+                <div class="steps-section">
+                  <ol class="steps-list">
+                    {project.steps.map((step, i) => (
+                      <li key={i} class="step-card">
+                        <div class="step-card__connector" aria-hidden="true">
+                          <span class="step-card__number">{i + 1}</span>
+                          {i < project.steps.length - 1 && <span class="step-card__line"></span>}
+                        </div>
+                        <div class="step-card__content">
+                          <div class="step-card__header">
+                            <h4 class="step-card__title">{step.title}</h4>
+                            {step.state && (
+  step.state === 'planned' && <span class="state-badge state-badge--planned">PLANNED</span>
+  || step.state === 'done' && <span class="state-badge state-badge--done">DONE</span>
+  || (step.state === 'current' || step.state === 'next') && <span class="state-badge state-badge--current">{step.state === 'current' ? 'CURRENT' : 'NEXT'}</span>
+)}
+                          </div>
+                          <p class="step-card__text">{step.text}</p>
+                        </div>
+                      </li>
+                    ))}
+                  </ol>
+                </div>
+              )}
+
+              {hasArchitecture && (
+                <div class="architecture-section">
+                  {project.architecture.map((layer, i) => (
+                    <div key={i} class={`architecture-layer ${layer.state === 'planned' ? 'architecture-layer--planned' : ''}`}>
+                      <div class="architecture-layer__header">
+                        <div class="architecture-layer__meta">
+                          <h4 class="architecture-layer__name">{layer.name}</h4>
+                          {layer.note && <span class="architecture-layer__note">{layer.note}</span>}
+                          {layer.state && (
+  layer.state === 'planned' && <span class="state-badge state-badge--planned">PLANNED</span>
+  || layer.state === 'done' && <span class="state-badge state-badge--done">DONE</span>
+  || (layer.state === 'current' || layer.state === 'next') && <span class="state-badge state-badge--current">{layer.state === 'current' ? 'CURRENT' : 'NEXT'}</span>
+)}
+                        </div>
+                      </div>
+                      {layer.items && layer.items.length > 0 && (
+                        <div class="architecture-layer__items">
+                          {layer.items.map((item, j) => (
+                            <Chip key={j} variant="tag">{item}</Chip>
+                          ))}
+                        </div>
+                      )}
+                      {i < project.architecture.length - 1 && (
+                        <div class="architecture-layer__connector" aria-hidden="true">
+                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                            <line x1="8" y1="0" x2="8" y2="16" stroke="var(--border-strong)" stroke-width="1.5"/>
+                            <polyline points="4 12 8 16 12 12" stroke="var(--border-strong)" stroke-width="1.5" fill="none"/>
+                          </svg>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {!hasSteps && !hasArchitecture && (
+                <div class="how-it-works__diagram" aria-label={`${project.name} concept diagram`}>
+                  <ProjectDiagram
+                    variant={project.slug === 'rishi-os' ? 'hub' : 'flow'}
+                    labels={
+                      project.slug === 'rishi-os'
+                        ? ['CEO agent', 'Research', 'Analysis', 'Content']
+                        : project.slug === 'tech-intelligence-engine'
+                          ? ['query', 'tech & AI\nindex', 'results']
+                          : ['YouTube\nlink', 'notes', 'shelf']
+                    }
+                  />
+                  <p class="how-it-works__placeholder">A step-by-step walkthrough is coming soon.</p>
+                </div>
+              )}
+            </div>
+          </HudCard>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- MEET THE AGENTS -->
+  {hasAgents && (
+    <section class="section" aria-labelledby="agents-title">
+      <div class="container">
+        <SectionHeader number={getSectionNumber('agents')} label="Project" title="Meet the Agents" id="agents-title" />
+
+        <div class="reveal-target">
+          <HudCard>
+            <div class="agents-grid">
+              {ceoAgent && (
+                <article class="agent-card agent-card--ceo">
+                  <h4 class="agent-card__name">{ceoAgent.name}</h4>
+                  <p class="agent-card__job">{ceoAgent.job}</p>
+                  <Chip variant="tag" class="agent-card__output">{ceoAgent.output}</Chip>
+                </article>
+              )}
+              {otherAgents.map((agent, i) => (
+                <article key={i} class="agent-card">
+                  <h4 class="agent-card__name">{agent.name}</h4>
+                  <p class="agent-card__job">{agent.job}</p>
+                  <Chip variant="tag" class="agent-card__output">{agent.output}</Chip>
+                </article>
+              ))}
+            </div>
+          </HudCard>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- DESIGN PRINCIPLES -->
+  {hasPrinciples && (
+    <section class="section" aria-labelledby="principles-title">
+      <div class="container">
+        <SectionHeader number={getSectionNumber('principles')} label="Project" title="Design Principles" id="principles-title" />
+
+        <div class="reveal-target">
+          <HudCard>
+            <div class="principles-grid">
+              {project.principles.map((principle, i) => (
+                <article key={i} class="principle-card">
+                  <span class="principle-card__number">{i + 1}</span>
+                  <h4 class="principle-card__title">{principle.title}</h4>
+                  <p class="principle-card__text">{principle.text}</p>
+                </article>
+              ))}
+            </div>
+          </HudCard>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- BUILT TO RUN ON FREE TIERS -->
+  {hasLedger && (
+    <section class="section" aria-labelledby="ledger-title">
+      <div class="container">
+        <SectionHeader number={getSectionNumber('ledger')} label="Project" title="Built to Run on Free Tiers" id="ledger-title" />
+
+        <div class="reveal-target">
+          <HudCard>
+            <div class="ledger-content">
+              <dl class="ledger-list">
+                {project.ledger.map((item, i) => (
+                  <div key={i} class="ledger-item">
+                    <dt class="ledger-item__label">{item.label}</dt>
+                    <dd class="ledger-item__value">{item.value}</dd>
+                  </div>
                 ))}
-              </ol>
-            ) : (
-              <p class="how-it-works__placeholder">A step-by-step walkthrough is coming soon.</p>
-            )}
-          </div>
-        </HudCard>
+              </dl>
+              {project.ledgerNote && (
+                <p class="ledger-note">{project.ledgerNote}</p>
+              )}
+            </div>
+          </HudCard>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
+  )}
 
-  <!-- 03 SCREENSHOTS (conditional) -->
+  <!-- TECH -->
+  {hasTech && (
+    <section class="section" aria-labelledby="tech-title">
+      <div class="container">
+        <SectionHeader number={getSectionNumber('tech')} label="Project" title="Tech" id="tech-title" />
+
+        <div class="reveal-target">
+          <HudCard>
+            <div class="tech-chips">
+              {project.tech.map((item, i) => (
+                <Chip 
+                  key={i} 
+                  variant={item.state === 'planned' ? 'tag-planned' : 'tag'}
+                  class={item.state === 'planned' ? 'tech-chip--planned' : ''}
+                >
+                  {item.name}
+                  {item.state === 'planned' && <span class="tech-chip__state">planned</span>}
+                </Chip>
+              ))}
+            </div>
+            {allTechPlanned && (
+              <p class="tech-all-planned">Planned stack. Nothing here is built yet.</p>
+            )}
+          </HudCard>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- ROADMAP AND STATUS -->
+  {(hasRoadmap || hasNextSteps) && (
+    <section class="section" aria-labelledby="roadmap-title">
+      <div class="container">
+        <SectionHeader number={getSectionNumber('roadmap')} label="Project" title="Roadmap & Status" id="roadmap-title" />
+
+        <div class="reveal-target">
+          <HudCard>
+            {hasRoadmap && (
+              <div class="roadmap-timeline">
+                {project.roadmap.map((phase, i) => (
+                  <article key={i} class="roadmap-entry">
+                    <div class="roadmap-entry__timeline" aria-hidden="true">
+                      {phase.state === 'done' && <span class="timeline-dot timeline-dot--done"></span>
+|| (phase.state === 'current' || phase.state === 'next') && <span class="timeline-dot timeline-dot--current"></span>
+|| <span class="timeline-dot timeline-dot--planned"></span>}
+                      {i < project.roadmap.length - 1 && <span class="roadmap-entry__line"></span>}
+                    </div>
+                    <div class="roadmap-entry__content">
+                      <div class="roadmap-entry__header">
+                        <span class="roadmap-entry__phase">{phase.phase}</span>
+                        <h4 class="roadmap-entry__title">{phase.title}</h4>
+                        {phase.state && (
+  phase.state === 'planned' && <span class="state-badge state-badge--planned">PLANNED</span>
+  || phase.state === 'done' && <span class="state-badge state-badge--done">DONE</span>
+  || (phase.state === 'current' || phase.state === 'next') && <span class="state-badge state-badge--current">{phase.state === 'current' ? 'CURRENT' : 'NEXT'}</span>
+)}
+                      </div>
+                      {phase.items && phase.items.length > 0 && (
+                        <ul class="roadmap-entry__items">
+                          {phase.items.map((item, j) => (
+                            <li key={j}>{item}</li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
+                  </article>
+                ))}
+              </div>
+            )}
+            {!hasRoadmap && hasNextSteps && (
+              <div class="next-steps-checklist">
+                <ul class="next-steps-list">
+                  {project.nextSteps.map((step, i) => (
+                    <li key={i} class="next-step-item">
+                      <span class="next-step-item__dot" aria-hidden="true">
+                        <span class={step.done ? 'filled' : ''}></span>
+                      </span>
+                      <span class="next-step-item__text">{step.text}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </HudCard>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- SCREENSHOTS -->
   {hasScreenshots && (
     <section class="section" aria-labelledby="screenshots-title">
       <div class="container">
@@ -206,6 +579,7 @@ function getSectionNumber(name: string) {
               {project.screenshots.map((shot, i) => (
                 <button
                   type="button"
+                  key={i}
                   class="screenshot-thumb"
                   data-index={i}
                   data-src={shot.src}
@@ -258,88 +632,22 @@ function getSectionNumber(name: string) {
     </section>
   )}
 
-  <!-- TECH USED -->
-  <section class="section" aria-labelledby="tech-title">
-    <div class="container">
-      <SectionHeader number={getSectionNumber('tech')} label="Project" title="Tech Used" id="tech-title" />
-
-      <div class="reveal-target">
-        <HudCard>
-          {hasTech ? (
-            <div class="tech-chips">
-              {project.techStack.map(tech => <Chip variant="tag">{tech}</Chip>)}
-            </div>
-          ) : (
-            <>
-              <div class="tech-chips">
-                {project.tags.map(tag => <Chip variant="tag">{tag}</Chip>)}
-              </div>
-              <p class="tech-placeholder">Full tech details coming soon.</p>
-            </>
-          )}
-        </HudCard>
-      </div>
-    </div>
-  </section>
-
   <!-- WHAT I LEARNED -->
-  <section class="section" aria-labelledby="learned-title">
-    <div class="container">
-      <SectionHeader number={getSectionNumber('learned')} label="Project" title="What I Learned" id="learned-title" />
+  {hasLearned && (
+    <section class="section" aria-labelledby="learned-title">
+      <div class="container">
+        <SectionHeader number={getSectionNumber('learned')} label="Project" title="What I Learned" id="learned-title" />
 
-      <div class="reveal-target">
-        <HudCard>
-          {hasLearned ? (
+        <div class="reveal-target">
+          <HudCard>
             <p>{project.learned}</p>
-          ) : (
-            <p>Documentation in progress.</p>
-          )}
-        </HudCard>
+          </HudCard>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
+  )}
 
-  <!-- STATUS AND NEXT STEPS -->
-  <section class="section" aria-labelledby="status-title">
-    <div class="container">
-      <SectionHeader number={getSectionNumber('status')} label="Project" title="Status & Next Steps" id="status-title" />
-
-      <div class="reveal-target">
-        <HudCard>
-          <div class="status-content">
-            <div class="status-content__current">
-              <Chip 
-                variant="status" 
-                status={project.status === 'In progress' ? 'in-progress' : 'planned'}
-              >{project.status}</Chip>
-              <p>
-                {project.status === 'In progress' 
-                  ? 'This project is in progress.' 
-                  : 'This project is planned and not built yet.'
-                }
-              </p>
-            </div>
-            {hasNextSteps ? (
-              <ul class="status-content__next">
-                {project.nextSteps.map((step, i) => (
-                  <li key={i} class="next-step">
-                    <span class="next-step__dot" aria-hidden="true">
-                      <span class={step.done ? 'filled' : ''}></span>
-                    </span>
-                    <span class="next-step__text">{step.text}</span>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p class="status-placeholder">Next steps will be added here.</p>
-            )}
-          </div>
-        </HudCard>
-      </div>
-    </div>
-  </section>
-
-  <!-- BOTTOM: PREV/NEXT + BACK -->
+  <!-- BOTTOM: PREV/NEXT + CTA -->
   <section class="section project-nav-section" aria-labelledby="nav-title">
     <div class="container">
       <div class="project-nav-grid">
@@ -362,15 +670,25 @@ function getSectionNumber(name: string) {
           </a>
         )}
       </div>
-      <div class="project-back">
-        <a class="btn btn--secondary" href="/projects">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M21 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6"/>
-            <polyline points="21 3 21 9 15 9"/>
-            <path d="M21 3l-9 9"/>
-          </svg>
-          Back to all projects
-        </a>
+      <div class="project-cta reveal-target">
+        <p class="project-cta__text">Want to know more about this project?</p>
+        <div class="project-cta__actions">
+          <a class="btn btn--secondary" href="/contact">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="2" y="4" width="20" height="16" rx="2"/>
+              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+            </svg>
+            Get in touch
+          </a>
+          <a class="btn btn--secondary" href="/projects">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6"/>
+              <polyline points="21 3 21 9 15 9"/>
+              <path d="M21 3l-9 9"/>
+            </svg>
+            Back to all projects
+          </a>
+        </div>
       </div>
     </div>
   </section>
@@ -500,6 +818,16 @@ function getSectionNumber(name: string) {
     letter-spacing: -0.01em;
   }
 
+  .page-header__subtitle {
+    font-family: var(--font-body);
+    font-size: 12.5px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--signal-soft);
+    margin-top: var(--space-1);
+  }
+
   /* PROJECT HEADER SECTION */
   .project-header-section {
     padding-bottom: var(--space-8);
@@ -519,6 +847,14 @@ function getSectionNumber(name: string) {
     flex-wrap: wrap;
   }
 
+  .project-header__status-note {
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text-body);
+    margin: 0;
+    flex: 1 1 100%;
+  }
+
   .project-header__name {
     font-family: var(--font-heading);
     font-weight: 400;
@@ -529,13 +865,11 @@ function getSectionNumber(name: string) {
     margin-bottom: var(--space-3);
   }
 
-  .project-header__plain {
-    font-family: var(--font-body);
-    font-size: 13px;
+  .project-header__tagline {
+    font-size: 19px;
+    line-height: 1.6;
     font-weight: 500;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--muted-strong);
+    color: var(--text-body);
     max-width: 60ch;
     margin-bottom: var(--space-4);
   }
@@ -575,19 +909,97 @@ function getSectionNumber(name: string) {
     object-fit: cover;
   }
 
+  /* AT A GLANCE / FACTS */
+  .facts-section {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .facts-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+  }
+
+  @media (min-width: 640px) {
+    .facts-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .facts-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .fact-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    padding: var(--space-4);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+  }
+
+  .fact-card__label {
+    font-family: var(--font-body);
+    font-size: 12.5px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--signal-soft);
+  }
+
+  .fact-card__value {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 17px;
+    line-height: 1.3;
+    color: var(--text);
+  }
+
   /* OVERVIEW */
   .overview-content {
     display: flex;
     flex-direction: column;
-    gap: var(--space-4);
+    gap: var(--space-5);
   }
 
-  .overview-content p {
+  .overview-content > p {
     font-size: 17.5px;
     line-height: 1.75;
     font-weight: 500;
     color: var(--text-body);
     max-width: 64ch;
+    margin: 0;
+  }
+
+  .overview-plainwords {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-5);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--signal);
+    border-radius: var(--radius-card);
+  }
+
+  .overview-plainwords__label {
+    font-family: var(--font-body);
+    font-size: 12.5px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--signal-soft);
+  }
+
+  .overview-plainwords p {
+    font-size: 18px;
+    line-height: 1.7;
+    font-weight: 600;
+    color: var(--text);
     margin: 0;
   }
 
@@ -618,35 +1030,108 @@ function getSectionNumber(name: string) {
     color: var(--text-body);
   }
 
-  /* HOW IT WORKS */
-  .how-it-works-content {
+  /* THE PROBLEM */
+  .problem-content {
     display: flex;
     flex-direction: column;
     gap: var(--space-8);
   }
 
-  .how-it-works__diagram {
-    width: 100%;
-  }
-
-  .how-it-works__diagram :global(.diagram-wrapper) {
-    width: 100%;
-    height: 160px;
-    max-width: 100%;
-  }
-
-  .how-it-works__diagram :global(.diagram-caption) {
-    font-family: var(--font-body);
-    font-size: 11.5px;
+  .problem-intro {
+    font-size: 17px;
+    line-height: 1.75;
     font-weight: 500;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--muted);
-    text-align: center;
-    margin-top: var(--space-3);
+    color: var(--text-body);
+    margin: 0;
   }
 
-  .how-it-works__steps {
+  .problem-points {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .problem-point {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    padding: var(--space-3);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+  }
+
+  .problem-point__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--signal-soft);
+    flex-shrink: 0;
+    margin-top: 6px;
+  }
+
+  .problem-point span {
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text-body);
+  }
+
+  .problem-boundaries {
+    padding: var(--space-5);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+  }
+
+  .problem-boundaries__title {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 1.4;
+    color: var(--text);
+    margin: 0 0 var(--space-4);
+  }
+
+  .problem-boundaries__items {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .problem-boundaries__item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    font-size: 15.5px;
+    line-height: 1.65;
+    color: var(--text-body);
+  }
+
+  .problem-boundaries__marker {
+    flex-shrink: 0;
+    color: var(--signal-soft);
+    margin-top: 2px;
+  }
+
+  /* HOW IT WORKS */
+  .how-it-works-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-10);
+  }
+
+  /* STEPS */
+  .steps-section {
+    width: 100%;
+  }
+
+  .steps-list {
     display: flex;
     flex-direction: column;
     gap: var(--space-4);
@@ -655,27 +1140,328 @@ function getSectionNumber(name: string) {
     list-style: none;
   }
 
-  .how-step {
+  .step-card {
     display: flex;
     gap: var(--space-4);
-    padding: var(--space-4);
-    background: var(--surface-2);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-card);
+    position: relative;
   }
 
-  .how-step__number {
+  @media (min-width: 768px) {
+    .steps-list {
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: flex-start;
+    }
+    .step-card {
+      flex: 1 1 calc(50% - var(--space-2));
+      min-width: 280px;
+    }
+  }
+
+  .step-card__connector {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .step-card__number {
     font-family: var(--font-body);
     font-size: 12.5px;
     font-weight: 600;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--signal-soft);
-    flex-shrink: 0;
-    margin-top: 2px;
+    background: var(--surface);
+    border: 2px solid var(--signal);
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
   }
 
-  .how-step__text {
+  .step-card__line {
+    width: 2px;
+    height: 100%;
+    background: var(--border-strong);
+    margin-top: var(--space-2);
+    min-height: 60px;
+  }
+
+  @media (min-width: 768px) {
+    .step-card__line {
+      display: none;
+    }
+    .steps-list::before {
+      content: '';
+      position: absolute;
+      left: 16px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: var(--border-strong);
+      z-index: 0;
+    }
+    .steps-list {
+      position: relative;
+      padding-left: 32px;
+    }
+  }
+
+  .step-card__content {
+    flex: 1;
+    padding: var(--space-4);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .step-card__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-3);
+  }
+
+  .step-card__title {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 17px;
+    line-height: 1.3;
+    color: var(--text);
+    margin: 0;
+  }
+
+  .step-card__text {
+    font-size: 16.5px;
+    line-height: 1.7;
+    font-weight: 500;
+    color: var(--text-body);
+    margin: 0;
+  }
+
+  /* STATE BADGE */
+  .state-badge {
+    font-family: var(--font-body);
+    font-size: 11.5px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 4px 8px;
+    border-radius: 999px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .state-badge--planned {
+    background: transparent;
+    border: 1px dashed var(--muted);
+    color: var(--muted);
+  }
+
+  .state-badge--done {
+    background: var(--signal);
+    color: var(--bg);
+  }
+
+  .state-badge--current {
+    background: var(--signal-soft);
+    color: var(--bg);
+  }
+
+  /* ARCHITECTURE */
+  .architecture-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .architecture-layer {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    padding: var(--space-5);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+    position: relative;
+  }
+
+  .architecture-layer--planned {
+    border-style: dashed;
+    border-color: var(--muted);
+    background: var(--surface-2);
+  }
+
+  .architecture-layer__header {
+    width: 100%;
+  }
+
+  .architecture-layer__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .architecture-layer__name {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 17px;
+    line-height: 1.3;
+    color: var(--text);
+    margin: 0;
+  }
+
+  .architecture-layer__note {
+    font-family: var(--font-body);
+    font-size: 12.5px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted-strong);
+  }
+
+  .architecture-layer__items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .architecture-layer__connector {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 24px;
+    margin-left: 8px;
+  }
+
+  /* MEET THE AGENTS */
+  .agents-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+
+  @media (min-width: 640px) {
+    .agents-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .agents-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .agent-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    padding: var(--space-5);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+    transition: border-color 0.15s ease;
+  }
+
+  .agent-card:hover {
+    border-color: var(--signal);
+  }
+
+  .agent-card--ceo {
+    grid-column: 1 / -1;
+    border-color: var(--signal);
+    background: linear-gradient(135deg, var(--surface-2), var(--surface));
+  }
+
+  @media (min-width: 640px) {
+    .agent-card--ceo {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .agent-card--ceo {
+      grid-column: 1 / -1;
+    }
+  }
+
+  .agent-card__name {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 17px;
+    line-height: 1.3;
+    color: var(--text);
+    margin: 0;
+  }
+
+  .agent-card__job {
+    font-size: 16.5px;
+    line-height: 1.65;
+    color: var(--text-body);
+    margin: 0;
+  }
+
+  .agent-card__output {
+    align-self: flex-start;
+  }
+
+  /* DESIGN PRINCIPLES */
+  .principles-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+
+  @media (min-width: 768px) {
+    .principles-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .principles-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .principle-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-5);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+  }
+
+  .principle-card__number {
+    font-family: var(--font-body);
+    font-size: 12.5px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--signal-soft);
+  }
+
+  .principle-card__title {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 17px;
+    line-height: 1.3;
+    color: var(--text);
+    margin: 0;
+  }
+
+  .principle-card__text {
     font-size: 16px;
     line-height: 1.7;
     font-weight: 500;
@@ -683,15 +1469,295 @@ function getSectionNumber(name: string) {
     margin: 0;
   }
 
-  .how-it-works__placeholder {
-    font-size: 16px;
-    line-height: 1.7;
-    color: var(--text-body);
-    text-align: center;
-    padding: var(--space-6);
+  /* BUILT TO RUN ON FREE TIERS (LEDGER) */
+  .ledger-content {
+    width: 100%;
+  }
+
+  .ledger-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+    margin-bottom: var(--space-4);
+  }
+
+  @media (min-width: 768px) {
+    .ledger-list {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .ledger-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    padding: var(--space-4);
     background: var(--surface-2);
     border: 1px solid var(--border);
     border-radius: var(--radius-card);
+  }
+
+  .ledger-item__label {
+    font-family: var(--font-body);
+    font-size: 12.5px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--signal-soft);
+  }
+
+  .ledger-item__value {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--text);
+  }
+
+  .ledger-note {
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: var(--muted-strong);
+    margin: 0;
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--border);
+  }
+
+  /* TECH */
+  .tech-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-bottom: var(--space-3);
+  }
+
+  .tech-chip--planned {
+    border-style: dashed;
+    border-color: var(--muted);
+    background: var(--surface-2);
+  }
+
+  .tech-chip__state {
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-left: 6px;
+  }
+
+  .tech-all-planned {
+    font-size: 15.5px;
+    line-height: 1.65;
+    color: var(--muted-strong);
+    margin: 0;
+  }
+
+  /* ROADMAP */
+  .roadmap-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    position: relative;
+  }
+
+  .roadmap-timeline::before {
+    content: '';
+    position: absolute;
+    left: 16px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(180deg, var(--signal), var(--signal-glow));
+    z-index: 0;
+  }
+
+  .roadmap-entry {
+    display: flex;
+    gap: var(--space-5);
+    padding: var(--space-5) 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .roadmap-entry__timeline {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+    width: 32px;
+  }
+
+  .timeline-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid var(--border-strong);
+    background: var(--surface);
+    position: relative;
+    z-index: 2;
+    transition: all 0.2s ease;
+  }
+
+  .timeline-dot--done {
+    background: var(--signal);
+    border-color: var(--signal);
+  }
+
+  .timeline-dot--done::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    border: 2px solid var(--signal);
+    animation: pulse-ring 2s ease-out infinite;
+  }
+
+  @keyframes pulse-ring {
+    0% { transform: scale(1); opacity: 0.6; }
+    100% { transform: scale(2); opacity: 0; }
+  }
+
+  .timeline-dot--current {
+    background: var(--signal);
+    border-color: var(--signal);
+    box-shadow: 0 0 16px var(--signal-glow);
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-dot {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 16px var(--signal-glow); }
+    50% { transform: scale(1.2); box-shadow: 0 0 24px var(--signal-glow); }
+  }
+
+  .timeline-dot--planned {
+    background: var(--surface);
+    border-style: dashed;
+  }
+
+  .roadmap-entry__line {
+    flex: 1;
+    width: 2px;
+    background: var(--border-strong);
+    margin-top: 4px;
+  }
+
+  .roadmap-entry:last-child .roadmap-entry__line {
+    display: none;
+  }
+
+  .roadmap-entry__content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .roadmap-entry__header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-3);
+  }
+
+  .roadmap-entry__phase {
+    font-family: var(--font-body);
+    font-size: 12.5px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--signal-soft);
+  }
+
+  .roadmap-entry__title {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 17px;
+    line-height: 1.3;
+    color: var(--text);
+    margin: 0;
+  }
+
+  .roadmap-entry__items {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .roadmap-entry__items li {
+    font-size: 15.5px;
+    line-height: 1.65;
+    color: var(--text-body);
+    position: relative;
+    padding-left: var(--space-4);
+  }
+
+  .roadmap-entry__items li::before {
+    content: '>';
+    position: absolute;
+    left: 0;
+    color: var(--signal-soft);
+    font-family: var(--font-body);
+    font-size: 11.5px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  /* NEXT STEPS CHECKLIST */
+  .next-steps-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .next-step-item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    padding: var(--space-3);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+  }
+
+  .next-step-item__dot {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--border-strong);
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2px;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+
+  .next-step-item__dot.filled {
+    background: var(--signal);
+    border-color: var(--signal);
+  }
+
+  .next-step-item__dot.filled::after {
+    content: '';
+    width: 8px;
+    height: 8px;
+    background: var(--text);
+    border-radius: 50%;
+  }
+
+  .next-step-item__text {
+    font-size: 15.5px;
+    line-height: 1.65;
+    color: var(--text-body);
   }
 
   /* SCREENSHOTS */
@@ -890,100 +1956,6 @@ function getSectionNumber(name: string) {
     max-width: 85vw;
   }
 
-  /* TECH USED */
-  .tech-chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-2);
-    margin-bottom: var(--space-3);
-  }
-
-  .tech-placeholder {
-    font-size: 16px;
-    line-height: 1.7;
-    color: var(--text-body);
-  }
-
-  /* WHAT I LEARNED */
-  .status-content {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-6);
-  }
-
-  .status-content__current {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-start;
-    gap: var(--space-3);
-  }
-
-  .status-content__current p {
-    font-size: 16px;
-    line-height: 1.7;
-    color: var(--text-body);
-    margin: 0;
-    flex: 1;
-    min-width: 200px;
-  }
-
-  .status-content__next {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-3);
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  .next-step {
-    display: flex;
-    align-items: flex-start;
-    gap: var(--space-3);
-    padding: var(--space-3);
-    background: var(--surface-2);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-card);
-  }
-
-  .next-step__dot {
-    width: 20px;
-    height: 20px;
-    border: 2px solid var(--border-strong);
-    border-radius: 50%;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 2px;
-    transition: border-color 0.15s ease, background 0.15s ease;
-  }
-
-  .next-step__dot.filled {
-    background: var(--signal);
-    border-color: var(--signal);
-  }
-
-  .next-step__dot.filled::after {
-    content: '';
-    width: 8px;
-    height: 8px;
-    background: var(--text);
-    border-radius: 50%;
-  }
-
-  .next-step__text {
-    font-size: 15.5px;
-    line-height: 1.65;
-    color: var(--text-body);
-  }
-
-  .status-placeholder {
-    font-size: 16px;
-    line-height: 1.7;
-    color: var(--text-body);
-  }
-
   /* PROJECT NAV SECTION */
   .project-nav-section {
     border-top: 1px solid var(--border);
@@ -1047,12 +2019,28 @@ function getSectionNumber(name: string) {
     margin-top: auto;
   }
 
-  .project-back {
+  /* PROJECT CTA */
+  .project-cta {
     text-align: center;
+    padding: var(--space-8);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
   }
 
-  .project-back .btn {
-    display: inline-flex;
+  .project-cta__text {
+    font-size: 17px;
+    line-height: 1.7;
+    font-weight: 500;
+    color: var(--text-body);
+    margin: 0 0 var(--space-6);
+  }
+
+  .project-cta__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-4);
   }
 
   /* REVEAL ANIMATION */
