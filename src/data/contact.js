@@ -89,7 +89,7 @@ Thanks,
     ],
     rightNow: [
       "Building a personal team of AI agents",
-      "Building a compact search engine for tech and AI",
+      "Designing the Tech Intelligence Engine",
       "Studying for a Computer Engineering diploma alongside"
     ]
   },

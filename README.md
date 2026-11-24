@@ -13,7 +13,7 @@ I'm Rishi Sakhija, a self-taught AI/ML builder with hands-on experience since 20
 ## Pages
 
 - **Home:** introduction, featured projects, and what I'm working on
-- **Projects:** AI Search Engine, Agentic Team, and Virtual Shelf, each with its own detail page
+- **Projects:** Rishi-OS, Tech Intelligence Engine, and Virtual Shelf, each with its own detail page
 - **Skills:** what I work with and what I'm learning
 - **About:** my story and timeline
 - **Contact:** how to reach me

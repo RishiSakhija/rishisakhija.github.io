@@ -20,13 +20,13 @@ export const journeyData = [
   {
     label: "NOW",
     title: "Building in public",
-    text: "I'm working on a personal team of AI agents and a compact search engine for tech and AI, and shaping all of it into a professional personal brand.",
+    text: "I'm running a personal system of seven AI agents called Rishi-OS, shaping a professional personal brand, and moving the Tech Intelligence Engine from design into build.",
     chips: ["In progress"]
   },
   {
     label: "NEXT",
     title: "What's coming",
-    text: "Finishing the projects, publishing detailed case studies and code, and adding research notes and a build log to this site.",
+    text: "Starting the Tech Intelligence Engine build, taking Virtual Shelf past its first step, publishing detailed case studies, and adding research notes and a build log to this site.",
     chips: ["Planned"],
     planned: true
   }

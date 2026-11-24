@@ -48,13 +48,13 @@ export const skillsData = {
         },
         {
           name: "AI agents",
-          description: "Designing agents with specific jobs and connecting them so they can work alone or as a team.",
+          description: "Designing agents with specific jobs and connecting them so they work alone or as a team, as in Rishi-OS.",
           level: null,
           usedIn: ["rishi-os"]
         },
         {
           name: "Agent frameworks and libraries",
-          description: "Using existing libraries to put agent workflows together faster instead of starting from scratch.",
+          description: "I'm exploring agent frameworks. My own system, Rishi-OS, deliberately avoids them: plain Python and one fixed workflow keep it cheap, predictable and easy to debug.",
           level: null,
           usedIn: []
         }
@@ -95,7 +95,7 @@ export const skillsData = {
   exploring: [
     {
       name: "Search systems",
-      description: "Finding and ranking results, the foundation for my tech-and-AI search engine."
+      description: "The foundation of the Tech Intelligence Engine: finding and ranking results."
     },
     {
       name: "Vector databases and embeddings",

@@ -23,14 +23,14 @@ export const aboutData = {
       number: "02",
       title: "What I focus on",
       paragraphs: [
-        "Today I concentrate on the agentic era, where AI does more than answer questions: it plans, coordinates and takes action. I design AI agents that work together and automations that take repetitive work off my plate, and I'm starting to explore search."
+        "Today I concentrate on the agentic era, where AI does more than answer questions: it plans, coordinates and takes action. I design AI agents that work together and automations that take repetitive work off my plate, and I plan systems like a tech intelligence engine carefully before building them."
       ]
     },
     {
       number: "03",
       title: "Where I am now",
       paragraphs: [
-        "I'm studying for my Computer Engineering diploma while building on the side. Right now I'm working on a personal team of AI agents and a compact search engine for tech and AI, and I'm shaping all of it into a professional personal brand."
+        "I'm studying for my Computer Engineering diploma while building on the side. Right now I'm running a personal team of AI agents called Rishi-OS, designing a tech intelligence engine, and shaping all of it into a professional personal brand."
       ]
     }
   ],
