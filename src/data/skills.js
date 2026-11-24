@@ -8,7 +8,7 @@ export const skillsData = {
           name: "Python",
           description: "The language I build most of my projects in.",
           level: null,
-          usedIn: ["agentic-team", "ai-search-engine"]
+          usedIn: ["rishi-os", "virtual-shelf"]
         },
         {
           name: "Git",
@@ -44,13 +44,13 @@ export const skillsData = {
           name: "Large language model APIs",
           description: "Connecting language models to my own code so they can power agents and automations.",
           level: null,
-          usedIn: []
+          usedIn: ["rishi-os", "virtual-shelf"]
         },
         {
           name: "AI agents",
           description: "Designing agents with specific jobs and connecting them so they can work alone or as a team.",
           level: null,
-          usedIn: ["agentic-team"]
+          usedIn: ["rishi-os"]
         },
         {
           name: "Agent frameworks and libraries",
@@ -68,7 +68,7 @@ export const skillsData = {
           name: "Workflow automation",
           description: "Turning repetitive tasks into simple, reliable workflows.",
           level: null,
-          usedIn: ["agentic-team"]
+          usedIn: ["rishi-os"]
         }
       ]
     },

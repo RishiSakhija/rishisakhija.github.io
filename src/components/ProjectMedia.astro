@@ -33,11 +33,11 @@ const coverSrc = getCover(project.slug);
   ) : (
     <div class="project-media__diagram" aria-label={`${project.name} concept diagram`}>
       <ProjectDiagram
-        variant={project.slug === 'agentic-team' ? 'hub' : 'flow'}
+        variant={project.slug === 'rishi-os' ? 'hub' : 'flow'}
         labels={
-          project.slug === 'agentic-team'
+          project.slug === 'rishi-os'
             ? ['CEO agent', 'Research', 'Analysis', 'Content']
-            : project.slug === 'ai-search-engine'
+            : project.slug === 'tech-intelligence-engine'
               ? ['query', 'tech & AI\nindex', 'results']
               : ['YouTube\nlink', 'notes', 'shelf']
         }
