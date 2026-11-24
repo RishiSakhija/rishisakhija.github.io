@@ -3,8 +3,10 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import HudCard from '../../components/HudCard.astro';
 import SectionHeader from '../../components/SectionHeader.astro';
 import Chip from '../../components/Chip.astro';
-import Button from '../../components/Button.astro';
+import StatusDot from '../../components/StatusDot.astro';
 import ProjectDiagram from '../../components/ProjectDiagram.astro';
+import ProjectMedia from '../../components/ProjectMedia.astro';
+import Button from '../../components/Button.astro';
 import { projects, getPrevNext, getProject } from '../../data/projects.js';
 
 export function getStaticPaths() {
@@ -18,11 +20,36 @@ const { prev, next } = getPrevNext(slug as string);
 if (!project) {
   throw new Error(`Project not found: ${slug}`);
 }
+
+const hasScreenshots = project.screenshots && project.screenshots.length > 0;
+const hasHowItWorks = project.howItWorksSteps && project.howItWorksSteps.length > 0;
+const hasTech = project.techStack && project.techStack.length > 0;
+const hasLearned = project.learned && project.learned.trim().length > 0;
+const hasNextSteps = project.nextSteps && project.nextSteps.length > 0;
+
+// Build dynamic section numbers
+let sectionCounter = 0;
+function nextSection() { return `0${++sectionCounter}`.slice(-2); }
+function getSectionNumber(name: string) {
+  const sections = [
+    'overview',
+    'how-it-works',
+    ...(hasScreenshots ? ['screenshots'] : []),
+    'tech',
+    'learned',
+    'status'
+  ];
+  const idx = sections.indexOf(name);
+  return idx >= 0 ? `0${idx + 1}`.slice(-2) : '??';
+}
 ---
 
-<BaseLayout title={`${project.name} | Rishi Sakhija`} description={project.description}>
+<BaseLayout 
+  title={`${project.name} | Projects | Rishi Sakhija`} 
+  description={project.summary[0] || project.plainWords}
+>
 
-  <!-- Page Header Band -->
+  <!-- HEADER BAND -->
   <header class="page-header" aria-hidden="true">
     <div class="container">
       <nav class="page-header__breadcrumb" aria-label="Breadcrumb">
@@ -32,195 +59,421 @@ if (!project) {
         <span aria-hidden="true">/</span>
         <span>{project.name.toUpperCase()}</span>
       </nav>
-      <div class="page-header__number">01</div>
-      <h1 class="page-header__title">{project.name}</h1>
+      <h1 class="page-header__title heading-gradient">{project.name}</h1>
     </div>
   </header>
 
-  <section class="section" aria-labelledby="project-title">
+  <!-- PROJECT HEADER -->
+  <section class="section project-header-section" aria-labelledby="project-header-title" style="padding-top: 0;">
     <div class="container">
       <header class="project-header reveal-target">
         <div class="project-header__meta">
-          <Chip variant="status" status={project.status === 'In progress' ? 'in-progress' : 'planned'}>{project.status}</Chip>
-          <div class="project-header__tags">
-            {project.tags.map(tag => <Chip variant="tag">{tag}</Chip>)}
-          </div>
-        </div>
-        <h1 id="project-title" class="project-header__name">{project.name}</h1>
-        <p class="project-header__plain">{project.plainWords}</p>
-      </header>
-    </div>
-  </section>
-
-  <!-- Concept Diagram -->
-  <section class="section" aria-labelledby="diagram-title" style="padding-top: 0;">
-    <div class="container">
-      <div class="reveal-target">
-        <HudCard label="CONCEPT DIAGRAM">
-          <ProjectDiagram
-            variant={project.slug === 'agentic-team' ? 'hub' : 'flow'}
-            labels={
-              project.slug === 'agentic-team'
-                ? ['CEO agent', 'Research', 'Analysis', 'Content']
-                : project.slug === 'ai-search-engine'
-                  ? ['query', 'tech & AI\nindex', 'results']
-                  : ['YouTube\nlink', 'notes', 'shelf']
-            }
+          <StatusDot 
+            status={project.status === 'In progress' ? 'live' : 'planned'} 
+            label={project.status} 
           />
-        </HudCard>
+          <Chip 
+            variant="status" 
+            status={project.status === 'In progress' ? 'in-progress' : 'planned'}
+          >{project.status}</Chip>
+        </div>
+        <h1 id="project-header-title" class="project-header__name">{project.name}</h1>
+        <p class="project-header__plain">{project.plainWords}</p>
+        <div class="project-header__tags">
+          {project.tags.map(tag => <Chip variant="tag">{tag}</Chip>)}
+        </div>
+        <div class="project-header__actions">
+          {project.repo ? (
+            <a 
+              class="btn btn--secondary" 
+              href={project.repo} 
+              target="_blank" 
+              rel="noopener noreferrer"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+              </svg>
+              GitHub
+            </a>
+          ) : (
+            <span class="btn btn--secondary btn--disabled" aria-disabled="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+              </svg>
+              GitHub · coming soon
+            </span>
+          )}
+          {project.demo ? (
+            <a 
+              class="btn btn--secondary" 
+              href={project.demo} 
+              target="_blank" 
+              rel="noopener noreferrer"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="2" y="3" width="20" height="14" rx="2"/>
+                <path d="M8 21h8M12 17v4"/>
+              </svg>
+              Demo
+            </a>
+          ) : (
+            <span class="btn btn--secondary btn--disabled" aria-disabled="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="2" y="3" width="20" height="14" rx="2"/>
+                <path d="M8 21h8M12 17v4"/>
+              </svg>
+              Demo · coming soon
+            </span>
+          )}
+        </div>
+      </header>
+
+      <!-- MEDIA / COVER -->
+      <div class="project-media-section reveal-target">
+        <ProjectMedia project={project} class="project-media--full" />
       </div>
     </div>
   </section>
 
+  <!-- 01 OVERVIEW -->
   <section class="section" aria-labelledby="overview-title">
     <div class="container">
-      <SectionHeader number="02" label="Project" title="Overview" id="overview-title" />
+      <SectionHeader number={getSectionNumber('overview')} label="Project" title="Overview" id="overview-title" />
 
       <div class="reveal-target">
         <HudCard>
-          {project.summary.map(p => <p>{p}</p>)}
+          <div class="overview-content">
+            {project.summary.map((p, i) => (
+              <p key={i}>{p}</p>
+            ))}
+            <div class="overview-goal">
+              <span class="overview-goal__label">GOAL</span>
+              <span>{project.goal}</span>
+            </div>
+          </div>
         </HudCard>
       </div>
     </div>
   </section>
 
-  <section class="section" aria-labelledby="goal-title">
-    <div class="container">
-      <SectionHeader number="03" label="Project" title="Goal" id="goal-title" />
-
-      <div class="reveal-target">
-        <HudCard>
-          <p>{project.goal}</p>
-        </HudCard>
-      </div>
-    </div>
-  </section>
-
-  <section class="section" aria-labelledby="plain-title">
-    <div class="container">
-      <SectionHeader number="04" label="Summary" title="In Plain Words" id="plain-title" />
-
-      <div class="reveal-target">
-        <HudCard>
-          <p>{project.plainWords}</p>
-        </HudCard>
-      </div>
-    </div>
-  </section>
-
-  <section class="section" aria-labelledby="problem-title">
-    <div class="container">
-      <SectionHeader number="05" label="Context" title="Problem" id="problem-title" />
-
-      <div class="reveal-target">
-        <HudCard>
-          <p>{project.problem}</p>
-        </HudCard>
-      </div>
-    </div>
-  </section>
-
+  <!-- 02 HOW IT WORKS -->
   <section class="section" aria-labelledby="how-title">
     <div class="container">
-      <SectionHeader number="06" label="Method" title="How It Works" id="how-title" />
+      <SectionHeader number={getSectionNumber('how-it-works')} label="Project" title="How It Works" id="how-title" />
 
       <div class="reveal-target">
         <HudCard>
-          <p>{project.howItWorks}</p>
-        </HudCard>
-      </div>
-    </div>
-  </section>
-
-  <section class="section" aria-labelledby="tech-title">
-    <div class="container">
-      <SectionHeader number="07" label="Stack" title="Tech" id="tech-title" />
-
-      <div class="reveal-target">
-        <HudCard>
-          <p>{project.tech}</p>
-        </HudCard>
-      </div>
-    </div>
-  </section>
-
-  <section class="section" aria-labelledby="status-title">
-    <div class="container">
-      <SectionHeader number="08" label="State" title="Status" id="status-title" />
-
-      <div class="reveal-target">
-        <HudCard>
-          <p>{project.status}</p>
-        </HudCard>
-      </div>
-    </div>
-  </section>
-
-  <section class="section" aria-labelledby="links-title">
-    <div class="container">
-      <SectionHeader number="09" label="Access" title="Links" id="links-title" />
-
-      <div class="reveal-target">
-        <HudCard>
-          <div class="project-links">
-            <Button
-              variant="primary"
-              href={project.demoUrl}
-              disabled={!project.demoUrl}
-            >
-              Demo
-            </Button>
-            <Button
-              variant="secondary"
-              href={project.codeUrl}
-              disabled={!project.codeUrl}
-            >
-              Code
-            </Button>
+          <div class="how-it-works-content">
+            <div class="how-it-works__diagram" aria-label={`${project.name} concept diagram`}>
+              <ProjectDiagram
+                variant={project.slug === 'agentic-team' ? 'hub' : 'flow'}
+                labels={
+                  project.slug === 'agentic-team'
+                    ? ['CEO agent', 'Research', 'Analysis', 'Content']
+                    : project.slug === 'ai-search-engine'
+                      ? ['query', 'tech & AI\nindex', 'results']
+                      : ['YouTube\nlink', 'notes', 'shelf']
+                }
+              />
+            </div>
+            {hasHowItWorks ? (
+              <ol class="how-it-works__steps">
+                {project.howItWorksSteps.map((step, i) => (
+                  <li key={i} class="how-step">
+                    <span class="how-step__number" aria-hidden="true">{i + 1}</span>
+                    <p class="how-step__text">{step}</p>
+                  </li>
+                ))}
+              </ol>
+            ) : (
+              <p class="how-it-works__placeholder">A step-by-step walkthrough is coming soon.</p>
+            )}
           </div>
-          <p class="project-links__note">Links will be added when the project is ready for public access.</p>
         </HudCard>
       </div>
     </div>
   </section>
 
-  {prev || next ? (
-    <section class="section project-nav" aria-labelledby="nav-title">
+  <!-- 03 SCREENSHOTS (conditional) -->
+  {hasScreenshots && (
+    <section class="section" aria-labelledby="screenshots-title">
       <div class="container">
-        <nav class="project-nav__grid" aria-label="Project navigation">
-          {prev && (
-            <a class="project-nav__link project-nav__link--prev" href={`/projects/${prev.slug}`} aria-label={`Previous project: ${prev.name}`}>
-              <span class="project-nav__label">Previous</span>
-              <span class="project-nav__name">{prev.name}</span>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <polyline points="15 18 9 12 15 6"/>
-              </svg>
-            </a>
-          )}
-          {next && (
-            <a class="project-nav__link project-nav__link--next" href={`/projects/${next.slug}`} aria-label={`Next project: ${next.name}`}>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <polyline points="9 18 15 12 9 6"/>
-              </svg>
-              <span class="project-nav__name">{next.name}</span>
-              <span class="project-nav__label">Next</span>
-            </a>
-          )}
-        </nav>
+        <SectionHeader number={getSectionNumber('screenshots')} label="Project" title="Screenshots" id="screenshots-title" />
+
+        <div class="reveal-target">
+          <HudCard>
+            <div class="screenshots-grid" role="list">
+              {project.screenshots.map((shot, i) => (
+                <button
+                  type="button"
+                  class="screenshot-thumb"
+                  data-index={i}
+                  data-src={shot.src}
+                  data-caption={shot.caption}
+                  aria-label={`View screenshot ${i + 1}: ${shot.caption}`}
+                  role="listitem"
+                >
+                  <div class="screenshot-thumb__image-wrapper">
+                    <img 
+                      src={shot.src} 
+                      alt={shot.caption} 
+                      loading="lazy" 
+                      decoding="async"
+                      class="screenshot-thumb__image"
+                    />
+                  </div>
+                  <span class="screenshot-thumb__label">SCREENSHOT</span>
+                  <figcaption class="screenshot-thumb__caption">{shot.caption}</figcaption>
+                </button>
+              ))}
+            </div>
+          </HudCard>
+        </div>
+
+        <!-- LIGHTBOX DIALOG -->
+        <dialog class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Screenshot lightbox">
+          <div class="lightbox__backdrop" data-close></div>
+          <button class="lightbox__close" data-close aria-label="Close lightbox">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="18" y1="6" x2="6" y2="18"/>
+              <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+          <button class="lightbox__nav lightbox__nav--prev" data-prev aria-label="Previous screenshot">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="15 18 9 12 15 6"/>
+            </svg>
+          </button>
+          <div class="lightbox__image-wrapper">
+            <img class="lightbox__image" src="" alt="" />
+          </div>
+          <button class="lightbox__nav lightbox__nav--next" data-next aria-label="Next screenshot">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="9 18 15 12 9 6"/>
+            </svg>
+          </button>
+          <figcaption class="lightbox__caption"></figcaption>
+        </dialog>
       </div>
     </section>
-  ) : null}
+  )}
+
+  <!-- TECH USED -->
+  <section class="section" aria-labelledby="tech-title">
+    <div class="container">
+      <SectionHeader number={getSectionNumber('tech')} label="Project" title="Tech Used" id="tech-title" />
+
+      <div class="reveal-target">
+        <HudCard>
+          {hasTech ? (
+            <div class="tech-chips">
+              {project.techStack.map(tech => <Chip variant="tag">{tech}</Chip>)}
+            </div>
+          ) : (
+            <>
+              <div class="tech-chips">
+                {project.tags.map(tag => <Chip variant="tag">{tag}</Chip>)}
+              </div>
+              <p class="tech-placeholder">Full tech details coming soon.</p>
+            </>
+          )}
+        </HudCard>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT I LEARNED -->
+  <section class="section" aria-labelledby="learned-title">
+    <div class="container">
+      <SectionHeader number={getSectionNumber('learned')} label="Project" title="What I Learned" id="learned-title" />
+
+      <div class="reveal-target">
+        <HudCard>
+          {hasLearned ? (
+            <p>{project.learned}</p>
+          ) : (
+            <p>Documentation in progress.</p>
+          )}
+        </HudCard>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATUS AND NEXT STEPS -->
+  <section class="section" aria-labelledby="status-title">
+    <div class="container">
+      <SectionHeader number={getSectionNumber('status')} label="Project" title="Status & Next Steps" id="status-title" />
+
+      <div class="reveal-target">
+        <HudCard>
+          <div class="status-content">
+            <div class="status-content__current">
+              <Chip 
+                variant="status" 
+                status={project.status === 'In progress' ? 'in-progress' : 'planned'}
+              >{project.status}</Chip>
+              <p>
+                {project.status === 'In progress' 
+                  ? 'This project is in progress.' 
+                  : 'This project is planned and not built yet.'
+                }
+              </p>
+            </div>
+            {hasNextSteps ? (
+              <ul class="status-content__next">
+                {project.nextSteps.map((step, i) => (
+                  <li key={i} class="next-step">
+                    <span class="next-step__dot" aria-hidden="true">
+                      <span class={step.done ? 'filled' : ''}></span>
+                    </span>
+                    <span class="next-step__text">{step.text}</span>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p class="status-placeholder">Next steps will be added here.</p>
+            )}
+          </div>
+        </HudCard>
+      </div>
+    </div>
+  </section>
+
+  <!-- BOTTOM: PREV/NEXT + BACK -->
+  <section class="section project-nav-section" aria-labelledby="nav-title">
+    <div class="container">
+      <div class="project-nav-grid">
+        {prev && (
+          <a class="project-nav-card project-nav-card--prev" href={`/projects/${prev.slug}`} aria-label={`Previous project: ${prev.name}`}>
+            <span class="project-nav-card__label">Previous</span>
+            <h3 class="project-nav-card__name">{prev.name}</h3>
+            <span class="project-nav-card__status">
+              <Chip variant="status" status={prev.status === 'In progress' ? 'in-progress' : 'planned'}>{prev.status}</Chip>
+            </span>
+          </a>
+        )}
+        {next && (
+          <a class="project-nav-card project-nav-card--next" href={`/projects/${next.slug}`} aria-label={`Next project: ${next.name}`}>
+            <span class="project-nav-card__label">Next</span>
+            <h3 class="project-nav-card__name">{next.name}</h3>
+            <span class="project-nav-card__status">
+              <Chip variant="status" status={next.status === 'In progress' ? 'in-progress' : 'planned'}>{next.status}</Chip>
+            </span>
+          </a>
+        )}
+      </div>
+      <div class="project-back">
+        <a class="btn btn--secondary" href="/projects">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6"/>
+            <polyline points="21 3 21 9 15 9"/>
+            <path d="M21 3l-9 9"/>
+          </svg>
+          Back to all projects
+        </a>
+      </div>
+    </div>
+  </section>
 
 </BaseLayout>
 
+<script>
+  // Lightbox for screenshots (idempotent)
+  (() => {
+    if (window.__lightboxInitialized) return;
+    window.__lightboxInitialized = true;
+
+    const lightbox = document.getElementById('lightbox');
+    if (!lightbox) return;
+
+    const thumbnails = document.querySelectorAll('.screenshot-thumb');
+    const lightboxImage = lightbox.querySelector('.lightbox__image');
+    const lightboxCaption = lightbox.querySelector('.lightbox__caption');
+    const closeBtn = lightbox.querySelector('[data-close]');
+    const prevBtn = lightbox.querySelector('[data-prev]');
+    const nextBtn = lightbox.querySelector('[data-next]');
+
+    let currentIndex = 0;
+    let lastFocusedThumb = null;
+
+    const screenshots = Array.from(thumbnails).map((thumb, i) => ({
+      src: thumb.dataset.src,
+      caption: thumb.dataset.caption,
+      index: i
+    }));
+
+    function openLightbox(index) {
+      currentIndex = index;
+      lastFocusedThumb = thumbnails[index];
+      updateLightbox();
+      lightbox.showModal();
+      document.body.style.overflow = 'hidden';
+      closeBtn?.focus();
+    }
+
+    function closeLightbox() {
+      lightbox.close();
+      document.body.style.overflow = '';
+      if (lastFocusedThumb) {
+        lastFocusedThumb.focus();
+      }
+    }
+
+    function updateLightbox() {
+      const shot = screenshots[currentIndex];
+      if (lightboxImage) {
+        lightboxImage.src = shot.src;
+        lightboxImage.alt = shot.caption;
+      }
+      if (lightboxCaption) {
+        lightboxCaption.textContent = shot.caption;
+      }
+    }
+
+    function goPrev() {
+      currentIndex = (currentIndex - 1 + screenshots.length) % screenshots.length;
+      updateLightbox();
+    }
+
+    function goNext() {
+      currentIndex = (currentIndex + 1) % screenshots.length;
+      updateLightbox();
+    }
+
+    thumbnails.forEach((thumb, i) => {
+      thumb.addEventListener('click', () => openLightbox(i));
+      thumb.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openLightbox(i);
+        }
+      });
+    });
+
+    closeBtn?.addEventListener('click', closeLightbox);
+    lightbox.querySelector('[data-close]')?.addEventListener('click', closeLightbox);
+    prevBtn?.addEventListener('click', goPrev);
+    nextBtn?.addEventListener('click', goNext);
+
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) closeLightbox();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (!lightbox.open) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') goPrev();
+      if (e.key === 'ArrowRight') goNext();
+    });
+  })();
+</script>
+
 <style>
-  /* Page Header Band */
+  /* HEADER BAND */
   .page-header {
     padding: var(--space-6) 0;
     border-bottom: 1px solid var(--border);
     background: var(--surface);
-    width: min(var(--container-w), 100% - 2 * var(--gutter));
-    margin-inline: auto;
     padding-top: clamp(120px, 14vw, 160px);
   }
 
@@ -239,26 +492,17 @@ if (!project) {
     color: var(--text-fade);
   }
 
-  .page-header__number {
-    font-family: var(--font-body);
-    font-size: 11.5px;
-    font-weight: 500;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--signal);
-    margin-bottom: var(--space-1);
-  }
-
   .page-header__title {
     font-family: var(--font-heading);
     font-weight: 400;
     font-size: clamp(2.75rem, 6.5vw, 5rem);
     line-height: 1.1;
     letter-spacing: -0.01em;
-    background: linear-gradient(90deg, var(--text), var(--text-fade));
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+  }
+
+  /* PROJECT HEADER SECTION */
+  .project-header-section {
+    padding-bottom: var(--space-8);
   }
 
   .project-header {
@@ -269,21 +513,20 @@ if (!project) {
 
   .project-header__meta {
     display: flex;
-    flex-wrap: wrap;
     align-items: center;
     gap: var(--space-3);
-    margin-bottom: var(--space-4);
-  }
-
-  .project-header__tags {
-    display: flex;
+    margin-bottom: var(--space-3);
     flex-wrap: wrap;
-    gap: var(--space-2);
   }
 
   .project-header__name {
+    font-family: var(--font-heading);
+    font-weight: 400;
     font-size: clamp(2rem, 5vw, 3.5rem);
-    margin-bottom: var(--space-4);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    color: var(--text);
+    margin-bottom: var(--space-3);
   }
 
   .project-header__plain {
@@ -294,90 +537,546 @@ if (!project) {
     text-transform: uppercase;
     color: var(--muted-strong);
     max-width: 60ch;
-  }
-
-  .project-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-4);
     margin-bottom: var(--space-4);
   }
 
-  .project-links__note {
-    font-family: var(--font-body);
-    font-size: 12px;
-    font-weight: 500;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--muted-strong);
+  .project-header__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-bottom: var(--space-4);
   }
 
-  .project-nav {
-    border-top: 1px solid var(--border);
-    padding-top: var(--space-6);
+  .project-header__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+
+  .project-header__actions .btn--disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  /* PROJECT MEDIA FULL WIDTH */
+  .project-media-section {
     width: min(var(--container-w), 100% - 2 * var(--gutter));
     margin-inline: auto;
   }
 
-  .project-nav__grid {
-    display: grid.
-    gap: var(--space-4).
+  .project-media--full .project-media__wrapper {
+    width: 100%;
+    max-height: 460px;
+    aspect-ratio: auto;
   }
 
-  @media (min-width: 768px) {
-    .project-nav__grid {
-      grid-template-columns: 1fr 1fr.
+  .project-media--full .project-media__image {
+    object-fit: cover;
+  }
+
+  /* OVERVIEW */
+  .overview-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .overview-content p {
+    font-size: 17.5px;
+    line-height: 1.75;
+    font-weight: 500;
+    color: var(--text-body);
+    max-width: 64ch;
+    margin: 0;
+  }
+
+  .overview-goal {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-3);
+    padding-top: var(--space-2);
+    border-top: 1px solid var(--border);
+    margin-top: var(--space-2);
+  }
+
+  .overview-goal__label {
+    font-family: var(--font-body);
+    font-size: 12.5px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--signal-soft);
+    flex-shrink: 0;
+  }
+
+  .overview-goal span:last-child {
+    font-size: 17.5px;
+    line-height: 1.75;
+    font-weight: 500;
+    color: var(--text-body);
+  }
+
+  /* HOW IT WORKS */
+  .how-it-works-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+  }
+
+  .how-it-works__diagram {
+    width: 100%;
+  }
+
+  .how-it-works__diagram :global(.diagram-wrapper) {
+    width: 100%;
+    height: 160px;
+    max-width: 100%;
+  }
+
+  .how-it-works__diagram :global(.diagram-caption) {
+    font-family: var(--font-body);
+    font-size: 11.5px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-align: center;
+    margin-top: var(--space-3);
+  }
+
+  .how-it-works__steps {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .how-step {
+    display: flex;
+    gap: var(--space-4);
+    padding: var(--space-4);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+  }
+
+  .how-step__number {
+    font-family: var(--font-body);
+    font-size: 12.5px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--signal-soft);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .how-step__text {
+    font-size: 16px;
+    line-height: 1.7;
+    font-weight: 500;
+    color: var(--text-body);
+    margin: 0;
+  }
+
+  .how-it-works__placeholder {
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text-body);
+    text-align: center;
+    padding: var(--space-6);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+  }
+
+  /* SCREENSHOTS */
+  .screenshots-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+
+  @media (min-width: 640px) {
+    .screenshots-grid {
+      grid-template-columns: repeat(2, 1fr);
     }
   }
 
-  .project-nav__link {
-    display: flex.
-    align-items: center.
-    gap: var(--space-4).
-    padding: var(--space-4).
-    background: var(--surface).
-    border: 1px solid var(--border).
-    border-radius: var(--radius-card).
-    transition: border-color 0.15s ease, background 0.15s ease.
+  @media (min-width: 1024px) {
+    .screenshots-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
   }
 
-  .project-nav__link:hover {
-    border-color: var(--signal).
-    background: var(--surface-2).
+  .screenshot-thumb {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: border-color 0.15s ease, transform 0.15s ease;
+    padding: 0;
+    text-align: left;
   }
 
-  .project-nav__link:focus-visible {
-    outline: 2px solid var(--signal).
-    outline-offset: 3px.
+  .screenshot-thumb:hover,
+  .screenshot-thumb:focus-visible {
+    border-color: var(--signal);
+    outline: none;
   }
 
-  .project-nav__link--prev {
-    flex-direction: row.
+  .screenshot-thumb:focus-visible {
+    box-shadow: 0 0 0 2px var(--signal);
   }
 
-  .project-nav__link--next {
-    flex-direction: row-reverse.
-    justify-content: flex-end.
+  .screenshot-thumb__image-wrapper {
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
   }
 
-  .project-nav__label {
+  .screenshot-thumb__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+  }
+
+  .screenshot-thumb:hover .screenshot-thumb__image {
+    transform: scale(1.03);
+  }
+
+  .screenshot-thumb__label {
+    font-family: var(--font-body);
+    font-size: 11.5px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--signal-soft);
+    padding: 0 var(--space-3);
+    margin-top: var(--space-2);
+  }
+
+  .screenshot-thumb__caption {
+    font-family: var(--font-body);
+    font-size: 13.5px;
+    font-weight: 500;
+    line-height: 1.5;
+    color: var(--text-body);
+    padding: 0 var(--space-3) var(--space-3);
+  }
+
+  /* LIGHTBOX */
+  .lightbox {
+    border: none;
+    background: transparent;
+    padding: 0;
+    max-width: 90vw;
+    max-height: 90vh;
+    margin: auto;
+  }
+
+  .lightbox::backdrop {
+    background: rgba(5, 5, 7, 0.85);
+    backdrop-filter: blur(4px);
+  }
+
+  .lightbox__backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+  }
+
+  .lightbox__close {
+    position: absolute;
+    top: var(--space-4);
+    right: var(--space-4);
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--surface);
+    border: 1px solid var(--border-strong);
+    border-radius: 50%;
+    color: var(--text);
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease;
+    z-index: 10;
+  }
+
+  .lightbox__close:hover {
+    border-color: var(--signal);
+    background: var(--surface-2);
+  }
+
+  .lightbox__close:focus-visible {
+    outline: 2px solid var(--signal);
+    outline-offset: 2px;
+  }
+
+  .lightbox__nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--surface);
+    border: 1px solid var(--border-strong);
+    border-radius: 50%;
+    color: var(--text);
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease;
+    z-index: 10;
+  }
+
+  .lightbox__nav:hover {
+    border-color: var(--signal);
+    background: var(--surface-2);
+  }
+
+  .lightbox__nav:focus-visible {
+    outline: 2px solid var(--signal);
+    outline-offset: 2px;
+  }
+
+  .lightbox__nav--prev {
+    left: var(--space-4);
+  }
+
+  .lightbox__nav--next {
+    right: var(--space-4);
+  }
+
+  @media (max-width: 640px) {
+    .lightbox__nav--prev { left: var(--space-2); }
+    .lightbox__nav--next { right: var(--space-2); }
+    .lightbox__close { top: var(--space-2); right: var(--space-2); }
+  }
+
+  .lightbox__image-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .lightbox__image {
+    max-width: 85vw;
+    max-height: 75vh;
+    object-fit: contain;
+    border-radius: var(--radius-card);
+    box-shadow: 0 0 48px rgba(0, 0, 0, 0.5);
+  }
+
+  .lightbox__caption {
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.5;
+    color: var(--text-body);
+    text-align: center;
+    padding: var(--space-3) var(--space-4);
+    max-width: 85vw;
+  }
+
+  /* TECH USED */
+  .tech-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-bottom: var(--space-3);
+  }
+
+  .tech-placeholder {
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text-body);
+  }
+
+  /* WHAT I LEARNED */
+  .status-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+
+  .status-content__current {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: var(--space-3);
+  }
+
+  .status-content__current p {
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text-body);
+    margin: 0;
+    flex: 1;
+    min-width: 200px;
+  }
+
+  .status-content__next {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .next-step {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    padding: var(--space-3);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+  }
+
+  .next-step__dot {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--border-strong);
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2px;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+
+  .next-step__dot.filled {
+    background: var(--signal);
+    border-color: var(--signal);
+  }
+
+  .next-step__dot.filled::after {
+    content: '';
+    width: 8px;
+    height: 8px;
+    background: var(--text);
+    border-radius: 50%;
+  }
+
+  .next-step__text {
+    font-size: 15.5px;
+    line-height: 1.65;
+    color: var(--text-body);
+  }
+
+  .status-placeholder {
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text-body);
+  }
+
+  /* PROJECT NAV SECTION */
+  .project-nav-section {
+    border-top: 1px solid var(--border);
+    padding-top: var(--space-8);
+    padding-bottom: var(--space-8);
+  }
+
+  .project-nav-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+    margin-bottom: var(--space-8);
+  }
+
+  @media (min-width: 768px) {
+    .project-nav-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .project-nav-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-5);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+    text-decoration: none;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+
+  .project-nav-card:hover {
+    border-color: var(--signal);
+    background: var(--surface-2);
+  }
+
+  .project-nav-card:focus-visible {
+    outline: 2px solid var(--signal);
+    outline-offset: 3px;
+  }
+
+  .project-nav-card__label {
     font-family: var(--font-body);
     font-size: 11.5px;
     font-weight: 500;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--muted-strong);
-    white-space: nowrap;
   }
 
-  .project-nav__name {
-    font-family: var(--font-body).
-    font-size: 15px.
-    color: var(--text-fade).
-    transition: color 0.15s ease.
+  .project-nav-card__name {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 17px;
+    line-height: 1.3;
+    color: var(--text);
   }
 
-  .project-nav__link:hover .project-nav__name {
-    color: var(--text).
+  .project-nav-card__status {
+    margin-top: auto;
+  }
+
+  .project-back {
+    text-align: center;
+  }
+
+  .project-back .btn {
+    display: inline-flex;
+  }
+
+  /* REVEAL ANIMATION */
+  .reveal-target {
+    opacity: 1;
+    transform: none;
+  }
+
+  .html.js .reveal-target {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  }
+
+  .html.js .reveal-target.revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .html.js .reveal-target {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
   }
 </style>
