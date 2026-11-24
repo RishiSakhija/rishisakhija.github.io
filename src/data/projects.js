@@ -15,7 +15,15 @@ export const projects = [
       'A compact search engine built only for tech and AI topics. General search results are crowded with noise, so builders spend a lot of time hunting for reliable answers.',
       'By limiting its scope to tech and AI instead of the whole web, it aims to surface what matters faster. It is still in progress, and details will be added here as it takes shape.'
     ],
-    goal: 'Help builders find useful tech and AI answers faster.'
+    goal: 'Help builders find useful tech and AI answers faster.',
+    repo: '',
+    demo: '',
+    coverAlt: 'Concept visual: a glowing magnifying glass lifting search result cards in front of a curved monitor.',
+    screenshots: [],
+    howItWorksSteps: [],
+    techStack: [],
+    learned: '',
+    nextSteps: []
   },
   {
     slug: 'agentic-team',
@@ -33,7 +41,15 @@ export const projects = [
       'A personal team of AI agents, each with its own specialty: a CEO agent that supervises and assigns tasks, plus agents for research, analysis and content. Each agent can work alone on its own job, or be connected so the CEO agent coordinates them.',
       'The aim is to reduce my day-to-day workload by delegating routine work to the team. It is in progress, and I am documenting what I learn as I build it.'
     ],
-    goal: 'Take routine work off my plate with a coordinated team of agents.'
+    goal: 'Take routine work off my plate with a coordinated team of agents.',
+    repo: '',
+    demo: '',
+    coverAlt: 'Concept visual: a lead robot coordinating a team of robots around a holographic network.',
+    screenshots: [],
+    howItWorksSteps: [],
+    techStack: [],
+    learned: '',
+    nextSteps: []
   },
   {
     slug: 'virtual-shelf',
@@ -51,7 +67,15 @@ export const projects = [
       'A web app where you paste a YouTube link and get clean, structured notes, saved on a personal shelf so they stay organized and easy to find later.',
       'It is useful for anyone who learns from videos and wants notes without writing them by hand. It is currently planned and not built yet.'
     ],
-    goal: 'Turn videos into organized notes automatically.'
+    goal: 'Turn videos into organized notes automatically.',
+    repo: '',
+    demo: '',
+    coverAlt: 'Concept visual: video notes turning into organized note cards on a glowing shelf.',
+    screenshots: [],
+    howItWorksSteps: [],
+    techStack: [],
+    learned: '',
+    nextSteps: []
   },
 ];
 

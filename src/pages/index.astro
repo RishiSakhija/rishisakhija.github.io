@@ -7,7 +7,7 @@ import Ticker from '../components/Ticker.astro';
 import HudCard from '../components/HudCard.astro';
 import SectionHeader from '../components/SectionHeader.astro';
 import Chip from '../components/Chip.astro';
-import ProjectDiagram from '../components/ProjectDiagram.astro';
+import ProjectMedia from '../components/ProjectMedia.astro';
 import { projects } from '../data/projects.js';
 import { sinceText } from '../data/profile.js';
 import { journeyData } from '../data/journey.js';
@@ -192,16 +192,7 @@ import { journeyData } from '../data/journey.js';
                 </details>
               </div>
               <div class="work-row__diagram" aria-label={`${project.name} concept diagram`}>
-                <ProjectDiagram
-                  variant={project.slug === 'agentic-team' ? 'hub' : 'flow'}
-                  labels={
-                    project.slug === 'agentic-team'
-                      ? ['CEO agent', 'Research', 'Analysis', 'Content']
-                      : project.slug === 'ai-search-engine'
-                        ? ['query', 'tech & AI\nindex', 'results']
-                        : ['YouTube\nlink', 'notes', 'shelf']
-                  }
-                />
+                <ProjectMedia project={project} />
               </div>
               <span class="work-row__arrow" aria-hidden="true">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

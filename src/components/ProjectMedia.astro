@@ -1,0 +1,115 @@
+---
+import { getCover } from '../utils/cover.js';
+import ProjectDiagram from './ProjectDiagram.astro';
+
+interface Props {
+  project: {
+    slug: string;
+    name: string;
+    coverAlt: string;
+    status: string;
+  };
+  class?: string;
+}
+
+const { project, class: className = '' } = Astro.props;
+const coverSrc = getCover(project.slug);
+---
+
+<div class="project-media {className}">
+  {coverSrc ? (
+    <a href={`/projects/${project.slug}`} class="project-media__wrapper" aria-label={`View ${project.name} project`}>
+      <img
+        src={coverSrc}
+        alt={project.coverAlt}
+        width="1672"
+        height="941"
+        loading="lazy"
+        decoding="async"
+        class="project-media__image"
+      />
+      <span class="project-media__label">CONCEPT VISUAL</span>
+    </a>
+  ) : (
+    <div class="project-media__diagram" aria-label={`${project.name} concept diagram`}>
+      <ProjectDiagram
+        variant={project.slug === 'agentic-team' ? 'hub' : 'flow'}
+        labels={
+          project.slug === 'agentic-team'
+            ? ['CEO agent', 'Research', 'Analysis', 'Content']
+            : project.slug === 'ai-search-engine'
+              ? ['query', 'tech & AI\nindex', 'results']
+              : ['YouTube\nlink', 'notes', 'shelf']
+        }
+      />
+    </div>
+  )}
+</div>
+
+<style>
+  .project-media {
+    width: 100%;
+  }
+
+  .project-media__wrapper {
+    position: relative;
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border-strong);
+    background: var(--surface-2);
+  }
+
+  .project-media__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+  }
+
+  .project-media__wrapper:hover .project-media__image {
+    transform: scale(1.02);
+  }
+
+  .project-media__label {
+    position: absolute;
+    left: 12px;
+    bottom: 12px;
+    font-family: var(--font-body);
+    font-size: 11.5px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    background: rgba(5, 5, 7, 0.72);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    padding: 6px 10px;
+    border-radius: 999px;
+    color: var(--text);
+    pointer-events: none;
+  }
+
+  .project-media__diagram {
+    width: 100%;
+  }
+
+  .project-media__diagram :global(.diagram-wrapper) {
+    width: 100%;
+    height: 160px;
+    max-width: 100%;
+  }
+
+  .project-media__diagram :global(.diagram-caption) {
+    font-family: var(--font-body);
+    font-size: 11.5px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-align: center;
+    margin-top: var(--space-3);
+  }
+</style>

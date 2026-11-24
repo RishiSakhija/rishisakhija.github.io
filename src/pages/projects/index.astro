@@ -3,13 +3,15 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import HudCard from '../../components/HudCard.astro';
 import SectionHeader from '../../components/SectionHeader.astro';
 import Chip from '../../components/Chip.astro';
-import ProjectDiagram from '../../components/ProjectDiagram.astro';
+import StatusDot from '../../components/StatusDot.astro';
+import ProjectMedia from '../../components/ProjectMedia.astro';
+import Button from '../../components/Button.astro';
 import { projects } from '../../data/projects.js';
 ---
 
-<BaseLayout title="Projects | Rishi Sakhija" description="AI/ML builder focused on agents and automation. Self-taught, remote, open to work.">
+<BaseLayout title="Projects | Rishi Sakhija" description="Projects by Rishi Sakhija: a personal team of AI agents, a compact search engine for tech and AI, and a YouTube-to-notes app.">
 
-  <!-- Page Header Band -->
+  <!-- HEADER BAND -->
   <header class="page-header" aria-hidden="true">
     <div class="container">
       <nav class="page-header__breadcrumb" aria-label="Breadcrumb">
@@ -17,55 +19,142 @@ import { projects } from '../../data/projects.js';
         <span aria-hidden="true">/</span>
         <span>PROJECTS</span>
       </nav>
-      <div class="page-header__number">01</div>
-      <h1 class="page-header__title">Projects</h1>
+      <h1 class="page-header__title heading-gradient">Things I'm building.</h1>
+      <p class="page-header__intro">
+        These are the projects I'm working on right now, from a team of AI agents to a search engine and a note-taking app. Some are in progress and some are still planned, and each one has its own page where I explain how it works and what I'm learning.
+      </p>
     </div>
   </header>
 
-  <section class="section" aria-labelledby="projects-title">
+  <!-- 01 FEATURED WORK -->
+  <section class="section" aria-labelledby="featured-title">
     <div class="container">
-      <SectionHeader number="01" label="Portfolio" title="Projects" id="projects-title" />
+      <SectionHeader number="01" label="Portfolio" title="Featured Work" id="featured-title" />
 
-      <div class="projects-grid">
-        {projects.map(project => (
-          <article class="reveal-target">
-            <HudCard elevated>
-              <div class="project-card">
-                <div class="project-card__header">
-                  <h3 class="project-card__name">{project.name}</h3>
+      <div class="featured-rows">
+        {projects.map((project, index) => {
+          const isOdd = index % 2 === 0;
+          const mediaFirst = isOdd;
+          return (
+            <article class="featured-row reveal-target" data-media-first={mediaFirst}>
+              <div class="featured-row__media">
+                <ProjectMedia project={project} />
+              </div>
+              <div class="featured-row__content">
+                <div class="featured-row__header">
+                  <StatusDot status={project.status === 'In progress' ? 'live' : 'planned'} label={project.status} />
                   <Chip variant="status" status={project.status === 'In progress' ? 'in-progress' : 'planned'}>{project.status}</Chip>
                 </div>
-                <p class="project-card__desc">{project.description}</p>
-                <p class="project-card__plain">{project.plainWords}</p>
-                <p class="project-card__summary">{project.summary[0]}</p>
-                <div class="project-card__diagram" aria-label={`${project.name} concept diagram`}>
-                  <ProjectDiagram
-                    variant={project.slug === 'agentic-team' ? 'hub' : 'flow'}
-                    labels={
-                      project.slug === 'agentic-team'
-                        ? ['CEO agent', 'Research', 'Analysis', 'Content']
-                        : project.slug === 'ai-search-engine'
-                          ? ['query', 'tech & AI\nindex', 'results']
-                          : ['YouTube\nlink', 'notes', 'shelf']
-                    }
-                  />
-                </div>
-                <div class="project-card__tags">
+                <h2 class="featured-row__name">{project.name}</h2>
+                <p class="featured-row__plain">{project.plainWords}</p>
+                <p class="featured-row__summary">{project.summary[0]}</p>
+                <div class="featured-row__tags">
                   {project.tags.map(tag => (
                     <Chip variant="tag">{tag}</Chip>
                   ))}
                 </div>
-                <a class="project-card__link" href={`/projects/${project.slug}`} aria-label={`View ${project.name} project`}>
-                  View project
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <line x1="5" y1="12" x2="19" y2="12"/>
-                    <polyline points="12 5 19 12 12 19"/>
-                  </svg>
-                </a>
+                <div class="featured-row__actions">
+                  <a class="btn btn--secondary" href={`/projects/${project.slug}`}>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="M21 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6"/>
+                      <polyline points="21 3 21 9 15 9"/>
+                      <path d="M21 3l-9 9"/>
+                    </svg>
+                    Read case study
+                  </a>
+                  {project.repo ? (
+                    <a class="btn btn--secondary" href={project.repo} target="_blank" rel="noopener noreferrer">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+                      </svg>
+                      GitHub
+                    </a>
+                  ) : (
+                    <span class="btn btn--secondary btn--disabled" aria-disabled="true">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+                      </svg>
+                      GitHub · coming soon
+                    </span>
+                  )}
+                  {project.demo ? (
+                    <a class="btn btn--secondary" href={project.demo} target="_blank" rel="noopener noreferrer">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <rect x="2" y="3" width="20" height="14" rx="2"/>
+                        <path d="M8 21h8M12 17v4"/>
+                      </svg>
+                      Demo
+                    </a>
+                  ) : (
+                    <span class="btn btn--secondary btn--disabled" aria-disabled="true">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <rect x="2" y="3" width="20" height="14" rx="2"/>
+                        <path d="M8 21h8M12 17v4"/>
+                      </svg>
+                      Demo · coming soon
+                    </span>
+                  )}
+                </div>
               </div>
-            </HudCard>
-          </article>
-        ))}
+            </article>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 HOW I BUILD -->
+  <section class="section" aria-labelledby="build-title">
+    <div class="container">
+      <SectionHeader number="02" label="Method" title="How I Build" id="build-title" />
+
+      <div class="build-grid">
+        <article class="build-card reveal-target">
+          <HudCard>
+            <span class="build-card__number">01</span>
+            <h3 class="build-card__title">Start small</h3>
+            <p class="build-card__desc">A working rough version first, then I improve it.</p>
+          </HudCard>
+        </article>
+        <article class="build-card reveal-target">
+          <HudCard>
+            <span class="build-card__number">02</span>
+            <h3 class="build-card__title">Use agents well</h3>
+            <p class="build-card__desc">I direct AI coding assistants and review what they build.</p>
+          </HudCard>
+        </article>
+        <article class="build-card reveal-target">
+          <HudCard>
+            <span class="build-card__number">03</span>
+            <h3 class="build-card__title">Show the process</h3>
+            <p class="build-card__desc">Each project page explains how it works and what I'm learning.</p>
+          </HudCard>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 CLOSING BLOCK -->
+  <section class="section cta-section" aria-labelledby="cta-title">
+    <div class="container">
+      <div class="cta-content reveal-target">
+        <h2 id="cta-title" class="cta__title heading-gradient">Want to talk about a project?</h2>
+        <p class="cta__subtitle">I'm happy to explain how any of these work.</p>
+        <div class="cta__actions">
+          <a class="btn btn--secondary" href="/contact">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="2" y="4" width="20" height="16" rx="2"/>
+              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+            </svg>
+            Get in touch
+          </a>
+          <a class="btn btn--secondary" href="https://github.com/RishiSakhija" target="_blank" rel="noopener noreferrer">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+            </svg>
+            GitHub
+          </a>
+        </div>
       </div>
     </div>
   </section>
@@ -73,13 +162,11 @@ import { projects } from '../../data/projects.js';
 </BaseLayout>
 
 <style>
-  /* Page Header Band */
+  /* HEADER BAND */
   .page-header {
     padding: var(--space-6) 0;
     border-bottom: 1px solid var(--border);
     background: var(--surface);
-    width: min(var(--container-w), 100% - 2 * var(--gutter));
-    margin-inline: auto;
     padding-top: clamp(120px, 14vw, 160px);
   }
 
@@ -98,80 +185,94 @@ import { projects } from '../../data/projects.js';
     color: var(--text-fade);
   }
 
-  .page-header__number {
-    font-family: var(--font-body);
-    font-size: 11.5px;
-    font-weight: 500;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--signal);
-    margin-bottom: var(--space-1);
-  }
-
   .page-header__title {
     font-family: var(--font-heading);
     font-weight: 400;
     font-size: clamp(2.75rem, 6.5vw, 5rem);
     line-height: 1.1;
     letter-spacing: -0.01em;
-    background: linear-gradient(90deg, var(--text), var(--text-fade));
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
   }
 
-  .projects-grid {
+  .page-header__intro {
+    font-size: 18px;
+    line-height: 1.75;
+    font-weight: 500;
+    color: var(--text-body);
+    max-width: 64ch;
+    margin-top: var(--space-4);
+  }
+
+  /* ============================================================
+     01 FEATURED WORK
+     ============================================================ */
+
+  .featured-rows {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-10);
+  }
+
+  .featured-row {
     display: grid;
-    gap: var(--card-gap);
-    align-items: stretch;
-    width: min(var(--container-w), 100% - 2 * var(--gutter));
-    margin-inline: auto;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+    align-items: start;
+    padding-bottom: var(--space-10);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .featured-row:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
   }
 
   @media (min-width: 768px) {
-    .projects-grid {
-      grid-template-columns: repeat(2, 1fr);
+    .featured-row {
+      grid-template-columns: 52% 48%;
+      align-items: center;
+    }
+
+    .featured-row[data-media-first="true"] .featured-row__media {
+      order: 1;
+    }
+
+    .featured-row[data-media-first="true"] .featured-row__content {
+      order: 2;
+    }
+
+    .featured-row[data-media-first="false"] .featured-row__media {
+      order: 2;
+    }
+
+    .featured-row[data-media-first="false"] .featured-row__content {
+      order: 1;
     }
   }
 
-  @media (min-width: 1024px) {
-    .projects-grid {
-      grid-template-columns: repeat(3, 1fr);
-    }
+  .featured-row__media {
+    width: 100%;
   }
 
-  .project-card {
+  .featured-row__header {
     display: flex;
-    flex-direction: column;
-    height: 100%;
-  }
-
-  .project-card__header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
+    align-items: center;
     gap: var(--space-3);
     margin-bottom: var(--space-3);
   }
 
-  .project-card__name {
+  .featured-row__name {
     font-family: var(--font-heading);
     font-weight: 400;
-    font-size: 1.125rem;
-    line-height: 1.3;
+    font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
     color: var(--text);
-  }
-
-  .project-card__desc {
-    font-size: 15px;
-    line-height: 1.65;
-    color: var(--text-body);
     margin-bottom: var(--space-3);
   }
 
-  .project-card__plain {
+  .featured-row__plain {
     font-family: var(--font-body);
-    font-size: 12px;
+    font-size: 12.5px;
     font-weight: 500;
     letter-spacing: 0.14em;
     text-transform: uppercase;
@@ -181,52 +282,139 @@ import { projects } from '../../data/projects.js';
     border-left: 1px solid var(--border);
   }
 
-  .project-card__summary {
-    font-size: 15px;
-    line-height: 1.65;
+  .featured-row__summary {
+    font-size: 17px;
+    line-height: 1.7;
+    font-weight: 500;
     color: var(--text-body);
     margin-bottom: var(--space-4);
   }
 
-  .project-card__diagram {
-    margin-bottom: var(--space-4).
-    overflow: hidden.
+  .featured-row__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-bottom: var(--space-5);
   }
 
-  .project-card__diagram svg {
-    width: 100%.
-    height: auto.
-    max-height: 160px.
+  .featured-row__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
   }
 
-  .project-card__tags {
-    display: flex.
-    flex-wrap: wrap.
-    gap: var(--space-2).
-    margin-bottom: var(--space-5).
+  .featured-row__actions .btn--disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
   }
 
-  .project-card__link {
-    display: inline-flex.
-    align-items: center.
-    gap: var(--space-2).
-    font-family: var(--font-body).
-    font-size: 13px.
-    font-weight: 500.
-    letter-spacing: 0.06em.
-    color: var(--text).
-    transition: color 0.15s ease, gap 0.15s ease.
-    margin-top: auto.
+  /* ============================================================
+     02 HOW I BUILD
+     ============================================================ */
+
+  .build-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--card-gap);
   }
 
-  .project-card__link:hover {
-    color: var(--signal).
-    gap: var(--space-3).
+  @media (min-width: 768px) {
+    .build-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
   }
 
-  .project-card__link:focus-visible {
-    outline: 2px solid var(--signal).
-    outline-offset: 3px.
-    border-radius: var(--radius-card).
+  .build-card {
+    height: 100%;
+  }
+
+  .build-card__number {
+    font-family: var(--font-body);
+    font-size: 12.5px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--signal-soft);
+    margin-bottom: var(--space-3);
+    display: block;
+  }
+
+  .build-card__title {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: clamp(1.125rem, 2vw, 1.375rem);
+    line-height: 1.3;
+    color: var(--text);
+    margin-bottom: var(--space-3);
+  }
+
+  .build-card__desc {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--text-body);
+  }
+
+  /* ============================================================
+     03 CLOSING BLOCK
+     ============================================================ */
+
+  .cta-section {
+    border-top: 1px solid var(--border);
+    padding-top: var(--space-8);
+    padding-bottom: var(--space-8);
+  }
+
+  .cta-content {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .cta__title {
+    font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+    margin-bottom: var(--space-4);
+  }
+
+  .cta__subtitle {
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--text-body);
+    margin-bottom: var(--space-8);
+  }
+
+  .cta__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-4);
+  }
+
+  /* ============================================================
+     REVEAL ANIMATION (gentle fade-up, never hides without JS)
+     ============================================================ */
+
+  .reveal-target {
+    opacity: 1;
+    transform: none;
+  }
+
+  .html.js .reveal-target {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  }
+
+  .html.js .reveal-target.revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .html.js .reveal-target {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
   }
 </style>
